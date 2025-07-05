@@ -1,0 +1,8 @@
+{
+  "tag_name": "v1.0.0",
+  "target_commitish": "main",
+  "name": "AION v1.0.0",
+  "body": "# \ud83d\ude80 AION v1.0.0 Release\n\n## \ud83c\udf1f What's New\n\nThis release includes all the core features of AION:\n\n### \u2728 Features\n- \ud83c\udf0d **Multilingual Support**: 7 languages with beautiful UI\n- \ud83e\udd16 **AI Integration**: Multiple AI providers support\n- \ud83d\udcbb **Code Execution**: Python, JavaScript, Rust, C++\n- \ud83d\udd12 **Security**: Advanced security and session management\n- \ud83e\udde9 **Plugins**: Extensible plugin system\n- \ud83c\udf10 **Interfaces**: CLI, TUI, and Web interfaces\n\n### \ud83d\udce6 Installation\n```bash\npip install aion-ai==1.0.0\n```\n\n### \ud83d\udd17 Quick Start\n```bash\n# Start AION\naion-cli\n\n# Or with Arabic interface\naion-ar\n```\n\n### \ud83d\udcda Documentation\n- [User Guide](https://github.com/yourusername/aion-ai/wiki)\n- [API Reference](https://github.com/yourusername/aion-ai/blob/main/docs/api-reference.md)\n\n### \ud83d\ude4f Thanks\nThank you to all contributors and users who made this release possible!\n\n---\n**Full Changelog**: https://github.com/yourusername/aion-ai/compare/v0.9.0...v1.0.0\n",
+  "draft": false,
+  "prerelease": false
+}
