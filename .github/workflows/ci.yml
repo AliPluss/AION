@@ -40,6 +40,7 @@ jobs:
           ${{ runner.os }}-pip-
 
     - name: Install dependencies
+      shell: bash
       run: |
         python -m pip install --upgrade pip
         # Use CI-specific requirements for better compatibility
@@ -53,7 +54,6 @@ jobs:
           echo "Using default requirements..."
           pip install -r requirements.txt
         fi
-      continue-on-error: false
 
     - name: Lint with flake8
       run: |
