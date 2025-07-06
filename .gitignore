@@ -157,3 +157,23 @@ Thumbs.db
 *.temp
 *.bak
 *.backup
+
+# Security - API Keys and Tokens
+*.key
+*.pem
+*.p12
+*.pfx
+.env.local
+.env.production
+.env.staging
+*_token
+*_key
+*_secret
+api_keys.txt
+secrets.txt
+credentials.json
+
+# AION Security
+aion_env/
+test_venv/
+.aion_secrets/

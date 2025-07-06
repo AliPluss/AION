@@ -31,22 +31,39 @@ install-dev:
 
 # Testing
 test:
+	pytest -v --tb=short --continue-on-collection-errors
+
+test-basic:
+	pytest tests/test_basic.py -v
+
+test-integration:
+	pytest tests/test_integration.py -v
+
+test-coverage:
 	pytest --cov=. --cov-report=html --cov-report=term-missing
 
 test-verbose:
 	pytest -v --cov=. --cov-report=html --cov-report=term-missing
 
+health-check:
+	@echo "🔍 Running AION health check..."
+	@python -c "import sys; print(f'✅ Python version: {sys.version}')"
+	@if [ -f "main.py" ] || [ -f "aion_project/main.py" ]; then echo "✅ Main application found"; else echo "❌ Main application not found"; fi
+	@if [ -f "requirements.txt" ]; then echo "✅ Requirements file found"; else echo "❌ Requirements file not found"; fi
+	@if [ -d "tests" ]; then echo "✅ Tests directory found"; else echo "❌ Tests directory not found"; fi
+	@echo "🎉 Health check completed!"
+
 # Code quality
 lint:
-	flake8 .
-	isort --check-only .
+	python -m flake8 . --exclude=venv,aion_env,build,dist
+	python -m isort --check-only . --skip venv --skip aion_env --skip build --skip dist
 
 format:
-	black .
-	isort .
+	python -m black . --exclude="/(venv|aion_env|build|dist)/"
+	python -m isort . --skip venv --skip aion_env --skip build --skip dist
 
 type-check:
-	mypy . --ignore-missing-imports
+	python -m mypy . --ignore-missing-imports --exclude="(venv|aion_env|build|dist)"
 
 # Security
 security:

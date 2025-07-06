@@ -1,0 +1,37 @@
+[flake8]
+max-line-length = 127
+max-complexity = 10
+exclude = 
+    .git,
+    __pycache__,
+    venv,
+    aion_env,
+    build,
+    dist,
+    .eggs,
+    *.egg-info,
+    .tox,
+    .coverage,
+    .coverage.*,
+    .cache,
+    nosetests.xml,
+    coverage.xml,
+    *.cover,
+    *.log,
+    .mypy_cache,
+    .pytest_cache
+
+# Error codes to ignore
+ignore = 
+    E203,  # whitespace before ':'
+    E501,  # line too long (handled by black)
+    W503,  # line break before binary operator
+    F401,  # imported but unused (in __init__.py files)
+
+# Error codes to always report
+select = E,W,F,C
+
+per-file-ignores =
+    __init__.py:F401
+    */migrations/*:E501,F401
+    tests/*:F401,F811

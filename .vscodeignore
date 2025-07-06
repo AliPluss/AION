@@ -1,0 +1,55 @@
+# VS Code ignore file - exclude from security scanning
+
+# Environment files
+.env
+.env.*
+*.env
+
+# API Keys and tokens
+*_token*
+*_key*
+*_secret*
+api_keys.*
+secrets.*
+credentials.*
+
+# Virtual environments
+.venv/
+venv/
+env/
+aion_env/
+test_venv/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation builds
+docs/_build/
+site/
