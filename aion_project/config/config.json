@@ -2,12 +2,12 @@
   "app": {
     "name": "AION",
     "version": "2.0.0",
-    "language": "ar",
+    "language": "en",
     "theme": "dark"
   },
   "ai": {
-    "default_provider": "openai",
-    "current_model": "gpt-4-turbo",
+    "default_provider": "deepseek",
+    "current_model": "deepseek-chat",
     "providers": {
       "openai": {
         "name": "OpenAI",
@@ -15,21 +15,21 @@
         "models": {
           "gpt-4": {
             "name": "GPT-4",
-            "description": "أقوى نموذج من OpenAI - دقة عالية",
+            "description": "Most powerful OpenAI model - high accuracy",
             "max_tokens": 8000,
-            "cost": "عالي"
+            "cost": "High"
           },
           "gpt-4-turbo": {
             "name": "GPT-4 Turbo",
-            "description": "GPT-4 محسن للسرعة والكفاءة",
+            "description": "GPT-4 optimized for speed and efficiency",
             "max_tokens": 4000,
-            "cost": "متوسط"
+            "cost": "Medium"
           },
           "gpt-3.5-turbo": {
             "name": "GPT-3.5 Turbo",
-            "description": "نموذج سريع ومتوازن - الافتراضي",
+            "description": "Fast and balanced model - default",
             "max_tokens": 4000,
-            "cost": "منخفض"
+            "cost": "Low"
           }
         }
       },
@@ -40,15 +40,15 @@
         "models": {
           "deepseek-chat": {
             "name": "DeepSeek Chat",
-            "description": "نموذج DeepSeek للمحادثة - اقتصادي",
+            "description": "DeepSeek model for conversation - economical",
             "max_tokens": 4000,
-            "cost": "منخفض جداً"
+            "cost": "Very Low"
           },
           "deepseek-coder": {
             "name": "DeepSeek Coder",
-            "description": "متخصص في البرمجة والكود",
+            "description": "Specialized in programming and code",
             "max_tokens": 4000,
-            "cost": "منخفض جداً"
+            "cost": "Very Low"
           }
         }
       },
@@ -58,15 +58,15 @@
         "models": {
           "gemini-pro": {
             "name": "Gemini Pro",
-            "description": "نموذج Google المتقدم",
+            "description": "Google's advanced model",
             "max_tokens": 2048,
-            "cost": "متوسط"
+            "cost": "Medium"
           },
           "gemini-pro-vision": {
             "name": "Gemini Pro Vision",
-            "description": "يدعم الصور والنصوص",
+            "description": "Supports images and text",
             "max_tokens": 2048,
-            "cost": "متوسط"
+            "cost": "Medium"
           }
         }
       },
@@ -76,21 +76,21 @@
         "models": {
           "claude-3-opus": {
             "name": "Claude 3 Opus",
-            "description": "أقوى نموذج من Anthropic",
+            "description": "Most powerful Anthropic model",
             "max_tokens": 4000,
-            "cost": "عالي"
+            "cost": "High"
           },
           "claude-3-sonnet": {
             "name": "Claude 3 Sonnet",
-            "description": "متوازن بين الأداء والتكلفة",
+            "description": "Balanced between performance and cost",
             "max_tokens": 4000,
-            "cost": "متوسط"
+            "cost": "Medium"
           },
           "claude-3-haiku": {
             "name": "Claude 3 Haiku",
-            "description": "سريع واقتصادي",
+            "description": "Fast and economical",
             "max_tokens": 4000,
-            "cost": "منخفض"
+            "cost": "Low"
           }
         }
       }

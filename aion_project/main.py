@@ -35,11 +35,11 @@ class AIONApp:
             with open(self.config_dir / "config.json", "r", encoding="utf-8") as f:
                 self.config = json.load(f)
         except FileNotFoundError:
-            self.config = {"app": {"language": "ar"}}
+            self.config = {"app": {"language": "en"}}
     
     def load_language(self):
         """Load language translations"""
-        lang = self.config.get("app", {}).get("language", "ar")
+        lang = self.config.get("app", {}).get("language", "en")
         try:
             with open(self.config_dir / f"lang_{lang}.json", "r", encoding="utf-8") as f:
                 self.lang = json.load(f)
@@ -66,17 +66,17 @@ class AIONApp:
         """Show main menu"""
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column("🔢", style="cyan", width=4)
-        table.add_column("الوظيفة | Function", style="green", width=25)
-        table.add_column("الوصف | Description", style="white", width=35)
+        table.add_column("Function", style="green", width=25)
+        table.add_column("Description", style="white", width=35)
         
         menu_items = [
-            ("1", "🤖 " + self.lang.get("ai_assistant", "AI Assistant"), "محادثة مع الذكاء الاصطناعي"),
-            ("2", "⚡ " + self.lang.get("code_execution", "Code Execution"), "تنفيذ الأكواد البرمجية"),
-            ("3", "🧩 " + self.lang.get("plugin_manager", "Plugin Manager"), "إدارة الإضافات والتوسعات"),
-            ("4", "🎤 " + self.lang.get("voice_mode", "Voice Mode"), "التحكم بالأوامر الصوتية"),
-            ("5", "⚙️ " + self.lang.get("settings", "Settings"), "الإعدادات والتخصيص"),
-            ("6", "❓ " + self.lang.get("help", "Help"), "المساعدة والدليل"),
-            ("0", "🚪 " + self.lang.get("exit", "Exit"), "خروج من البرنامج")
+            ("1", "🤖 " + self.lang.get("ai_assistant", "AI Assistant"), "Chat with AI assistant"),
+            ("2", "⚡ " + self.lang.get("code_execution", "Code Execution"), "Execute programming code"),
+            ("3", "🧩 " + self.lang.get("plugin_manager", "Plugin Manager"), "Manage plugins and extensions"),
+            ("4", "🎤 " + self.lang.get("voice_mode", "Voice Mode"), "Voice command control"),
+            ("5", "⚙️ " + self.lang.get("settings", "Settings"), "Settings and customization"),
+            ("6", "❓ " + self.lang.get("help", "Help"), "Help and guide"),
+            ("0", "🚪 " + self.lang.get("exit", "Exit"), "Exit the program")
         ]
         
         for num, func, desc in menu_items:
@@ -84,7 +84,7 @@ class AIONApp:
         
         menu_panel = Panel(
             table,
-            title="[bold blue]🎯 القائمة الرئيسية | Main Menu[/bold blue]",
+            title="[bold blue]🎯 Main Menu[/bold blue]",
             border_style="green"
         )
         
@@ -99,24 +99,24 @@ class AIONApp:
             self.show_menu()
 
             choice = Prompt.ask(
-                "\n[cyan]اختر رقم الوظيفة | Select function number[/cyan]",
+                "\n[cyan]Select function number[/cyan]",
                 choices=["0", "1", "2", "3", "4", "5", "6"],
                 default="1"
             )
 
             if choice == "0":
-                console.print("\n[green]🙏 شكراً لاستخدام AION! | Thank you for using AION![/green]")
+                console.print("\n[green]🙏 Thank you for using AION![/green]")
                 break
             elif choice == "1":
-                console.print("\n[yellow]🤖 بدء مساعد الذكاء الاصطناعي...[/yellow]")
-                console.print("[dim]⚠️ هذه الميزة قيد التطوير | This feature is under development[/dim]")
+                console.print("\n[yellow]🤖 Starting AI assistant...[/yellow]")
+                console.print("[dim]⚠️ This feature is under development[/dim]")
             elif choice == "2":
                 await self.show_code_execution()
             elif choice == "3":
                 self.show_plugin_manager()
             elif choice == "4":
-                console.print("\n[yellow]🎤 بدء الوضع الصوتي...[/yellow]")
-                console.print("[dim]⚠️ هذه الميزة قيد التطوير | This feature is under development[/dim]")
+                console.print("\n[yellow]🎤 Starting voice mode...[/yellow]")
+                console.print("[dim]⚠️ This feature is under development[/dim]")
             elif choice == "5":
                 self.show_settings()
             elif choice == "6":
@@ -124,14 +124,14 @@ class AIONApp:
 
     async def show_code_execution(self):
         """Show code execution interface with enhanced Rust and C++ support"""
-        console.print("\n[bold blue]⚡ تنفيذ الكود متعدد اللغات | Multi-Language Code Execution[/bold blue]")
+        console.print("\n[bold blue]⚡ Multi-Language Code Execution[/bold blue]")
 
         # Simple built-in code execution for now
         available_languages = {
-            "python": {"name": "Python", "icon": "🐍", "performance": "متوسط", "available": True},
-            "javascript": {"name": "JavaScript", "icon": "🟨", "performance": "متوسط", "available": True},
-            "rust": {"name": "Rust", "icon": "🦀", "performance": "عالي جداً", "available": False},
-            "cpp": {"name": "C++", "icon": "⚡", "performance": "عالي جداً", "available": False}
+            "python": {"name": "Python", "icon": "🐍", "performance": "Medium", "available": True},
+            "javascript": {"name": "JavaScript", "icon": "🟨", "performance": "Medium", "available": True},
+            "rust": {"name": "Rust", "icon": "🦀", "performance": "Very High", "available": False},
+            "cpp": {"name": "C++", "icon": "⚡", "performance": "Very High", "available": False}
         }
 
         # Check for available compilers
@@ -150,19 +150,19 @@ class AIONApp:
 
         while True:
             console.print("\n" + "="*60)
-            console.print("[bold cyan]🚀 مشغل الكود AION | AION Code Executor[/bold cyan]")
+            console.print("[bold cyan]🚀 AION Code Executor[/bold cyan]")
             console.print("="*60)
 
             table = Table(show_header=True, header_style="bold magenta", width=55)
-            table.add_column("الخيار | Option", style="cyan", width=8)
-            table.add_column("الوظيفة | Function", style="green", width=25)
-            table.add_column("الوصف | Description", style="white", width=22)
+            table.add_column("Option", style="cyan", width=8)
+            table.add_column("Function", style="green", width=25)
+            table.add_column("Description", style="white", width=22)
 
             menu_items = [
-                ("1", "🏃 " + "تشغيل كود | Run Code", "تنفيذ كود تفاعلي"),
-                ("2", "🌐 " + "اللغات المتاحة | Languages", "عرض اللغات المدعومة"),
-                ("3", "📝 " + "أمثلة الكود | Samples", "عرض أمثلة جاهزة"),
-                ("0", "🔙 " + "العودة | Back", "العودة للقائمة الرئيسية")
+                ("1", "🏃 Run Code", "Execute interactive code"),
+                ("2", "🌐 Languages", "Show supported languages"),
+                ("3", "📝 Samples", "Show code samples"),
+                ("0", "🔙 Back", "Back to main menu")
             ]
 
             for option, function, description in menu_items:
@@ -170,7 +170,7 @@ class AIONApp:
 
             console.print(table)
 
-            choice = Prompt.ask("\n[bold yellow]اختر خيار | Choose option[/bold yellow]",
+            choice = Prompt.ask("\n[bold yellow]Choose option[/bold yellow]",
                               choices=["0", "1", "2", "3"], default="1")
 
             if choice == "0":
@@ -182,28 +182,28 @@ class AIONApp:
             elif choice == "3":
                 self._show_code_samples()
 
-            input("\n[dim]اضغط Enter للمتابعة | Press Enter to continue...[/dim]")
+            input("\n[dim]Press Enter to continue...[/dim]")
 
     async def _run_simple_code(self):
         """Simple code execution"""
-        console.print("\n[bold green]💻 تشغيل الكود | Code Execution[/bold green]")
+        console.print("\n[bold green]💻 Code Execution[/bold green]")
 
         # Language selection
         languages = ["python", "javascript"]
-        console.print("اختر لغة البرمجة:")
+        console.print("Choose programming language:")
         console.print("1. 🐍 Python")
         console.print("2. 🟨 JavaScript")
 
-        choice = Prompt.ask("اختر رقم اللغة", choices=["1", "2"], default="1")
+        choice = Prompt.ask("Choose language number", choices=["1", "2"], default="1")
 
         if choice == "1":
             lang = "python"
-            console.print("✅ تم اختيار Python")
+            console.print("✅ Python selected")
         else:
             lang = "javascript"
-            console.print("✅ تم اختيار JavaScript")
+            console.print("✅ JavaScript selected")
 
-        console.print("أدخل الكود (اكتب 'END' في سطر منفصل للانتهاء):")
+        console.print("Enter code (type 'END' on a separate line to finish):")
 
         code_lines = []
         while True:
@@ -213,16 +213,16 @@ class AIONApp:
                     break
                 code_lines.append(line)
             except KeyboardInterrupt:
-                console.print("\n❌ تم الإلغاء")
+                console.print("\n❌ Cancelled")
                 return
 
         code = "\n".join(code_lines)
         if not code.strip():
-            console.print("❌ لم يتم إدخال أي كود")
+            console.print("❌ No code entered")
             return
 
         # Execute code
-        console.print(f"\n🚀 تشغيل كود {lang.upper()}...")
+        console.print(f"\n🚀 Running {lang.upper()} code...")
 
         try:
             import tempfile
@@ -241,13 +241,13 @@ class AIONApp:
 
             # Display results
             if result.returncode == 0:
-                console.print(f"[green]✅ تم تنفيذ الكود بنجاح![/green]")
+                console.print(f"[green]✅ Code executed successfully![/green]")
                 if result.stdout:
-                    console.print(f"[blue]📤 المخرجات:[/blue]\n{result.stdout}")
+                    console.print(f"[blue]📤 Output:[/blue]\n{result.stdout}")
             else:
-                console.print(f"[red]❌ خطأ في التنفيذ![/red]")
+                console.print(f"[red]❌ Execution error![/red]")
                 if result.stderr:
-                    console.print(f"[red]🚨 الخطأ:[/red]\n{result.stderr}")
+                    console.print(f"[red]🚨 Error:[/red]\n{result.stderr}")
 
             # Cleanup
             import os
@@ -370,11 +370,11 @@ int main() {
                 plugin_table.add_column("الوصف | Description", style="white", width=35)
 
                 plugin_menu_items = [
-                    ("1", "📋 عرض الإضافات | List Plugins", "عرض جميع الإضافات المتاحة"),
-                    ("2", "🔄 تحميل الإضافات | Load Plugins", "تحميل جميع الإضافات"),
-                    ("3", "🧮 تجربة الآلة الحاسبة | Try Calculator", "تجربة إضافة الآلة الحاسبة"),
-                    ("4", "📊 أوامر الإضافات | Plugin Commands", "عرض أوامر الإضافات"),
-                    ("0", "🔙 العودة | Back", "العودة للقائمة الرئيسية")
+                    ("1", "📋 List Plugins", "Show all available plugins"),
+                    ("2", "🔄 Load Plugins", "Load all plugins"),
+                    ("3", "🧮 Try Calculator", "Test calculator plugin"),
+                    ("4", "📊 Plugin Commands", "Show plugin commands"),
+                    ("0", "🔙 Back", "Back to main menu")
                 ]
 
                 for num, func, desc in plugin_menu_items:
@@ -389,7 +389,7 @@ int main() {
                 console.print(plugin_panel)
 
                 plugin_choice = Prompt.ask(
-                    "\n[cyan]اختر رقم الوظيفة | Select function number[/cyan]",
+                    "\n[cyan]Select function number[/cyan]",
                     choices=["0", "1", "2", "3", "4"],
                     default="1"
                 )
@@ -397,55 +397,55 @@ int main() {
                 if plugin_choice == "0":
                     break
                 elif plugin_choice == "1":
-                    console.print("\n[yellow]📋 عرض الإضافات المتاحة...[/yellow]")
+                    console.print("\n[yellow]📋 Listing available plugins...[/yellow]")
                     plugin_manager.list_plugins()
                 elif plugin_choice == "2":
-                    console.print("\n[yellow]🔄 تحميل الإضافات...[/yellow]")
+                    console.print("\n[yellow]🔄 Loading plugins...[/yellow]")
                     loaded_count = plugin_manager.load_all_plugins()
-                    console.print(f"[green]✅ تم تحميل {loaded_count} إضافة بنجاح[/green]")
+                    console.print(f"[green]✅ Successfully loaded {loaded_count} plugins[/green]")
                 elif plugin_choice == "3":
                     self.demo_calculator_plugin(plugin_manager)
                 elif plugin_choice == "4":
-                    console.print("\n[yellow]📊 أوامر الإضافات المتاحة...[/yellow]")
+                    console.print("\n[yellow]📊 Available plugin commands...[/yellow]")
                     commands = plugin_manager.get_all_commands()
                     if commands:
                         for plugin_name, plugin_commands in commands.items():
                             console.print(f"[cyan]🧩 {plugin_name}:[/cyan] {', '.join(plugin_commands)}")
                     else:
-                        console.print("[yellow]⚠️ لا توجد إضافات محملة[/yellow]")
+                        console.print("[yellow]⚠️ No plugins loaded[/yellow]")
 
         except ImportError as e:
-            console.print(f"[red]❌ خطأ في تحميل مدير الإضافات: {e}[/red]")
-            console.print("[yellow]💡 تأكد من تشغيل الإعداد بشكل صحيح[/yellow]")
+            console.print(f"[red]❌ Error loading plugin manager: {e}[/red]")
+            console.print("[yellow]💡 Make sure to run setup correctly[/yellow]")
 
     def demo_calculator_plugin(self, plugin_manager):
         """Demo calculator plugin functionality"""
-        console.print("\n[bold blue]🧮 تجربة إضافة الآلة الحاسبة | Calculator Plugin Demo[/bold blue]")
+        console.print("\n[bold blue]🧮 Calculator Plugin Demo[/bold blue]")
 
         # Load calculator plugin if not loaded
         if "calculator_plugin" not in plugin_manager.loaded_plugins:
             if not plugin_manager.load_plugin("calculator_plugin"):
-                console.print("[red]❌ فشل في تحميل إضافة الآلة الحاسبة[/red]")
+                console.print("[red]❌ Failed to load calculator plugin[/red]")
                 return
 
         while True:
-            console.print("\n[green]أمثلة على العمليات الحسابية:[/green]")
-            console.print("• add 5 3 2 (الجمع)")
-            console.print("• subtract 10 3 (الطرح)")
-            console.print("• multiply 4 5 (الضرب)")
-            console.print("• divide 15 3 (القسمة)")
-            console.print("• sqrt 16 (الجذر التربيعي)")
-            console.print("• power 2 3 (الأس)")
-            console.print("• exit (للخروج)")
+            console.print("\n[green]Mathematical operation examples:[/green]")
+            console.print("• add 5 3 2 (addition)")
+            console.print("• subtract 10 3 (subtraction)")
+            console.print("• multiply 4 5 (multiplication)")
+            console.print("• divide 15 3 (division)")
+            console.print("• sqrt 16 (square root)")
+            console.print("• power 2 3 (exponentiation)")
+            console.print("• exit (to exit)")
 
-            user_input = Prompt.ask("\n[cyan]أدخل العملية | Enter operation[/cyan]")
+            user_input = Prompt.ask("\n[cyan]Enter operation[/cyan]")
 
             if user_input.lower() == "exit":
                 break
 
             parts = user_input.split()
             if len(parts) < 2:
-                console.print("[red]❌ صيغة خاطئة. مثال: add 5 3[/red]")
+                console.print("[red]❌ Wrong format. Example: add 5 3[/red]")
                 continue
 
             command = parts[0]
@@ -454,60 +454,60 @@ int main() {
             result = plugin_manager.execute_plugin_command("calculator_plugin", command, args)
 
             if result and result.get("success"):
-                console.print(f"[green]✅ النتيجة: {result['result']} ({result['operation']})[/green]")
+                console.print(f"[green]✅ Result: {result['result']} ({result['operation']})[/green]")
             elif result:
-                console.print(f"[red]❌ خطأ: {result.get('error', 'Unknown error')}[/red]")
+                console.print(f"[red]❌ Error: {result.get('error', 'Unknown error')}[/red]")
             else:
-                console.print("[red]❌ فشل في تنفيذ العملية[/red]")
+                console.print("[red]❌ Failed to execute operation[/red]")
     
     def show_help(self):
         """Show help information"""
         help_text = """
-[bold blue]🧠 AION - دليل المساعدة | Help Guide[/bold blue]
+[bold blue]🧠 AION - Help Guide[/bold blue]
 
-[green]الوظائف المتاحة | Available Functions:[/green]
-• مساعد الذكاء الاصطناعي - محادثة ذكية مع AI
-• تنفيذ الكود - تشغيل أكواد متعددة اللغات  
-• الوضع الصوتي - التحكم بالأوامر الصوتية
-• الإعدادات - تخصيص النظام حسب احتياجاتك
+[green]Available Functions:[/green]
+• AI Assistant - Smart conversation with AI
+• Code Execution - Run multi-language code
+• Voice Mode - Voice command control
+• Settings - Customize system to your needs
 
-[yellow]للمزيد من المعلومات، قم بزيارة الوثائق الرسمية[/yellow]
+[yellow]For more information, visit the official documentation[/yellow]
         """
-        
+
         help_panel = Panel(
             help_text.strip(),
-            title="[bold blue]❓ المساعدة | Help[/bold blue]",
+            title="[bold blue]❓ Help[/bold blue]",
             border_style="yellow"
         )
-        
+
         console.print(help_panel)
-        input("\nاضغط Enter للمتابعة | Press Enter to continue...")
+        input("\nPress Enter to continue...")
 
     def show_settings(self):
-        """عرض قائمة الإعدادات"""
+        """Show settings menu"""
         while True:
             console.clear()
             console.print(Panel(
-                f"🧠 AION - AI Operating Node\nمرحباً بك في AION\n\nEnhanced Terminal Assistant v{self.config['app']['version']}",
+                f"🧠 AION - AI Operating Node\nWelcome to AION\n\nEnhanced Terminal Assistant v{self.config['app']['version']}",
                 title="🤖 AION",
                 border_style="cyan"
             ))
 
-            # إنشاء جدول الإعدادات
+            # Create settings table
             settings_table = Table(show_header=True, header_style="bold magenta")
             settings_table.add_column("🔢", style="cyan", width=6)
-            settings_table.add_column("الوظيفة | Function", style="white", width=25)
-            settings_table.add_column("الوصف | Description", style="dim white", width=35)
+            settings_table.add_column("Function", style="white", width=25)
+            settings_table.add_column("Description", style="dim white", width=35)
 
-            settings_table.add_row("1", "🤖 اختيار نموذج الذكاء الاصطناعي", "تغيير نموذج الذكاء الاصطناعي")
-            settings_table.add_row("2", "🌐 تغيير اللغة | Change Language", "تغيير لغة الواجهة")
-            settings_table.add_row("3", "🎨 تغيير المظهر | Change Theme", "تغيير مظهر التطبيق")
-            settings_table.add_row("0", "🔙 العودة | Back", "العودة للقائمة الرئيسية")
+            settings_table.add_row("1", "🤖 AI Model Selection", "Change AI model")
+            settings_table.add_row("2", "🌐 Change Language", "Change interface language")
+            settings_table.add_row("3", "🎨 Change Theme", "Change application theme")
+            settings_table.add_row("0", "🔙 Back", "Back to main menu")
 
-            console.print(Panel(settings_table, title="⚙️ الإعدادات | Settings", border_style="green"))
+            console.print(Panel(settings_table, title="⚙️ Settings", border_style="green"))
 
             choice = Prompt.ask(
-                "اختر رقم الوظيفة | Select function number [0/1/2/3]",
+                "Select function number [0/1/2/3]",
                 choices=["0", "1", "2", "3"],
                 default="1"
             )
@@ -517,41 +517,41 @@ int main() {
             elif choice == "1":
                 self.show_ai_model_selection()
             elif choice == "2":
-                console.print("\n[yellow]🌐 تغيير اللغة...[/yellow]")
-                console.print("[dim]⚠️ هذه الميزة قيد التطوير | This feature is under development[/dim]")
-                input("\nاضغط Enter للمتابعة | Press Enter to continue...")
+                console.print("\n[yellow]🌐 Changing language...[/yellow]")
+                console.print("[dim]⚠️ This feature is under development[/dim]")
+                input("\nPress Enter to continue...")
             elif choice == "3":
-                console.print("\n[yellow]🎨 تغيير المظهر...[/yellow]")
-                console.print("[dim]⚠️ هذه الميزة قيد التطوير | This feature is under development[/dim]")
-                input("\nاضغط Enter للمتابعة | Press Enter to continue...")
+                console.print("\n[yellow]🎨 Changing theme...[/yellow]")
+                console.print("[dim]⚠️ This feature is under development[/dim]")
+                input("\nPress Enter to continue...")
 
     def show_ai_model_selection(self):
-        """عرض واجهة اختيار نموذج الذكاء الاصطناعي"""
+        """Show AI model selection interface"""
         while True:
             console.clear()
             console.print(Panel(
-                f"🤖 اختيار نموذج الذكاء الاصطناعي | AI Model Selection\n\nالنموذج الحالي: {self.config['ai']['current_model']}",
+                f"🤖 AI Model Selection\n\nCurrent Model: {self.config['ai']['current_model']}",
                 title="🧠 AION AI Models",
                 border_style="cyan"
             ))
 
-            # عرض المزودين المتاحين
+            # Show available providers
             providers_table = Table(show_header=True, header_style="bold magenta")
             providers_table.add_column("🔢", style="cyan", width=6)
-            providers_table.add_column("المزود | Provider", style="white", width=20)
-            providers_table.add_column("الوصف | Description", style="dim white", width=30)
+            providers_table.add_column("Provider", style="white", width=20)
+            providers_table.add_column("Description", style="dim white", width=30)
 
             provider_list = list(self.config['ai']['providers'].keys())
             for i, provider_key in enumerate(provider_list, 1):
                 provider = self.config['ai']['providers'][provider_key]
-                providers_table.add_row(str(i), provider['name'], f"عدد النماذج: {len(provider['models'])}")
+                providers_table.add_row(str(i), provider['name'], f"Models: {len(provider['models'])}")
 
-            providers_table.add_row("0", "🔙 العودة | Back", "العودة للإعدادات")
+            providers_table.add_row("0", "🔙 Back", "Back to settings")
 
-            console.print(Panel(providers_table, title="🏢 مزودي الذكاء الاصطناعي | AI Providers", border_style="blue"))
+            console.print(Panel(providers_table, title="🏢 AI Providers", border_style="blue"))
 
             choice = Prompt.ask(
-                f"اختر المزود | Select provider [0-{len(provider_list)}]",
+                f"Select provider [0-{len(provider_list)}]",
                 choices=[str(i) for i in range(len(provider_list) + 1)],
                 default="1"
             )
@@ -569,17 +569,17 @@ int main() {
         while True:
             console.clear()
             console.print(Panel(
-                f"🤖 نماذج {provider['name']} | {provider['name']} Models\n\nالنموذج الحالي: {self.config['ai']['current_model']}",
+                f"🤖 {provider['name']} Models\n\nCurrent Model: {self.config['ai']['current_model']}",
                 title=f"🧠 {provider['name']}",
                 border_style="cyan"
             ))
 
-            # عرض النماذج المتاحة
+            # Show available models
             models_table = Table(show_header=True, header_style="bold magenta")
             models_table.add_column("🔢", style="cyan", width=6)
-            models_table.add_column("النموذج | Model", style="white", width=20)
-            models_table.add_column("الوصف | Description", style="dim white", width=30)
-            models_table.add_column("التكلفة | Cost", style="yellow", width=10)
+            models_table.add_column("Model", style="white", width=20)
+            models_table.add_column("Description", style="dim white", width=30)
+            models_table.add_column("Cost", style="yellow", width=10)
 
             model_list = list(provider['models'].keys())
             for i, model_key in enumerate(model_list, 1):
@@ -592,12 +592,12 @@ int main() {
                     model['cost']
                 )
 
-            models_table.add_row("0", "🔙 العودة | Back", "العودة لاختيار المزود", "")
+            models_table.add_row("0", "🔙 Back", "Back to provider selection", "")
 
-            console.print(Panel(models_table, title=f"🤖 نماذج {provider['name']} | {provider['name']} Models", border_style="green"))
+            console.print(Panel(models_table, title=f"🤖 {provider['name']} Models", border_style="green"))
 
             choice = Prompt.ask(
-                f"اختر النموذج | Select model [0-{len(model_list)}]",
+                f"Select model [0-{len(model_list)}]",
                 choices=[str(i) for i in range(len(model_list) + 1)],
                 default="1"
             )
@@ -622,17 +622,17 @@ int main() {
 
             model_info = self.config['ai']['providers'][provider_key]['models'][model_key]
 
-            console.print(f"\n✅ [green]تم تغيير النموذج بنجاح![/green]")
-            console.print(f"🤖 النموذج الجديد: {model_info['name']}")
-            console.print(f"📝 الوصف: {model_info['description']}")
-            console.print(f"💰 التكلفة: {model_info['cost']}")
-            console.print(f"🔢 أقصى رموز: {model_info['max_tokens']}")
+            console.print(f"\n✅ [green]Model changed successfully![/green]")
+            console.print(f"🤖 New Model: {model_info['name']}")
+            console.print(f"📝 Description: {model_info['description']}")
+            console.print(f"💰 Cost: {model_info['cost']}")
+            console.print(f"🔢 Max Tokens: {model_info['max_tokens']}")
 
-            input("\nاضغط Enter للمتابعة | Press Enter to continue...")
+            input("\nPress Enter to continue...")
 
         except Exception as e:
-            console.print(f"\n❌ [red]خطأ في تغيير النموذج: {str(e)}[/red]")
-            input("\nاضغط Enter للمتابعة | Press Enter to continue...")
+            console.print(f"\n❌ [red]Error changing model: {str(e)}[/red]")
+            input("\nPress Enter to continue...")
 
 @app.command()
 def start():
@@ -644,8 +644,8 @@ def start():
 @app.command()
 def ai():
     """🤖 Quick AI assistant"""
-    console.print("\n[yellow]🤖 بدء مساعد الذكاء الاصطناعي...[/yellow]")
-    console.print("[dim]⚠️ هذه الميزة قيد التطوير | This feature is under development[/dim]")
+    console.print("\n[yellow]🤖 Starting AI assistant...[/yellow]")
+    console.print("[dim]⚠️ This feature is under development[/dim]")
 
 @app.command()
 def version():
