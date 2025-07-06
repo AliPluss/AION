@@ -1,15 +1,17 @@
 # 🤝 Contributing to AION
 
-Thank you for your interest in contributing to AION! We welcome contributions from everyone.
+Thank you for your interest in contributing to AION! We welcome contributions from developers around the world, especially those who can help improve our multilingual support.
 
 ## 🌟 Ways to Contribute
 
-- 🐛 **Bug Reports**: Report bugs and issues
-- 💡 **Feature Requests**: Suggest new features
-- 📝 **Documentation**: Improve documentation
+- 🐛 **Bug Reports**: Report bugs and issues with detailed information
+- 💡 **Feature Requests**: Suggest new features and improvements
+- 📝 **Documentation**: Improve documentation and help guides
 - 🔧 **Code**: Submit bug fixes and new features
-- 🌍 **Translations**: Add or improve language support
-- 🧩 **Plugins**: Create new plugins
+- 🌍 **Translations**: Add or improve language support (Arabic, English, etc.)
+- 🧩 **Plugins**: Create new plugins for the community
+- 🎨 **UI/UX**: Improve interface design and user experience
+- 🧪 **Testing**: Write tests and improve test coverage
 
 ## 🚀 Getting Started
 
@@ -17,18 +19,22 @@ Thank you for your interest in contributing to AION! We welcome contributions fr
 ```bash
 # Fork the repository on GitHub
 # Then clone your fork
-git clone https://github.com/yourusername/aion-ai.git
-cd aion-ai
+git clone https://github.com/AliPluss/AION.git
+cd AION
 ```
 
 ### 2. Set Up Development Environment
 ```bash
-# Install development dependencies
-make setup
+# Create virtual environment
+python -m venv dev_env
+source dev_env/bin/activate  # Windows: dev_env\Scripts\activate
 
-# Or manually:
+# Install dependencies
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
+
+# Run setup script to create project structure
+python setup_aion_fixed.py
 ```
 
 ### 3. Create a Branch
@@ -36,6 +42,8 @@ pip install -r requirements-dev.txt
 git checkout -b feature/your-feature-name
 # or
 git checkout -b fix/your-bug-fix
+# or
+git checkout -b docs/improve-readme
 ```
 
 ## 📋 Development Guidelines

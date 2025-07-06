@@ -7,11 +7,92 @@
   },
   "ai": {
     "default_provider": "openai",
+    "current_model": "gpt-4-turbo",
     "providers": {
       "openai": {
+        "name": "OpenAI",
         "api_key": "",
-        "model": "gpt-3.5-turbo",
-        "max_tokens": 1000
+        "models": {
+          "gpt-4": {
+            "name": "GPT-4",
+            "description": "أقوى نموذج من OpenAI - دقة عالية",
+            "max_tokens": 8000,
+            "cost": "عالي"
+          },
+          "gpt-4-turbo": {
+            "name": "GPT-4 Turbo",
+            "description": "GPT-4 محسن للسرعة والكفاءة",
+            "max_tokens": 4000,
+            "cost": "متوسط"
+          },
+          "gpt-3.5-turbo": {
+            "name": "GPT-3.5 Turbo",
+            "description": "نموذج سريع ومتوازن - الافتراضي",
+            "max_tokens": 4000,
+            "cost": "منخفض"
+          }
+        }
+      },
+      "deepseek": {
+        "name": "DeepSeek",
+        "api_key": "",
+        "base_url": "https://api.deepseek.com/v1",
+        "models": {
+          "deepseek-chat": {
+            "name": "DeepSeek Chat",
+            "description": "نموذج DeepSeek للمحادثة - اقتصادي",
+            "max_tokens": 4000,
+            "cost": "منخفض جداً"
+          },
+          "deepseek-coder": {
+            "name": "DeepSeek Coder",
+            "description": "متخصص في البرمجة والكود",
+            "max_tokens": 4000,
+            "cost": "منخفض جداً"
+          }
+        }
+      },
+      "gemini": {
+        "name": "Google Gemini",
+        "api_key": "",
+        "models": {
+          "gemini-pro": {
+            "name": "Gemini Pro",
+            "description": "نموذج Google المتقدم",
+            "max_tokens": 2048,
+            "cost": "متوسط"
+          },
+          "gemini-pro-vision": {
+            "name": "Gemini Pro Vision",
+            "description": "يدعم الصور والنصوص",
+            "max_tokens": 2048,
+            "cost": "متوسط"
+          }
+        }
+      },
+      "anthropic": {
+        "name": "Anthropic Claude",
+        "api_key": "",
+        "models": {
+          "claude-3-opus": {
+            "name": "Claude 3 Opus",
+            "description": "أقوى نموذج من Anthropic",
+            "max_tokens": 4000,
+            "cost": "عالي"
+          },
+          "claude-3-sonnet": {
+            "name": "Claude 3 Sonnet",
+            "description": "متوازن بين الأداء والتكلفة",
+            "max_tokens": 4000,
+            "cost": "متوسط"
+          },
+          "claude-3-haiku": {
+            "name": "Claude 3 Haiku",
+            "description": "سريع واقتصادي",
+            "max_tokens": 4000,
+            "cost": "منخفض"
+          }
+        }
       }
     }
   },

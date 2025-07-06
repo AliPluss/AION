@@ -1,0 +1,32 @@
+{
+  "security": {
+    "max_code_length": 10000,
+    "allowed_temp_dir": "temp",
+    "auto_cleanup": true,
+    "secure_permissions": true,
+    "input_validation": true,
+    "path_traversal_protection": true,
+    "command_injection_protection": true
+  },
+  "code_execution": {
+    "timeout_seconds": 30,
+    "memory_limit_mb": 512,
+    "allowed_extensions": [
+      ".py",
+      ".js",
+      ".rs",
+      ".cpp",
+      ".c",
+      ".go",
+      ".java",
+      ".cs"
+    ],
+    "blocked_imports": [
+      "os.system",
+      "subprocess.call",
+      "eval",
+      "exec"
+    ],
+    "sandbox_mode": false
+  }
+}
