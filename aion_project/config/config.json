@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "AION",
+    "version": "2.0.0",
+    "language": "ar",
+    "theme": "dark"
+  },
+  "ai": {
+    "default_provider": "openai",
+    "providers": {
+      "openai": {
+        "api_key": "",
+        "model": "gpt-3.5-turbo",
+        "max_tokens": 1000
+      }
+    }
+  },
+  "features": {
+    "voice_enabled": true,
+    "web_interface": true,
+    "plugins_enabled": true,
+    "export_enabled": true
+  }
+}
