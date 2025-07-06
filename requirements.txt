@@ -16,7 +16,7 @@ python-multipart>=0.0.6   # Form data parsing
 # AI Provider Clients
 openai>=1.3.0             # OpenAI API client (GPT-4, GPT-3.5)
 anthropic>=0.7.0          # Claude AI API client
-google-generativeai>=0.3.0 # Google Gemini API client
+google-generativeai>=0.8.0 # Google Gemini API client
 
 # HTTP and Network
 requests>=2.31.0          # HTTP library for API calls
