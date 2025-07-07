@@ -82,7 +82,14 @@ class StatsMonitor:
         self.system_stats_history: deque = deque(maxlen=300)  # 5 minutes at 1s intervals
         self.ai_usage_stats: Dict[str, AIUsageStats] = {}
         self.plugin_stats: Dict[str, PluginStats] = {}
-        self.session_stats = SessionStats(session_start=datetime.now())
+        self.session_stats = SessionStats(
+            session_start=datetime.now(),
+            commands_executed=0,
+            files_edited=0,
+            plugins_used=0,
+            ai_interactions=0,
+            errors_encountered=0
+        )
 
         # Performance thresholds
         self.cpu_warning_threshold = 80.0

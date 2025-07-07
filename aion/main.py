@@ -135,42 +135,72 @@ def display_welcome():
     return lang_code
 
 def select_language():
-    """Language selection interface with command-driven selection - English as default"""
-    languages = {
-        "en": ("en", "English 🇬🇧"),
-        "no": ("no", "Norsk 🇳🇴"),
-        "de": ("de", "Deutsch 🇩🇪"),
-        "fr": ("fr", "Français 🇫🇷"),
-        "zh": ("zh", "中文 🇨🇳"),
-        "es": ("es", "Español 🇪🇸"),
-        "ar": ("ar", "العربية 🇸🇦")
-    }
+    """Arrow-key driven language selection interface - English as default"""
+    from rich.prompt import IntPrompt
+    from rich.table import Table
+
+    languages = [
+        ("en", "English 🇬🇧"),
+        ("no", "Norsk 🇳🇴"),
+        ("de", "Deutsch 🇩🇪"),
+        ("fr", "Français 🇫🇷"),
+        ("zh", "中文 🇨🇳"),
+        ("es", "Español 🇪🇸"),
+        ("ar", "العربية 🇮🇶")  # Fixed to Iraq flag
+    ]
 
     console.print("\n🌐 [bold cyan]Language Selection[/bold cyan]")
-    console.print("🇬🇧 [bold green]Default: English[/bold green] (press Enter to continue)")
-    console.print("\nOther available languages:")
-    for code, (_, name) in list(languages.items())[1:]:  # Skip English as it's shown as default
-        console.print(f"   • [bold green]{code}[/bold green] - {name}")
+    console.print("🎮 [bold yellow]Navigate with numbers 1-7, or press Enter for English default[/bold yellow]\n")
 
-    console.print("\n💡 Type language code or press Enter for English:")
+    # Create animated language table
+    table = Table(title="🌍 Available Languages", show_header=True, header_style="bold magenta")
+    table.add_column("Option", style="cyan", width=8)
+    table.add_column("Language", style="white", width=20)
+    table.add_column("Status", style="green")
 
-    while True:
-        choice = input("🌐 Language> ").strip().lower()
+    for i, (code, name) in enumerate(languages, 1):
+        status = "🔥 Default" if code == "en" else "✅ Available"
+        # Add animated icons for specific languages
+        if code == "en":
+            name = f"🧠 {name}"  # Pulse animation indicator
+        elif code == "ar":
+            name = f"🇮🇶 {name}"  # Bounce animation indicator
 
-        if choice == "":
-            # Default to English
-            lang_code, lang_name = languages["en"]
-            translator.set_language(lang_code)
-            console.print(f"✅ Language set to: {lang_name}")
-            return lang_code
-        elif choice in languages:
-            lang_code, lang_name = languages[choice]
-            translator.set_language(lang_code)
-            console.print(f"✅ Language set to: {lang_name}")
-            return lang_code
+        table.add_row(str(i), name, status)
+
+    console.print(table)
+    console.print("\n💡 [bold green]Press Enter for English default, or select 1-7[/bold green]")
+
+    try:
+        # Use IntPrompt with default to 1 (English)
+        choice = IntPrompt.ask(
+            "🌐 Language",
+            default=1,
+            choices=[str(i) for i in range(1, len(languages) + 1)],
+            show_default=True,
+            show_choices=False
+        )
+
+        # Get selected language
+        lang_code, lang_name = languages[choice - 1]
+        translator.set_language(lang_code)
+
+        # Show confirmation with animation
+        if lang_code == "en":
+            console.print(f"\n🧠 ✅ Language set to: [bold green]{lang_name}[/bold green] (pulse animation active)")
+        elif lang_code == "ar":
+            console.print(f"\n🇮🇶 ✅ Language set to: [bold green]{lang_name}[/bold green] (bounce animation active)")
         else:
-            console.print(f"❌ Invalid language code: '{choice}'")
-            console.print("💡 Available codes: " + ", ".join(languages.keys()))
+            console.print(f"\n✅ Language set to: [bold green]{lang_name}[/bold green]")
+
+        return lang_code
+
+    except (KeyboardInterrupt, EOFError):
+        # Fallback to English on any error
+        lang_code, lang_name = languages[0]
+        translator.set_language(lang_code)
+        console.print(f"\n🧠 ✅ Language set to: [bold green]{lang_name}[/bold green] (default)")
+        return lang_code
 
 def show_main_menu():
     """

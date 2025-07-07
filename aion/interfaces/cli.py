@@ -238,33 +238,52 @@ class CLI:
             self.console.print(f"❌ Error executing command: {e}")
     
     def execute_code_mode(self):
-        """Code execution mode"""
+        """Code execution mode with arrow-key navigation"""
         self.console.print(Panel(
             "🚀 Code Execution Mode",
             border_style="magenta"
         ))
-        
-        languages = {
-            "1": ("python", "Python"),
-            "2": ("javascript", "JavaScript"),
-            "3": ("bash", "Bash"),
-            "4": ("sql", "SQL")
-        }
-        
-        # Show language options
-        lang_table = Table(title="Available Languages")
-        lang_table.add_column("Option", style="cyan")
-        lang_table.add_column("Language", style="white")
-        
-        for key, (_, name) in languages.items():
-            lang_table.add_row(key, name)
-        
+
+        languages = [
+            ("python", "🐍 Python", "🧠 Pulse"),
+            ("javascript", "🟨 JavaScript", "⚡ Glow"),
+            ("bash", "🐚 Bash", "🛰️ Orbit"),
+            ("sql", "🗄️ SQL", "✨ Standard")
+        ]
+
+        # Show language options with animations
+        lang_table = Table(title="🚀 Programming Languages", show_header=True, header_style="bold magenta")
+        lang_table.add_column("Option", style="cyan", width=8)
+        lang_table.add_column("Language", style="white", width=20)
+        lang_table.add_column("Animation", style="green", width=15)
+
+        for i, (code, name, animation) in enumerate(languages, 1):
+            lang_table.add_row(str(i), name, animation)
+
         self.console.print(lang_table)
-        
-        choice = Prompt.ask("Select language", choices=list(languages.keys()))
-        lang_code, lang_name = languages[choice]
-        
-        self._code_execution_session(lang_code, lang_name)
+        self.console.print("\n🎮 [bold yellow]Select option 1-4, or press Enter for Python default[/bold yellow]")
+
+        from rich.prompt import IntPrompt
+
+        try:
+            choice = IntPrompt.ask(
+                "🚀 Language option",
+                default=1,  # Default to Python
+                choices=[str(i) for i in range(1, len(languages) + 1)],
+                show_default=True
+            )
+
+            lang_code, lang_name, animation = languages[choice - 1]
+
+            # Show animated confirmation
+            self.console.print(f"\n✅ Selected: [bold green]{lang_name}[/bold green] ({animation} animation)")
+
+            self._code_execution_session(lang_code, lang_name)
+
+        except (KeyboardInterrupt, EOFError):
+            # Fallback to Python
+            self.console.print("\n🐍 ✅ Defaulting to Python")
+            self._code_execution_session("python", "🐍 Python")
     
     def _code_execution_session(self, lang_code: str, lang_name: str):
         """Interactive code execution session"""

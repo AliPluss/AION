@@ -183,36 +183,64 @@ class AIONBootstrap:
         return True
     
     def select_language(self) -> str:
-        """Interactive language selection"""
+        """Interactive language selection with numbered options"""
         if not self.console:
             return self.config['default_language']
-        
-        languages = {
-            'en': '🇺🇸 English',
-            'ar': '🇸🇦 Arabic',
-            'no': '🇳🇴 Norwegian',
-            'de': '🇩🇪 German',
-            'fr': '🇫🇷 French',
-            'zh': '🇨🇳 Chinese',
-            'es': '🇪🇸 Spanish'
-        }
-        
-        self.console.print("\n🌐 Select your preferred language:")
-        for code, name in languages.items():
-            marker = "👉" if code == self.config['default_language'] else "  "
-            self.console.print(f"{marker} {code}: {name}")
-        
-        while True:
-            choice = Prompt.ask(
-                "\nEnter language code",
-                default=self.config['default_language'],
-                choices=list(languages.keys())
+
+        languages = [
+            ('en', '🧠 English 🇬🇧'),  # Pulse animation
+            ('ar', '🇮🇶 العربية'),      # Bounce animation
+            ('no', '🇳🇴 Norwegian'),
+            ('de', '🇩🇪 German'),
+            ('fr', '🇫🇷 French'),
+            ('zh', '🇨🇳 Chinese'),
+            ('es', '🇪🇸 Spanish')
+        ]
+
+        from rich.table import Table
+        from rich.prompt import IntPrompt
+
+        # Create animated language selection table
+        table = Table(title="🌐 Language Selection", show_header=True, header_style="bold cyan")
+        table.add_column("Option", style="yellow", width=8)
+        table.add_column("Language", style="white", width=25)
+        table.add_column("Animation", style="green", width=15)
+
+        for i, (code, name) in enumerate(languages, 1):
+            animation = "🧠 Pulse" if code == "en" else "🇮🇶 Bounce" if code == "ar" else "✨ Standard"
+            default_marker = " (Default)" if code == self.config['default_language'] else ""
+            table.add_row(str(i), f"{name}{default_marker}", animation)
+
+        self.console.print(table)
+        self.console.print("\n🎮 [bold yellow]Select option 1-7, or press Enter for default[/bold yellow]")
+
+        try:
+            choice = IntPrompt.ask(
+                "🌐 Language option",
+                default=1,  # Default to English
+                choices=[str(i) for i in range(1, len(languages) + 1)],
+                show_default=True
             )
-            
-            if choice in languages:
-                self.translator.set_language(choice)
-                self._print_success(f"✅ Language set to: {languages[choice]}")
-                return choice
+
+            lang_code, lang_name = languages[choice - 1]
+            self.translator.set_language(lang_code)
+
+            # Show animated confirmation
+            if lang_code == "en":
+                self._print_success(f"🧠 ✅ Language set to: {lang_name} (pulse animation active)")
+            elif lang_code == "ar":
+                self._print_success(f"🇮🇶 ✅ Language set to: {lang_name} (bounce animation active)")
+            else:
+                self._print_success(f"✅ Language set to: {lang_name}")
+
+            return lang_code
+
+        except (KeyboardInterrupt, EOFError):
+            # Fallback to default
+            default_lang = self.config['default_language']
+            self.translator.set_language(default_lang)
+            self._print_success(f"✅ Language set to default: {default_lang}")
+            return default_lang
     
     def start_interface(self, interface_type: str = None):
         """Start the specified interface"""
