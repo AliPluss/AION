@@ -1,4 +1,4 @@
-# 🎯 AION - AI Operating Node | عقدة التشغيل الذكية
+# 🎯 AION - AI Operating Node | Intelligent Operating Node
 
 <div align="center">
 
