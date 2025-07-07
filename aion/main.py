@@ -263,6 +263,152 @@ def config():
     console.print("⚙️ AION Configuration")
     console.print(f"Current Language: {translator.current_language}")
     console.print(f"Supported Languages: {list(translator.supported_languages.keys())}")
+    console.print(f"Available Interfaces: CLI, TUI, Web")
+    console.print(f"Security Level: Enhanced")
+
+@app.command()
+def install_plugin(
+    source: str = typer.Argument(..., help="Plugin source (GitHub repo, PyPI package, or local path)"),
+    source_type: str = typer.Option("auto", help="Source type: github, pypi, local, or auto")
+):
+    """Install a plugin from various sources"""
+    try:
+        from .core.plugin_installer import install_plugin_command
+        console.print(f"🧩 Installing plugin from: {source}")
+        success = install_plugin_command(source, source_type)
+        if success:
+            console.print("✅ Plugin installed successfully!")
+        else:
+            console.print("❌ Plugin installation failed")
+    except ImportError:
+        console.print("❌ Plugin installer not available")
+
+@app.command()
+def remove_plugin(
+    plugin_name: str = typer.Argument(..., help="Name of the plugin to remove")
+):
+    """Remove an installed plugin"""
+    try:
+        from .core.plugin_installer import plugin_installer
+        console.print(f"🗑️ Removing plugin: {plugin_name}")
+        success = plugin_installer.uninstall_plugin(plugin_name)
+        if success:
+            console.print("✅ Plugin removed successfully!")
+        else:
+            console.print("❌ Plugin removal failed")
+    except ImportError:
+        console.print("❌ Plugin installer not available")
+
+@app.command()
+def list_plugins():
+    """List all installed plugins"""
+    try:
+        from .core.plugin_installer import plugin_installer
+        plugins = plugin_installer.list_installed_plugins()
+        if plugins:
+            console.print("🧩 Installed Plugins:")
+            for plugin in plugins:
+                console.print(f"  • {plugin.name} v{plugin.version} - {plugin.description}")
+        else:
+            console.print("📦 No plugins installed")
+    except ImportError:
+        console.print("❌ Plugin installer not available")
+
+@app.command()
+def update_plugin(
+    plugin_name: str = typer.Argument(..., help="Name of the plugin to update")
+):
+    """Update an installed plugin"""
+    try:
+        from .core.plugin_installer import plugin_installer
+        console.print(f"🔄 Updating plugin: {plugin_name}")
+        success = plugin_installer.update_plugin(plugin_name)
+        if success:
+            console.print("✅ Plugin updated successfully!")
+        else:
+            console.print("❌ Plugin update failed")
+    except ImportError:
+        console.print("❌ Plugin installer not available")
+
+@app.command()
+def stats():
+    """Show real-time system statistics"""
+    try:
+        from .core.stats_monitor import stats_monitor, format_bytes, format_duration
+        console.print("📊 AION System Statistics")
+        console.print("=" * 40)
+
+        # Start monitoring if not already started
+        stats_monitor.start_monitoring()
+
+        # Get current stats
+        current_stats = stats_monitor.get_current_system_stats()
+        session_stats = stats_monitor.get_session_summary()
+
+        if current_stats:
+            console.print(f"🔥 CPU Usage: {current_stats.cpu_percent:.1f}%")
+            console.print(f"🧠 Memory: {current_stats.memory_percent:.1f}% ({format_bytes(current_stats.memory_used)}/{format_bytes(current_stats.memory_total)})")
+            console.print(f"💾 Disk: {current_stats.disk_percent:.1f}% ({format_bytes(current_stats.disk_used)}/{format_bytes(current_stats.disk_total)})")
+            console.print(f"🌐 Network: ↑{format_bytes(current_stats.network_sent)} ↓{format_bytes(current_stats.network_recv)}")
+
+        console.print("\n📈 Session Statistics:")
+        console.print(f"⏱️ Uptime: {format_duration(session_stats.uptime.total_seconds())}")
+        console.print(f"⌨️ Commands: {session_stats.commands_executed}")
+        console.print(f"📝 Files Edited: {session_stats.files_edited}")
+        console.print(f"🧩 Plugins Used: {session_stats.plugins_used}")
+        console.print(f"🤖 AI Interactions: {session_stats.ai_interactions}")
+        console.print(f"❌ Errors: {session_stats.errors_encountered}")
+
+        # Performance recommendations
+        recommendations = stats_monitor.get_performance_recommendations()
+        if recommendations:
+            console.print("\n💡 Recommendations:")
+            for rec in recommendations:
+                console.print(f"  {rec}")
+
+    except ImportError:
+        console.print("❌ Statistics monitoring not available")
+
+@app.command()
+def setup_2fa(
+    account_name: str = typer.Option("user@aion", help="Account name for 2FA setup")
+):
+    """Setup two-factor authentication"""
+    try:
+        from .security.otp_manager import setup_two_factor_auth
+        success = setup_two_factor_auth(account_name)
+        if success:
+            console.print("✅ Two-factor authentication setup completed!")
+        else:
+            console.print("❌ 2FA setup failed")
+    except ImportError:
+        console.print("❌ 2FA setup not available")
+
+@app.command()
+def verify_2fa(
+    otp_code: str = typer.Argument(..., help="OTP code from authenticator app or backup code")
+):
+    """Verify two-factor authentication code"""
+    try:
+        from .security.otp_manager import verify_otp_command
+        success = verify_otp_command(otp_code)
+        if success:
+            console.print("✅ 2FA verification successful!")
+        else:
+            console.print("❌ Invalid 2FA code")
+    except ImportError:
+        console.print("❌ 2FA verification not available")
+
+@app.command()
+def toggle_theme():
+    """Toggle between light and dark themes"""
+    try:
+        from .interfaces.animated_components import ThemeManager
+        theme_manager = ThemeManager()
+        theme_manager.toggle_theme()
+        console.print(f"🎨 Theme switched to: {theme_manager.current_theme.value}")
+    except ImportError:
+        console.print("❌ Theme switching not available")
 
 if __name__ == "__main__":
     app()

@@ -15,8 +15,19 @@ This module provides:
 import asyncio
 import sys
 import time
+import uuid
 from typing import Dict, List, Optional, Any, Callable
 from pathlib import Path
+
+# Import new modules
+try:
+    from ..core.stats_monitor import stats_monitor
+    from ..core.plugin_installer import plugin_installer, install_plugin_command
+    from ..security.otp_manager import otp_manager, setup_two_factor_auth, verify_otp_command
+    ENHANCED_FEATURES_AVAILABLE = True
+except ImportError:
+    ENHANCED_FEATURES_AVAILABLE = False
+    print("⚠️ Enhanced features not available - some modules missing")
 
 try:
     from textual.app import App, ComposeResult
@@ -178,6 +189,15 @@ class EnhancedAIONApp(App):
         ("left", "move_left", "Move Left"),
         ("right", "move_right", "Move Right"),
         ("enter", "select", "Select"),
+        ("ctrl+t", "toggle_theme", "Toggle Theme"),
+        ("ctrl+s", "show_stats", "Show Stats"),
+        ("ctrl+i", "install_plugin", "Install Plugin"),
+        ("ctrl+2", "setup_2fa", "Setup 2FA"),
+        ("f1", "help", "Help"),
+        ("f2", "toggle_theme", "Theme"),
+        ("f3", "show_stats", "Stats"),
+        ("f4", "install_plugin", "Plugin"),
+        ("f5", "setup_2fa", "2FA"),
     ]
     
     def __init__(self, translator=None, ai_manager=None, **kwargs):
@@ -413,6 +433,48 @@ class EnhancedSettingsScreen(Screen):
         """Go back to main menu"""
         self.app.pop_screen()
 
+    def action_toggle_theme(self):
+        """Toggle between light and dark themes"""
+        if ENHANCED_FEATURES_AVAILABLE:
+            from .animated_components import ThemeManager
+            theme_manager = ThemeManager()
+            theme_manager.toggle_theme()
+            self.notify(f"🎨 Theme switched to {theme_manager.current_theme.value}")
+        else:
+            self.notify("⚠️ Theme switching not available")
+
+    def action_show_stats(self):
+        """Show real-time statistics"""
+        if ENHANCED_FEATURES_AVAILABLE:
+            stats_monitor.start_monitoring()
+            current_stats = stats_monitor.get_current_system_stats()
+            if current_stats:
+                self.notify(f"📊 CPU: {current_stats.cpu_percent:.1f}% | Memory: {current_stats.memory_percent:.1f}%")
+            else:
+                self.notify("📊 Statistics monitoring started")
+        else:
+            self.notify("⚠️ Statistics monitoring not available")
+
+    def action_install_plugin(self):
+        """Show plugin installation dialog"""
+        if ENHANCED_FEATURES_AVAILABLE:
+            self.notify("🧩 Plugin installation - Use: install-plugin <source>")
+        else:
+            self.notify("⚠️ Plugin installation not available")
+
+    def action_setup_2fa(self):
+        """Setup two-factor authentication"""
+        if ENHANCED_FEATURES_AVAILABLE:
+            if otp_manager.is_otp_enabled():
+                self.notify("🔐 2FA already enabled")
+            else:
+                self.notify("🔐 Setting up 2FA - Check terminal for QR code")
+                # Run setup in background
+                import threading
+                threading.Thread(target=setup_two_factor_auth, daemon=True).start()
+        else:
+            self.notify("⚠️ 2FA setup not available")
+
 # Placeholder screens for other menu items
 class EnhancedCodeScreen(Screen):
     BINDINGS = [("escape", "back", "Back")]
@@ -429,8 +491,126 @@ class EnhancedFileScreen(Screen):
     def action_back(self): self.app.pop_screen()
 
 class EnhancedPluginScreen(Screen):
-    BINDINGS = [("escape", "back", "Back")]
-    def __init__(self, translator): 
+    """Enhanced plugin management screen"""
+    BINDINGS = [("escape", "back", "Back"), ("i", "install_plugin", "Install")]
+
+    def __init__(self, translator):
         super().__init__()
         self.translator = translator
-    def action_back(self): self.app.pop_screen()
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Container(
+            Static("🧩 Plugin Manager", id="title"),
+            Static("Available Commands:", classes="section-title"),
+            Static("• install-plugin <source> - Install from GitHub/PyPI/Local"),
+            Static("• remove-plugin <name> - Uninstall plugin"),
+            Static("• list-plugins - Show installed plugins"),
+            Static("• update-plugin <name> - Update plugin"),
+            Static(""),
+            Static("Examples:", classes="section-title"),
+            Static("• install-plugin user/repo - From GitHub"),
+            Static("• install-plugin package-name - From PyPI"),
+            Static("• install-plugin ./local/path - From local directory"),
+            id="main-container"
+        )
+        yield Footer()
+
+    def action_back(self):
+        self.app.pop_screen()
+
+    def action_install_plugin(self):
+        """Show plugin installation prompt"""
+        self.notify("🧩 Use command: install-plugin <source>")
+
+class EnhancedStatsScreen(Screen):
+    """Real-time statistics monitoring screen"""
+    BINDINGS = [("escape", "back", "Back"), ("r", "refresh", "Refresh")]
+
+    def __init__(self, translator):
+        super().__init__()
+        self.translator = translator
+        self.stats_container = None
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        self.stats_container = Container(
+            Static("📊 Real-Time Statistics", id="title"),
+            Static("Loading statistics...", id="stats-content"),
+            id="main-container"
+        )
+        yield self.stats_container
+        yield Footer()
+
+    def on_mount(self):
+        """Start monitoring when screen mounts"""
+        if ENHANCED_FEATURES_AVAILABLE:
+            stats_monitor.start_monitoring()
+            self.set_interval(2.0, self.update_stats)
+
+    def update_stats(self):
+        """Update statistics display"""
+        if not ENHANCED_FEATURES_AVAILABLE:
+            return
+
+        try:
+            current_stats = stats_monitor.get_current_system_stats()
+            session_stats = stats_monitor.get_session_summary()
+
+            if current_stats:
+                stats_text = f"""
+📊 System Resources:
+  🔥 CPU Usage: {current_stats.cpu_percent:.1f}%
+  🧠 Memory: {current_stats.memory_percent:.1f}% ({self._format_bytes(current_stats.memory_used)}/{self._format_bytes(current_stats.memory_total)})
+  💾 Disk: {current_stats.disk_percent:.1f}% ({self._format_bytes(current_stats.disk_used)}/{self._format_bytes(current_stats.disk_total)})
+  🌐 Network: ↑{self._format_bytes(current_stats.network_sent)} ↓{self._format_bytes(current_stats.network_recv)}
+
+📈 Session Statistics:
+  ⏱️ Uptime: {self._format_duration(session_stats.uptime.total_seconds())}
+  ⌨️ Commands: {session_stats.commands_executed}
+  📝 Files Edited: {session_stats.files_edited}
+  🧩 Plugins Used: {session_stats.plugins_used}
+  🤖 AI Interactions: {session_stats.ai_interactions}
+  ❌ Errors: {session_stats.errors_encountered}
+
+🎯 Performance:
+  📊 Monitoring: Active
+  🔄 Update Rate: 2 seconds
+  ⚡ Status: {"🟢 Good" if current_stats.cpu_percent < 70 else "🟡 High" if current_stats.cpu_percent < 90 else "🔴 Critical"}
+"""
+            else:
+                stats_text = "📊 Statistics not available - monitoring starting..."
+
+            # Update the stats content
+            stats_widget = self.query_one("#stats-content")
+            stats_widget.update(stats_text)
+
+        except Exception as e:
+            self.notify(f"❌ Error updating stats: {e}")
+
+    def _format_bytes(self, bytes_value: int) -> str:
+        """Format bytes to human readable format"""
+        for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+            if bytes_value < 1024.0:
+                return f"{bytes_value:.1f} {unit}"
+            bytes_value /= 1024.0
+        return f"{bytes_value:.1f} PB"
+
+    def _format_duration(self, seconds: float) -> str:
+        """Format duration to human readable format"""
+        if seconds < 60:
+            return f"{seconds:.0f}s"
+        elif seconds < 3600:
+            return f"{seconds/60:.0f}m {seconds%60:.0f}s"
+        else:
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+            return f"{hours:.0f}h {minutes:.0f}m"
+
+    def action_back(self):
+        self.app.pop_screen()
+
+    def action_refresh(self):
+        """Manually refresh statistics"""
+        self.update_stats()
+        self.notify("📊 Statistics refreshed")

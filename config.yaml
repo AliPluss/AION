@@ -1,7 +1,7 @@
 # AION - AI Operating Node Configuration
-# ملف التكوين الرئيسي لنظام AION
+# Main configuration file for AION system
 
-# إعدادات عامة
+# General Settings
 general:
   name: "AION"
   version: "2.0.0"

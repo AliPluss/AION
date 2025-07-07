@@ -68,6 +68,47 @@ class AnimatedIcon:
     description: str = ""
 
 @dataclass
+class ThemeColors:
+    """Color scheme for different theme modes"""
+    background: str
+    foreground: str
+    accent: str
+    secondary: str
+    success: str
+    warning: str
+    error: str
+    info: str
+
+class ThemeMode(Enum):
+    """Theme modes for AION interface"""
+    LIGHT = "light"
+    DARK = "dark"
+    AUTO = "auto"
+
+# Theme color definitions
+LIGHT_THEME = ThemeColors(
+    background="white",
+    foreground="black",
+    accent="blue",
+    secondary="gray",
+    success="green",
+    warning="yellow",
+    error="red",
+    info="cyan"
+)
+
+DARK_THEME = ThemeColors(
+    background="black",
+    foreground="white",
+    accent="bright_blue",
+    secondary="bright_black",
+    success="bright_green",
+    warning="bright_yellow",
+    error="bright_red",
+    info="bright_cyan"
+)
+
+@dataclass
 class SelectionItem:
     """Selection item with animated icon"""
     key: str
@@ -76,15 +117,45 @@ class SelectionItem:
     callback: Optional[Callable] = None
     enabled: bool = True
 
+class ThemeManager:
+    """Manages theme switching and color schemes"""
+
+    def __init__(self):
+        self.current_theme = ThemeMode.DARK  # Default to dark theme
+        self.colors = DARK_THEME
+
+    def set_theme(self, theme_mode: ThemeMode):
+        """Set the current theme mode"""
+        self.current_theme = theme_mode
+        if theme_mode == ThemeMode.LIGHT:
+            self.colors = LIGHT_THEME
+        elif theme_mode == ThemeMode.DARK:
+            self.colors = DARK_THEME
+        elif theme_mode == ThemeMode.AUTO:
+            # Auto-detect based on system (default to dark for now)
+            self.colors = DARK_THEME
+
+    def get_color(self, color_type: str) -> str:
+        """Get color for specific type"""
+        return getattr(self.colors, color_type, self.colors.foreground)
+
+    def toggle_theme(self):
+        """Toggle between light and dark themes"""
+        if self.current_theme == ThemeMode.LIGHT:
+            self.set_theme(ThemeMode.DARK)
+        else:
+            self.set_theme(ThemeMode.LIGHT)
+
 class AnimationEngine:
     """Core animation engine for terminal effects"""
-    
-    def __init__(self):
+
+    def __init__(self, theme_manager: Optional['ThemeManager'] = None):
         self.console = Console()
         self.animation_cache = {}
         self.current_frame = 0
         self.fps = 10  # Terminal-friendly frame rate
         self.frame_time = 1.0 / self.fps
+        self.theme_manager = theme_manager or ThemeManager()
         
     def get_animation_frame(self, animation: AnimationType, frame: int, intensity: float = 1.0) -> str:
         """Get current animation frame for given animation type"""

@@ -1,6 +1,6 @@
 """
 AION Advanced Settings Manager
-مدير الإعدادات المتقدم مع التشفير والمزامنة
+Advanced settings manager with encryption and synchronization
 """
 
 import json
@@ -21,7 +21,7 @@ except ImportError:
     CRYPTO_AVAILABLE = False
 
 class SettingType(Enum):
-    """أنواع الإعدادات"""
+    """Setting types"""
     STRING = "string"
     INTEGER = "integer"
     FLOAT = "float"
@@ -34,7 +34,7 @@ class SettingType(Enum):
     EMAIL = "email"
 
 class SettingScope(Enum):
-    """نطاقات الإعدادات"""
+    """Setting scopes"""
     GLOBAL = "global"
     USER = "user"
     SESSION = "session"
@@ -74,7 +74,7 @@ class SettingValue:
     version: int = 1
 
 class AdvancedSettingsManager:
-    """مدير الإعدادات المتقدم"""
+    """Advanced settings manager"""
     
     def __init__(self, config_dir: Optional[Path] = None, encryption_key: Optional[str] = None):
         self.config_dir = config_dir or Path.cwd() / "config"
