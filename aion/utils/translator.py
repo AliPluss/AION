@@ -60,7 +60,10 @@ class Translator:
         if default_language != "en" and default_language in self.supported_languages:
             self.set_language(default_language)
 
-        print(f"🌐 Translator initialized - Current: {self.get_language_name(self.current_language)}, Default: English")
+        try:
+            print(f"🌐 Translator initialized - Current: {self.get_language_name(self.current_language)}, Default: English")
+        except UnicodeEncodeError:
+            print(f"[*] Translator initialized - Current: {self.get_language_name(self.current_language)}, Default: English")
     
     def _load_translations(self):
         """Load all translation files"""

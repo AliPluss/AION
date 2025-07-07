@@ -136,24 +136,11 @@ def display_welcome():
 
 def select_language():
     """Pure arrow-key language selection interface - English as default"""
-    # Always use arrow navigation - no fallback to typing
-    try:
-        from aion.interfaces.arrow_navigation import select_language_arrows
-        lang_code = select_language_arrows()
-        if lang_code:
-            translator.set_language(lang_code)
-            return lang_code
-        else:
-            # If cancelled, default to English
-            translator.set_language("en")
-            console.print("\n🔄 [bold yellow]Defaulting to English[/bold yellow]")
-            return "en"
-    except Exception as e:
-        # If any error, default to English
-        console.print(f"\n⚠️ [bold red]Arrow navigation error: {e}[/bold red]")
-        console.print("🔄 [bold yellow]Defaulting to English[/bold yellow]")
-        translator.set_language("en")
-        return "en"
+    # FORCE English as default - no user selection needed
+    console.print("\n🌐 [bold green]Language: English (Default)[/bold green]")
+    console.print("💡 [dim]Use 'change-language' command to switch languages later[/dim]")
+    translator.set_language("en")
+    return "en"
 
 def show_main_menu():
     """
@@ -392,6 +379,22 @@ def toggle_theme():
         console.print(f"🎨 Theme switched to: {theme_manager.current_theme.value}")
     except ImportError:
         console.print("❌ Theme switching not available")
+
+@app.command("change-language")
+def change_language():
+    """Change interface language using arrow key navigation"""
+    try:
+        from aion.interfaces.arrow_navigation import select_language_arrows
+        console.print("\n🌐 [bold yellow]Language Selection[/bold yellow]")
+        lang_code = select_language_arrows()
+        if lang_code:
+            translator.set_language(lang_code)
+            console.print(f"\n✅ [bold green]Language changed to: {translator.get_language_name(lang_code)}[/bold green]")
+        else:
+            console.print("\n❌ [bold red]Language change cancelled[/bold red]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Error changing language: {e}[/bold red]")
+        console.print("🔄 [bold yellow]Keeping current language[/bold yellow]")
 
 def main():
     """Main entry point for AION application"""

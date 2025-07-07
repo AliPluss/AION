@@ -129,41 +129,74 @@ class ArrowNavigator:
         """
         # Try arrow navigation first
         try:
+            import os
+
+            # Clear screen properly for Windows
+            if platform.system() == "Windows":
+                os.system('cls')
+            else:
+                os.system('clear')
+
             console.print(f"\n🎮 [bold yellow]Arrow Navigation Active[/bold yellow]")
             console.print("[dim]Use ↑↓ arrows to navigate, Enter to select, Esc to cancel[/dim]")
+            console.print(self.render_menu())
 
-            with Live(self.render_menu(), refresh_per_second=10) as live:
-                while self.running:
-                    try:
-                        key = self.get_key()
+            while self.running:
+                try:
+                    key = self.get_key()
 
-                        if key == 'fallback':
-                            # Switch to numbered fallback
-                            break
-                        elif key == 'up':
+                    if key == 'fallback':
+                        # Switch to numbered fallback
+                        break
+                    elif key in ['up', 'down']:
+                        # Update selection
+                        if key == 'up':
                             self.selected_index = (self.selected_index - 1) % len(self.items)
-                            live.update(self.render_menu())
-                        elif key == 'down':
+                        else:
                             self.selected_index = (self.selected_index + 1) % len(self.items)
-                            live.update(self.render_menu())
-                        elif key == 'enter':
-                            selected_value = self.items[self.selected_index][0]
-                            selected_name = self.items[self.selected_index][1]
-                            selected_animation = self.items[self.selected_index][2]
 
-                            # Show confirmation
-                            console.print(f"\n✅ Selected: [bold green]{selected_name}[/bold green] ({selected_animation})")
-                            return selected_value
-                        elif key == 'esc':
-                            console.print("\n❌ Selection cancelled")
-                            return None
+                        # Clear screen properly for Windows
+                        if platform.system() == "Windows":
+                            os.system('cls')
+                        else:
+                            os.system('clear')
 
-                    except KeyboardInterrupt:
+                        # Redraw interface
+                        console.print(f"\n🎮 [bold yellow]Arrow Navigation Active[/bold yellow]")
+                        console.print("[dim]Use ↑↓ arrows to navigate, Enter to select, Esc to cancel[/dim]")
+                        console.print(self.render_menu())
+
+                    elif key == 'enter':
+                        selected_value = self.items[self.selected_index][0]
+                        selected_name = self.items[self.selected_index][1]
+                        selected_animation = self.items[self.selected_index][2]
+
+                        # Clear and show confirmation
+                        if platform.system() == "Windows":
+                            os.system('cls')
+                        else:
+                            os.system('clear')
+                        console.print(f"\n✅ Selected: [bold green]{selected_name}[/bold green] ({selected_animation})")
+                        return selected_value
+
+                    elif key == 'esc':
+                        if platform.system() == "Windows":
+                            os.system('cls')
+                        else:
+                            os.system('clear')
                         console.print("\n❌ Selection cancelled")
                         return None
-                    except Exception:
-                        # Switch to fallback on any error
-                        break
+
+                except KeyboardInterrupt:
+                    if platform.system() == "Windows":
+                        os.system('cls')
+                    else:
+                        os.system('clear')
+                    console.print("\n❌ Selection cancelled")
+                    return None
+                except Exception:
+                    # Switch to fallback on any error
+                    break
 
         except Exception:
             pass  # Fall through to numbered fallback
