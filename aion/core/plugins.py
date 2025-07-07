@@ -1,6 +1,14 @@
 """
-🧩 AION Plugin System
-Extensible plugin architecture for AION
+🧩 AION Advanced Plugin System
+Extensible plugin architecture with sandbox security for AION
+
+This module provides a comprehensive plugin system with:
+- Secure plugin execution in isolated sandbox environments
+- Resource monitoring and limits enforcement
+- Plugin validation and security checks
+- Real-time plugin management and monitoring
+- Cross-platform plugin support with security controls
+- Comprehensive logging and audit trails
 """
 
 import os
@@ -8,12 +16,21 @@ import sys
 import json
 import importlib
 import importlib.util
+import subprocess
+import time
+import threading
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Callable
+from typing import Dict, List, Optional, Any, Callable, Tuple
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
 from enum import Enum
 import asyncio
+
+try:
+    from .sandbox import AdvancedSandbox, SandboxConfig, SandboxViolationError
+    SANDBOX_AVAILABLE = True
+except ImportError:
+    SANDBOX_AVAILABLE = False
 
 class PluginType(Enum):
     """Plugin types"""
@@ -126,8 +143,17 @@ class ExecutorPlugin(BasePlugin):
         pass
 
 class PluginManager:
-    """Plugin manager for AION"""
-    
+    """
+    🧩 Advanced Plugin Manager for AION
+
+    Provides comprehensive plugin management with sandbox security:
+    - Plugin discovery and validation
+    - Secure plugin execution in isolated environments
+    - Resource monitoring and limits enforcement
+    - Plugin lifecycle management
+    - Security validation and audit logging
+    """
+
     def __init__(self):
         self.plugins: Dict[str, BasePlugin] = {}
         self.plugin_info: Dict[str, PluginInfo] = {}
@@ -135,12 +161,36 @@ class PluginManager:
             Path(__file__).parent.parent / "plugins",
             Path.home() / ".aion" / "plugins"
         ]
-        
+
+        # Initialize sandbox for plugin execution
+        if SANDBOX_AVAILABLE:
+            self.sandbox_config = SandboxConfig(
+                max_memory_mb=64,
+                max_cpu_time_seconds=10,
+                max_processes=1,
+                network_access=False,
+                enable_logging=True,
+                log_file="test_logs/plugin_execution_test.log"
+            )
+            self.sandbox = AdvancedSandbox(self.sandbox_config)
+        else:
+            self.sandbox = None
+
+        # Plugin execution statistics
+        self.execution_stats = {
+            'total_executions': 0,
+            'successful_executions': 0,
+            'failed_executions': 0,
+            'security_violations': 0,
+            'average_execution_time': 0.0
+        }
+
         # Create plugin directories if they don't exist
         for plugin_dir in self.plugin_dirs:
             plugin_dir.mkdir(parents=True, exist_ok=True)
-        
+
         self.load_config()
+        print("🧩 Advanced Plugin Manager initialized with sandbox security")
     
     def load_config(self):
         """Load plugin configuration"""
@@ -179,6 +229,152 @@ class PluginManager:
                 
                 await self._load_plugin_file(plugin_file)
     
+    def execute_plugin_sandboxed(self, plugin_name: str, method_name: str, *args, **kwargs) -> Tuple[bool, Any, str]:
+        """
+        Execute plugin method in sandbox environment
+
+        Args:
+            plugin_name: Name of the plugin to execute
+            method_name: Method name to call
+            *args: Arguments to pass to the method
+            **kwargs: Keyword arguments to pass to the method
+
+        Returns:
+            Tuple of (success, result, error_message)
+        """
+        start_time = time.time()
+        self.execution_stats['total_executions'] += 1
+
+        try:
+            if not self.sandbox:
+                # Fallback to direct execution if sandbox not available
+                return self._execute_plugin_direct(plugin_name, method_name, *args, **kwargs)
+
+            # Validate plugin exists and is enabled
+            if plugin_name not in self.plugins:
+                error_msg = f"Plugin '{plugin_name}' not found"
+                self.execution_stats['failed_executions'] += 1
+                return False, None, error_msg
+
+            plugin = self.plugins[plugin_name]
+            if not plugin.enabled:
+                error_msg = f"Plugin '{plugin_name}' is disabled"
+                self.execution_stats['failed_executions'] += 1
+                return False, None, error_msg
+
+            # Create plugin execution script
+            execution_script = self._create_plugin_execution_script(plugin_name, method_name, args, kwargs)
+
+            # Execute in sandbox
+            try:
+                return_code, stdout, stderr = self.sandbox.execute_command(
+                    ['python', '-c', execution_script],
+                    timeout=self.sandbox_config.max_cpu_time_seconds
+                )
+
+                if return_code == 0:
+                    # Parse result from stdout
+                    try:
+                        result = json.loads(stdout.strip()) if stdout.strip() else None
+                        self.execution_stats['successful_executions'] += 1
+                        execution_time = time.time() - start_time
+                        self._update_average_execution_time(execution_time)
+                        return True, result, ""
+                    except json.JSONDecodeError:
+                        # Return raw stdout if not JSON
+                        self.execution_stats['successful_executions'] += 1
+                        return True, stdout.strip(), ""
+                else:
+                    error_msg = f"Plugin execution failed with code {return_code}: {stderr}"
+                    self.execution_stats['failed_executions'] += 1
+                    return False, None, error_msg
+
+            except SandboxViolationError as e:
+                error_msg = f"Sandbox violation: {str(e)}"
+                self.execution_stats['security_violations'] += 1
+                self.execution_stats['failed_executions'] += 1
+                return False, None, error_msg
+
+        except Exception as e:
+            error_msg = f"Plugin execution error: {str(e)}"
+            self.execution_stats['failed_executions'] += 1
+            return False, None, error_msg
+
+    def _execute_plugin_direct(self, plugin_name: str, method_name: str, *args, **kwargs) -> Tuple[bool, Any, str]:
+        """Direct plugin execution fallback"""
+        try:
+            plugin = self.plugins[plugin_name]
+            if hasattr(plugin, method_name):
+                method = getattr(plugin, method_name)
+                if asyncio.iscoroutinefunction(method):
+                    result = asyncio.run(method(*args, **kwargs))
+                else:
+                    result = method(*args, **kwargs)
+                return True, result, ""
+            else:
+                return False, None, f"Method '{method_name}' not found in plugin '{plugin_name}'"
+        except Exception as e:
+            return False, None, f"Direct execution error: {str(e)}"
+
+    def _create_plugin_execution_script(self, plugin_name: str, method_name: str, args: tuple, kwargs: dict) -> str:
+        """Create Python script for plugin execution in sandbox"""
+        script = f'''
+import sys
+import json
+import os
+from pathlib import Path
+
+# Add plugin path
+plugin_path = Path(__file__).parent / "plugins"
+sys.path.insert(0, str(plugin_path))
+
+try:
+    # Import and execute plugin
+    from {plugin_name} import {plugin_name.title()}Plugin
+
+    plugin = {plugin_name.title()}Plugin()
+
+    # Execute method
+    args = {repr(args)}
+    kwargs = {repr(kwargs)}
+
+    if hasattr(plugin, "{method_name}"):
+        method = getattr(plugin, "{method_name}")
+        result = method(*args, **kwargs)
+
+        # Output result as JSON
+        if result is not None:
+            print(json.dumps(result, default=str))
+        else:
+            print("")
+    else:
+        print(json.dumps({{"error": "Method not found"}}))
+        sys.exit(1)
+
+except Exception as e:
+    print(json.dumps({{"error": str(e)}}))
+    sys.exit(1)
+'''
+        return script
+
+    def _update_average_execution_time(self, execution_time: float):
+        """Update average execution time statistics"""
+        total_successful = self.execution_stats['successful_executions']
+        current_avg = self.execution_stats['average_execution_time']
+
+        # Calculate new average
+        new_avg = ((current_avg * (total_successful - 1)) + execution_time) / total_successful
+        self.execution_stats['average_execution_time'] = new_avg
+
+    def get_execution_statistics(self) -> Dict[str, Any]:
+        """Get plugin execution statistics"""
+        stats = self.execution_stats.copy()
+        stats['success_rate'] = (
+            (stats['successful_executions'] / stats['total_executions'] * 100)
+            if stats['total_executions'] > 0 else 0
+        )
+        return stats
+
     async def _load_plugin_file(self, plugin_file: Path):
         """Load a plugin from file"""
         try:

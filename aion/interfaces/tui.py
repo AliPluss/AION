@@ -395,7 +395,7 @@ class SettingsScreen(Screen):
 class TUI:
     """
     Professional Terminal User Interface for AION
-    
+
     This class provides a comprehensive TUI experience with:
     - Rich interactive terminal interface using Textual framework
     - Advanced keyboard navigation and shortcuts
@@ -405,7 +405,10 @@ class TUI:
     - AI assistant integration with conversation tracking
     - System monitoring and resource usage display
     - Advanced error handling and user feedback
-    
+    - Enhanced animated icon system with dynamic effects
+    - Arrow key navigation with real-time highlighting
+    - Cross-platform emoji support with ASCII fallback
+
     The TUI provides an enhanced terminal experience with visual
     elements, interactive forms, and intuitive navigation.
     """
@@ -419,17 +422,32 @@ class TUI:
 
         # Check if Textual is available for enhanced TUI
         self.textual_available = TEXTUAL_AVAILABLE
+        self.enhanced_mode = False
 
         if self.textual_available:
-            self.app = AIONApp(translator, security)
-
-        print("🖥️ AION TUI initialized successfully")
+            # Try to use enhanced animated TUI first
+            try:
+                from .enhanced_tui import EnhancedAIONApp
+                self.app = EnhancedAIONApp(translator, None)  # AI manager will be set later
+                self.enhanced_mode = True
+                print("🎨 Enhanced Animated AION TUI initialized successfully")
+            except ImportError:
+                # Fallback to standard TUI
+                self.app = AIONApp(translator, security)
+                print("🖥️ Standard AION TUI initialized successfully")
+        else:
+            print("🖥️ AION TUI initialized successfully (Rich fallback mode)")
 
     def start(self):
         """Start the TUI interface"""
         if self.textual_available:
             # Use enhanced Textual TUI
             self._show_animated_loading()
+            if self.enhanced_mode:
+                self.console.print("🎨 [bold green]Starting Enhanced Animated AION Interface...[/bold green]")
+                self.console.print("✨ [cyan]Features: Dynamic icons, arrow navigation, real-time animations[/cyan]")
+            else:
+                self.console.print("🖥️ [bold blue]Starting Standard AION Interface...[/bold blue]")
             self.app.run()
         else:
             # Fallback to basic Rich TUI

@@ -1,16 +1,32 @@
-# 🤖 AION - AI Operating Node
+# 🎯 AION - AI Operating Node | عقدة التشغيل الذكية
+
+<div align="center">
+
+![AION Logo](https://img.shields.io/badge/AION-AI%20Operating%20Node-blue?style=for-the-badge&logo=terminal)
+![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
+![Python](https://img.shields.io/badge/python-3.10+-blue?style=for-the-badge&logo=python)
 
 [![CI/CD Pipeline](https://github.com/AliPluss/AION/actions/workflows/ci.yml/badge.svg)](https://github.com/AliPluss/AION/actions)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 
-**AION (AI Operating Node)** is a professional-grade, multilingual AI assistant system that provides a unified terminal-based interface for multiple AI providers with advanced security, comprehensive integrations, and enterprise-ready features.
+**Next-Generation AI-Powered Terminal Assistant**
+**مساعد الطرفية المدعوم بالذكاء الاصطناعي من الجيل التالي**
+
+[English](#english) | [العربية](#arabic)
+
+</div>
+
+---
+
+## English
+
+**AION** is a revolutionary AI-powered terminal assistant that transforms your command line experience with intelligent automation, beautiful animated interfaces, and comprehensive multilingual support. Built with Python, enhanced with Rust performance, and featuring next-generation terminal UI.
 
 ## 🌟 Overview
 
-AION is designed as a complete AI operating environment that combines the power of multiple AI providers with robust system integration, advanced security protocols, and professional-grade features. Built with Python 3.10+ and modern frameworks, AION offers a seamless experience for developers, researchers, and enterprises requiring sophisticated AI assistance.
+AION combines the power of multiple AI providers with advanced security, professional-grade features, and an innovative animated terminal interface. Designed for developers, researchers, and enterprises requiring sophisticated AI assistance with cultural sensitivity and multilingual support.
 
 ## ✨ Core Features
 

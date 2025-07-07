@@ -38,8 +38,10 @@ class Translator:
     """
     
     def __init__(self, default_language: str = "en"):
-        """Initialize translator with English as default language"""
-        self.current_language = default_language
+        """Initialize translator with English as enforced default language"""
+        # Always enforce English as fallback - never allow system to start without English
+        self.current_language = "en"  # Start with English always
+        self.default_language = "en"  # English is always the default
         self.translations: Dict[str, Dict[str, str]] = {}
         self.supported_languages = {
             "en": "English",
@@ -50,12 +52,15 @@ class Translator:
             "zh": "中文 (Chinese)",
             "es": "Español (Spanish)"
         }
-        
+
         # Load all translations
         self._load_translations()
-        
-        # Set default language
-        self.set_language(default_language)
+
+        # Set requested language only after English is confirmed available
+        if default_language != "en" and default_language in self.supported_languages:
+            self.set_language(default_language)
+
+        print(f"🌐 Translator initialized - Current: {self.get_language_name(self.current_language)}, Default: English")
     
     def _load_translations(self):
         """Load all translation files"""
@@ -248,24 +253,44 @@ class Translator:
         }
     
     def set_language(self, language_code: str):
-        """Set the current language"""
+        """Set the current language with English fallback enforcement"""
+        # Always validate against supported languages
         if language_code in self.supported_languages:
-            self.current_language = language_code
+            # Ensure English translations are available before switching
+            if "en" not in self.translations or not self.translations["en"]:
+                print("⚠️ English translations not available - staying with English")
+                self.current_language = "en"
+                return
+
+            # Only switch if target language has translations or is English
+            if language_code == "en" or (language_code in self.translations and self.translations[language_code]):
+                self.current_language = language_code
+                print(f"🌐 Language changed to: {self.get_language_name(language_code)}")
+            else:
+                print(f"⚠️ {language_code} translations not available - staying with English")
+                self.current_language = "en"
         else:
-            self.current_language = "en"  # Fallback to English
+            print(f"⚠️ Unsupported language '{language_code}' - using English")
+            self.current_language = "en"  # Always fallback to English
     
     def get(self, key: str, default: str = None) -> str:
-        """Get translated text for a key"""
-        # Try current language first
-        if self.current_language in self.translations:
+        """Get translated text for a key with enforced English fallback"""
+        # Try current language first (unless it's Arabic and we want to prevent UI override)
+        if self.current_language in self.translations and self.translations[self.current_language]:
             if key in self.translations[self.current_language]:
-                return self.translations[self.current_language][key]
-        
-        # Fallback to English
-        if "en" in self.translations and key in self.translations["en"]:
-            return self.translations["en"][key]
-        
-        # Return default or key if no translation found
+                translation = self.translations[self.current_language][key]
+                # Ensure we don't return empty translations
+                if translation and translation.strip():
+                    return translation
+
+        # Always fallback to English for missing or empty translations
+        if "en" in self.translations and self.translations["en"]:
+            if key in self.translations["en"]:
+                english_translation = self.translations["en"][key]
+                if english_translation and english_translation.strip():
+                    return english_translation
+
+        # Final fallback: return default or the key itself
         return default or key
     
     def get_language_name(self, language_code: str) -> str:
