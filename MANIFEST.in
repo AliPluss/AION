@@ -1,47 +1,57 @@
-# Include the README and other important files
+# MANIFEST.in for AION PyPI Package
+# Include essential files for PyPI distribution
+
+# Documentation files
 include README.md
 include LICENSE
 include CHANGELOG.md
+include .env.template
+
+# Configuration files
+include pyproject.toml
+include setup.py
 include requirements.txt
-include requirements-dev.txt
 
-# Include configuration files
-recursive-include config *.json
-recursive-include locales *.json
+# Package data
+recursive-include aion *.py
+recursive-include aion/config *.json *.yaml *.yml
+recursive-include aion/templates *.html *.css *.js
+recursive-include aion/static *
+recursive-include aion/locales *.json
 
-# Include templates and static files
-recursive-include templates *.html *.css *.js
-recursive-include static *.css *.js *.png *.jpg *.ico
+# Include essential plugin examples
+include plugins/example_plugin.py
 
-# Include plugin examples
-recursive-include plugins *.py *.json *.md
+# Include essential documentation
+include docs/README.md
 
-# Include scripts
-include *.sh
-include *.bat
-include *.py
-
-# Include documentation
-recursive-include docs *.md *.rst *.txt
-
-# Exclude development and build files
-exclude .gitignore
-exclude .env*
-exclude *.pyc
-exclude __pycache__
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]
-recursive-exclude * .DS_Store
-recursive-exclude * .git*
-recursive-exclude * *.so
-recursive-exclude * *.dylib
-
-# Exclude test files
-recursive-exclude tests *
+# Exclude development and testing files
 exclude test_*.py
 exclude *_test.py
-
-# Exclude build directories
+recursive-exclude tests *
+recursive-exclude test_logs *
+recursive-exclude .git *
+recursive-exclude __pycache__ *
+recursive-exclude *.pyc
+recursive-exclude .pytest_cache *
+recursive-exclude .mypy_cache *
+recursive-exclude .coverage
+recursive-exclude htmlcov *
 recursive-exclude build *
 recursive-exclude dist *
 recursive-exclude *.egg-info *
+
+# Exclude IDE and system files
+exclude .gitignore
+exclude .gitattributes
+exclude .pre-commit-config.yaml
+exclude .github
+recursive-exclude .vscode *
+recursive-exclude .idea *
+exclude *.log
+exclude .DS_Store
+exclude Thumbs.db
+
+# Exclude non-essential plugins
+exclude plugins/test_*
+exclude plugins/*_test.py

@@ -3,7 +3,8 @@
 <div align="center">
 
 ![AION Logo](https://img.shields.io/badge/AION-AI%20Operating%20Node-blue?style=for-the-badge&logo=terminal)
-![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.2.0-green?style=for-the-badge)
+![PyPI](https://img.shields.io/pypi/v/aion-ai?style=for-the-badge&logo=pypi)
 ![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3.10+-blue?style=for-the-badge&logo=python)
 
@@ -97,7 +98,21 @@ AION combines the power of multiple AI providers with advanced security, profess
 
 ### Installation
 
-#### Method 1: Standard Installation
+#### Method 1: PyPI Installation (Recommended) 🐍
+
+```bash
+# Install AION from PyPI
+pip install aion-ai
+
+# Start AION
+aion
+
+# Or use alternative commands
+aion-cli
+aion-ai
+```
+
+#### Method 2: Standard Installation
 
 ```bash
 # Clone the repository
@@ -116,7 +131,7 @@ pip install -r requirements-integrations.txt  # For full features
 python main.py start
 ```
 
-#### Method 2: Docker Deployment
+#### Method 3: Docker Deployment
 
 ```bash
 # Clone and build
@@ -131,7 +146,7 @@ docker build -t aion .
 docker run -it --name aion-container aion
 ```
 
-#### Method 3: Development Setup
+#### Method 4: Development Setup
 
 ```bash
 # Clone repository

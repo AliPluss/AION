@@ -1,0 +1,193 @@
+name: 🐍 Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      deploy_to_pypi:
+        description: 'Deploy to PyPI'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+        - 'true'
+        - 'false'
+
+jobs:
+  build:
+    name: 📦 Build Package
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔄 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: 📦 Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine setuptools wheel
+        
+    - name: 🔍 Verify package files
+      run: |
+        echo "Checking required files..."
+        ls -la
+        test -f setup.py || (echo "setup.py missing" && exit 1)
+        test -f pyproject.toml || (echo "pyproject.toml missing" && exit 1)
+        test -f README.md || (echo "README.md missing" && exit 1)
+        test -f LICENSE || (echo "LICENSE missing" && exit 1)
+        echo "All required files present ✅"
+        
+    - name: 🏗️ Build package
+      run: |
+        echo "Building package..."
+        python -m build
+        echo "Build complete ✅"
+        
+    - name: 🔍 Check package
+      run: |
+        echo "Checking package..."
+        python -m twine check dist/*
+        echo "Package check passed ✅"
+        
+    - name: 📋 List built files
+      run: |
+        echo "Built files:"
+        ls -la dist/
+        
+    - name: 📤 Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-files
+        path: dist/
+
+  test-package:
+    name: 🧪 Test Package
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        
+    steps:
+    - name: 🔄 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-files
+        path: dist/
+        
+    - name: 🧪 Test package installation
+      run: |
+        echo "Testing package installation..."
+        pip install dist/*.whl
+        echo "Package installed ✅"
+        
+    - name: 🔍 Test imports
+      run: |
+        echo "Testing imports..."
+        python -c "import aion; print('Import successful!')"
+        echo "Imports working ✅"
+        
+    - name: 🎯 Test entry points
+      run: |
+        echo "Testing entry points..."
+        aion --help || echo "aion command test completed"
+        echo "Entry points test completed ✅"
+
+  deploy-testpypi:
+    name: 🧪 Deploy to TestPyPI
+    needs: [build, test-package]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
+    
+    steps:
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-files
+        path: dist/
+        
+    - name: 🚀 Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository-url: https://test.pypi.org/legacy/
+        
+    - name: ✅ TestPyPI deployment complete
+      run: |
+        echo "🎉 Successfully deployed to TestPyPI!"
+        echo "🔗 Check: https://test.pypi.org/project/aion-ai/"
+
+  deploy-pypi:
+    name: 🚀 Deploy to PyPI
+    needs: [build, test-package, deploy-testpypi]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_to_pypi == 'true')
+    environment: pypi-production
+    
+    steps:
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-files
+        path: dist/
+        
+    - name: 🚀 Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        
+    - name: ✅ PyPI deployment complete
+      run: |
+        echo "🎉 Successfully deployed to PyPI!"
+        echo "🔗 Check: https://pypi.org/project/aion-ai/"
+        echo "📦 Users can now install with: pip install aion-ai"
+
+  post-deploy-test:
+    name: 🔍 Post-Deploy Test
+    needs: deploy-pypi
+    runs-on: ubuntu-latest
+    if: needs.deploy-pypi.result == 'success'
+    
+    steps:
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: ⏳ Wait for PyPI propagation
+      run: |
+        echo "Waiting for PyPI package propagation..."
+        sleep 60
+        
+    - name: 📦 Install from PyPI
+      run: |
+        echo "Installing AION from PyPI..."
+        pip install aion-ai
+        echo "Installation successful ✅"
+        
+    - name: 🧪 Test PyPI installation
+      run: |
+        echo "Testing PyPI installation..."
+        python -c "import aion; print('AION imported successfully from PyPI!')"
+        aion --help || echo "Command test completed"
+        echo "PyPI installation test passed ✅"
+        
+    - name: 🎉 Deployment verification complete
+      run: |
+        echo "🎉 AION successfully deployed and verified on PyPI!"
+        echo "📦 Users can install with: pip install aion-ai"

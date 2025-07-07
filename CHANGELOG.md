@@ -5,6 +5,35 @@ All notable changes to AION will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2024-12-07
+
+### Added
+- **🐍 PyPI Package Support**: Complete PyPI distribution setup with `pip install aion-ai`
+- **📦 Production-Ready Configuration**: Enhanced setup.py and pyproject.toml for PyPI
+- **🏷️ Comprehensive Package Metadata**: Detailed classifiers, keywords, and project URLs
+- **🔗 Cross-Platform Entry Points**: Multiple command aliases (aion, aion-cli, aion-ai)
+- **📋 Enhanced Dependencies**: Updated dependency management with version constraints
+- **📄 Package Documentation**: MANIFEST.in, LICENSE, and CHANGELOG for PyPI
+
+### Changed
+- **📁 Package Structure**: Optimized for PyPI distribution and pip installation
+- **📖 Documentation**: Updated installation instructions for pip install method
+- **⚙️ Configuration**: Streamlined package configuration files for production
+
+### Fixed
+- **🔧 Import Paths**: Corrected entry points for proper package execution
+- **📦 Package Data**: Fixed inclusion of configuration and template files
+- **🎯 Command Aliases**: Unified command entry points for consistent access
+
+## [2.1.0] - 2024-12-06
+
+### Added
+- **⌨️ Complete Arrow-Key Navigation**: Pure keyboard navigation without manual input
+- **🎨 Animated Icon System**: Dynamic icons with provider-specific animations
+- **📱 Inline Icon Integration**: Icons integrated directly with text labels
+- **🧪 Comprehensive Testing**: 40+ test log files with detailed validation
+- **🔒 Sandbox Security**: 100% security validation with resource limits
+
 ## [1.0.0] - 2024-07-05
 
 ### Added

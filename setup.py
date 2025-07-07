@@ -1,36 +1,57 @@
 #!/usr/bin/env python3
 """
 Setup script for AION - AI Operating Node
+PyPI Package Configuration for pip install aion-ai
 """
 
 from setuptools import setup, find_packages
-from pathlib import Path
+import os
 
 # Read README file
-readme_file = Path(__file__).parent / "README.md"
-long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists() else ""
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
-# Read requirements
-requirements_file = Path(__file__).parent / "requirements.txt"
-requirements = []
-if requirements_file.exists():
-    requirements = requirements_file.read_text().strip().split('\n')
-    requirements = [req.strip() for req in requirements if req.strip() and not req.startswith('#')]
+# Core requirements for AION
+requirements = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "textual>=0.41.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+    "cryptography>=41.0.0",
+    "psutil>=5.9.0",
+    "aiofiles>=23.0.0",
+    "httpx>=0.25.0",
+    "python-dotenv>=1.0.0",
+    "openai>=1.0.0",
+    "google-generativeai>=0.3.0",
+    "requests>=2.31.0",
+    "pyyaml>=6.0.0",
+    "click>=8.0.0",
+]
 
 setup(
     name="aion-ai",
-    version="1.0.0",
-    author="AION Development Team",
-    author_email="dev@aion-ai.com",
-    description="🤖 AION - AI Operating Node: Multilingual Terminal-based AI Assistant",
+    version="2.2.0",
+    author="AliPluss",
+    author_email="project.django.rst@gmail.com",
+    description="🤖 AION - AI Operating Node | Professional Terminal AI Assistant with Multi-Provider Support",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/aion-ai",
-    packages=find_packages(),
+    url="https://github.com/AliPluss/AION",
+    packages=find_packages(exclude=["tests*", "test_logs*", "*.tests", "*.tests.*"]),
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "Intended Audience :: End Users/Desktop",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: MacOS",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -41,6 +62,10 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: System :: Shells",
         "Topic :: Terminals",
+        "Topic :: Office/Business :: Groupware",
+        "Topic :: Communications :: Chat",
+        "Environment :: Console",
+        "Environment :: Console :: Curses",
     ],
     python_requires=">=3.8",
     install_requires=requirements,
@@ -48,47 +73,51 @@ setup(
         "dev": [
             "pytest>=7.0.0",
             "pytest-asyncio>=0.21.0",
+            "pytest-cov>=4.0.0",
             "black>=23.0.0",
             "flake8>=6.0.0",
             "mypy>=1.0.0",
-        ],
-        "web": [
-            "fastapi>=0.104.0",
-            "uvicorn>=0.24.0",
-            "jinja2>=3.1.0",
-            "python-multipart>=0.0.6",
+            "isort>=5.12.0",
+            "pre-commit>=3.0.0",
         ],
         "full": [
-            "pytest>=7.0.0",
-            "pytest-asyncio>=0.21.0",
-            "black>=23.0.0",
-            "flake8>=6.0.0",
-            "mypy>=1.0.0",
-            "fastapi>=0.104.0",
-            "uvicorn>=0.24.0",
-            "jinja2>=3.1.0",
-            "python-multipart>=0.0.6",
-        ]
+            "jupyter>=1.0.0",
+            "notebook>=6.5.0",
+            "matplotlib>=3.7.0",
+            "pandas>=2.0.0",
+        ],
     },
     entry_points={
         "console_scripts": [
-            "aion=main:app",
-            "aion-cli=start_aion_en:main",
-            "aion-ar=start_aion:main",
+            "aion=aion.main:main",
+            "aion-cli=aion.main:main",
+            "aion-ai=aion.main:main",
         ],
     },
     include_package_data=True,
     package_data={
-        "": ["*.json", "*.txt", "*.md", "*.yml", "*.yaml"],
-        "locales": ["*.json"],
-        "config": ["*.json"],
-        "templates": ["*.html", "*.css", "*.js"],
+        "aion": [
+            "config/*.json",
+            "config/*.yaml",
+            "templates/*.html",
+            "static/*",
+            "locales/*/*.json",
+        ],
+    },
+    keywords=[
+        "ai", "artificial-intelligence", "terminal", "assistant", "cli", "tui",
+        "openai", "deepseek", "gemini", "automation", "chatbot", "command-line",
+        "productivity", "developer-tools", "ai-assistant", "multi-language",
+        "cross-platform", "security", "sandbox", "plugin-system"
+    ],
+    project_urls={
+        "Homepage": "https://github.com/AliPluss/AION",
+        "Bug Reports": "https://github.com/AliPluss/AION/issues",
+        "Source": "https://github.com/AliPluss/AION",
+        "Documentation": "https://github.com/AliPluss/AION#readme",
+        "Changelog": "https://github.com/AliPluss/AION/releases",
+        "Funding": "https://github.com/sponsors/AliPluss",
     },
     zip_safe=False,
-    keywords="ai, assistant, terminal, multilingual, arabic, cli, tui, web, automation",
-    project_urls={
-        "Bug Reports": "https://github.com/yourusername/aion-ai/issues",
-        "Source": "https://github.com/yourusername/aion-ai",
-        "Documentation": "https://github.com/yourusername/aion-ai/wiki",
-    },
+    platforms=["any"],
 )
