@@ -1,0 +1,357 @@
+# AION - AI Operating Node Configuration
+# ملف التكوين الرئيسي لنظام AION
+
+# إعدادات عامة
+general:
+  name: "AION"
+  version: "2.0.0"
+  description: "AI Operating Node - Terminal AI Assistant"
+  author: "AION Development Team"
+
+# إعدادات اللغة
+language:
+  default: "en"  # اللغة الافتراضية
+  supported:
+    - "ar"  # العربية
+    - "en"  # الإنجليزية
+    - "fr"  # الفرنسية
+    - "de"  # الألمانية
+    - "es"  # الإسبانية
+    - "zh"  # الصينية
+    - "no"  # النرويجية
+  auto_detect: true
+  fallback: "en"
+
+# AI Provider Configuration
+ai_providers:
+  openai:
+    name: "OpenAI GPT"
+    api_key: ""
+    model: "gpt-3.5-turbo"
+    max_tokens: 2000
+    temperature: 0.7
+    cost_per_1k_tokens: 0.002
+    description: "OpenAI's GPT models for general AI tasks"
+    enabled: true
+
+  deepseek:
+    name: "DeepSeek"
+    api_key: ""
+    model: "deepseek-chat"
+    max_tokens: 2000
+    temperature: 0.7
+    cost_per_1k_tokens: 0.0014
+    description: "DeepSeek's advanced AI models"
+    enabled: true
+
+  openrouter:
+    name: "OpenRouter"
+    api_key: ""
+    model: "openai/gpt-3.5-turbo"
+    max_tokens: 2000
+    temperature: 0.7
+    cost_per_1k_tokens: 0.002
+    description: "Access to multiple AI models through OpenRouter"
+    enabled: true
+
+  gemini:
+    name: "Google Gemini"
+    api_key: ""
+    model: "gemini-pro"
+    max_tokens: 2000
+    temperature: 0.7
+    cost_per_1k_tokens: 0.001
+    description: "Google's Gemini AI models"
+    enabled: true
+
+# Integration Configuration
+integrations:
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    imap_server: "imap.gmail.com"
+    imap_port: 993
+    use_tls: true
+    username: ""
+    password: ""
+    monitoring_interval: 30
+    otp_expiry_minutes: 5
+    max_attachment_size_mb: 25
+
+  github:
+    enabled: false
+    api_token: ""
+    base_url: "https://api.github.com"
+    default_username: ""
+    auto_upload_enabled: false
+    default_branch: "main"
+    commit_message_template: "AION: {action} - {timestamp}"
+
+  slack:
+    enabled: false
+    bot_token: ""
+    app_token: ""
+    signing_secret: ""
+    default_channel: "#general"
+
+  google_drive:
+    enabled: false
+    credentials_file: ""
+    default_folder: "AION"
+
+  notion:
+    enabled: false
+    api_token: ""
+    database_id: ""
+
+# إعدادات الأمان
+security:
+  enabled: true
+  dynamic_protection: true
+  rotation_interval: 60  # ثواني
+  encryption:
+    algorithm: "AES-256-GCM"
+    key_derivation: "PBKDF2"
+    iterations: 100000
+  hmac:
+    algorithm: "SHA-256"
+    key_size: 32
+  session:
+    timeout: 3600  # ثواني
+    max_sessions: 10
+  sandbox:
+    enabled: true
+    timeout: 30  # ثواني
+    memory_limit: "512MB"
+    cpu_limit: "50%"
+
+# إعدادات الذكاء الاصطناعي
+ai:
+  default_provider: "openai"
+  providers:
+    openai:
+      enabled: true
+      model: "gpt-4"
+      max_tokens: 4000
+      temperature: 0.7
+    deepseek:
+      enabled: true
+      model: "deepseek-chat"
+      max_tokens: 4000
+      temperature: 0.7
+    gemini:
+      enabled: true
+      model: "gemini-pro"
+      max_tokens: 4000
+      temperature: 0.7
+    openrouter:
+      enabled: true
+      model: "openai/gpt-4"
+      max_tokens: 4000
+      temperature: 0.7
+  
+  # إعدادات التخزين المؤقت
+  cache:
+    enabled: true
+    ttl: 3600  # ثواني
+    max_size: 1000
+  
+  # إعدادات المحادثة
+  conversation:
+    max_history: 50
+    context_window: 8000
+    auto_save: true
+
+# إعدادات تنفيذ الكود
+executor:
+  supported_languages:
+    - python
+    - javascript
+    - rust
+    - cpp
+    - java
+    - go
+    - bash
+    - powershell
+    - sql
+    - html
+    - css
+    - json
+    - yaml
+    - markdown
+  
+  # إعدادات البيئة المعزولة
+  sandbox:
+    enabled: true
+    docker_enabled: false  # يتم تفعيله إذا كان Docker متاح
+    timeout: 30
+    memory_limit: "256MB"
+    temp_dir: "./temp"
+  
+  # إعدادات الأمان
+  security:
+    code_analysis: true
+    threat_detection: true
+    safe_imports_only: true
+    blocked_modules:
+      - os.system
+      - subprocess.call
+      - eval
+      - exec
+
+# إعدادات الواجهات
+interfaces:
+  cli:
+    enabled: true
+    prompt: "AION> "
+    colors: true
+    auto_complete: true
+    history: true
+    max_history: 1000
+  
+  tui:
+    enabled: true
+    theme: "dark"
+    mouse_support: true
+    unicode_support: true
+  
+  web:
+    enabled: false
+    host: "127.0.0.1"
+    port: 8000
+    debug: false
+
+# إعدادات التكاملات الخارجية
+integrations:
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    use_tls: true
+  
+  github:
+    enabled: false
+    token: ""
+    username: ""
+    default_repo: ""
+  
+  slack:
+    enabled: false
+    token: ""
+    channel: ""
+  
+  google_drive:
+    enabled: false
+    credentials_file: ""
+    folder_id: ""
+  
+  notion:
+    enabled: false
+    token: ""
+    database_id: ""
+
+# إعدادات الإضافات
+plugins:
+  enabled: true
+  auto_load: true
+  directories:
+    - "./plugins"
+    - "~/.aion/plugins"
+  
+  # إعدادات الأمان للإضافات
+  security:
+    sandbox: true
+    code_review: true
+    signature_check: false
+
+# إعدادات التصدير
+export:
+  default_format: "markdown"
+  supported_formats:
+    - markdown
+    - pdf
+    - html
+    - json
+    - csv
+    - xml
+    - yaml
+    - txt
+    - zip
+  
+  # إعدادات التصدير التلقائي
+  auto_export:
+    enabled: false
+    interval: 3600  # ثواني
+    format: "json"
+    destination: "./exports"
+
+# إعدادات السجلات
+logging:
+  enabled: true
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "./logs/aion.log"
+  max_size: "10MB"
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # سجلات مخصصة
+  security_log: "./logs/security.log"
+  ai_log: "./logs/ai.log"
+  integration_log: "./logs/integrations.log"
+
+# إعدادات الأداء
+performance:
+  max_concurrent_tasks: 10
+  request_timeout: 30
+  retry_attempts: 3
+  cache_size: "100MB"
+  
+  # إعدادات الذاكرة
+  memory:
+    max_usage: "1GB"
+    cleanup_interval: 300  # ثواني
+    gc_threshold: 0.8
+
+# إعدادات التطوير
+development:
+  debug: false
+  verbose: false
+  profiling: false
+  test_mode: false
+  
+  # إعدادات الاختبار
+  testing:
+    mock_ai: false
+    mock_integrations: false
+    test_data_dir: "./test_data"
+
+# إعدادات النسخ الاحتياطي
+backup:
+  enabled: true
+  interval: 86400  # ثواني (يوميًا)
+  destination: "./backups"
+  max_backups: 7
+  compress: true
+  
+  # ما يتم نسخه احتياطيًا
+  include:
+    - config
+    - logs
+    - user_data
+    - sessions
+  
+  exclude:
+    - temp
+    - cache
+    - __pycache__
+
+# إعدادات التحديث
+updates:
+  auto_check: true
+  check_interval: 86400  # ثواني (يوميًا)
+  auto_update: false
+  update_channel: "stable"  # stable, beta, dev
+  backup_before_update: true

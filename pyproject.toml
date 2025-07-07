@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "aion-ai"
 version = "1.0.0"
 authors = [
-    {name = "AION Development Team", email = "dev@aion-ai.com"},
+    {name = "AION Development Team", email = "project.django.rst@gmail.com"},
 ]
 description = "🤖 AION - AI Operating Node: Multilingual Terminal-based AI Assistant"
 readme = "README.md"
@@ -68,18 +68,18 @@ full = [
 ]
 
 [project.scripts]
-aion = "main:app"
-aion-cli = "start_aion_en:main"
-aion-ar = "start_aion:main"
+aion = "aion.main:app"
+aion-cli = "aion.main:main"
+aion-ar = "aion.main:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/aion-ai"
-Documentation = "https://github.com/yourusername/aion-ai/wiki"
-Repository = "https://github.com/yourusername/aion-ai.git"
-"Bug Tracker" = "https://github.com/yourusername/aion-ai/issues"
+Homepage = "https://github.com/AliPluss/aion-ai"
+Documentation = "https://github.com/AliPluss/aion-ai/wiki"
+Repository = "https://github.com/AliPluss/aion-ai.git"
+"Bug Tracker" = "https://github.com/AliPluss/aion-ai/issues"
 
 [tool.setuptools]
-packages = ["core", "interfaces", "utils", "locales", "config", "plugins", "templates"]
+packages = ["aion", "aion.core", "aion.interfaces", "aion.utils", "locales", "config", "plugins", "templates"]
 include-package-data = true
 
 [tool.setuptools.package-data]

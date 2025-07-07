@@ -1,575 +1,395 @@
-# 🧠 AION - AI Operating Node
+# 🤖 AION - AI Operating Node
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/AliPluss/AION)
-[![Version](https://img.shields.io/badge/Version-2.0.0-brightgreen.svg)](https://github.com/AliPluss/AION/releases)
-[![Arabic Support](https://img.shields.io/badge/Arabic-Supported-orange.svg)](https://github.com/AliPluss/AION)
+[![CI/CD Pipeline](https://github.com/AliPluss/aion-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/AliPluss/aion-ai/actions)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 
-**AION (AI Operating Node)** is an advanced terminal-based AI assistant system that supports multiple programming languages, AI providers, and offers dynamic security features with an interactive CLI/TUI/Web interface. Built with full Arabic language support and multilingual capabilities.
+**AION (AI Operating Node)** is a professional-grade, multilingual AI assistant system that provides a unified terminal-based interface for multiple AI providers with advanced security, comprehensive integrations, and enterprise-ready features.
 
-## 🌟 Key Features
+## 🌟 Overview
 
-### 🤖 Advanced AI Integration
-- **Multiple AI Providers**: OpenAI GPT-4/3.5, DeepSeek, OpenRouter, Google Gemini
-- **Smart Context Management**: Maintains conversation history and context
-- **Dynamic Model Selection**: Switch between different AI models seamlessly
-- **Streaming Responses**: Real-time AI responses with progress indicators
-- **Custom System Prompts**: Personalized AI behavior
+AION is designed as a complete AI operating environment that combines the power of multiple AI providers with robust system integration, advanced security protocols, and professional-grade features. Built with Python 3.10+ and modern frameworks, AION offers a seamless experience for developers, researchers, and enterprises requiring sophisticated AI assistance.
 
-### 💻 Multi-Language Code Execution
-- **Supported Languages**: Python, Rust, C++, JavaScript, TypeScript, Go, Java, C#
-- **Secure Sandboxing**: Safe code execution environment with resource limits
-- **Real-time Output**: Live execution feedback with syntax highlighting
-- **Error Handling**: Comprehensive error reporting and debugging assistance
-- **Package Management**: Automatic dependency installation
+## ✨ Core Features
 
-### 🌍 Comprehensive Multilingual Support
-- **7 Languages**: Arabic (العربية), English, Norwegian (Norsk), German (Deutsch), French (Français), Chinese (中文), Spanish (Español)
-- **RTL Support**: Full right-to-left text support for Arabic with proper formatting
-- **Dynamic Language Switching**: Change interface language without restart
-- **Localized UI**: Fully translated interface elements and messages
-- **Cultural Adaptation**: Region-specific formatting and conventions
+### 🧠 AI & Intelligence
+- **Multi-Provider Support**: OpenAI, DeepSeek, OpenRouter, Google Gemini with automatic failover
+- **Dynamic Model Selection**: Choose and switch between different AI models seamlessly
+- **Conversation Management**: Persistent conversation history with context awareness
+- **Response Caching**: Intelligent caching system for improved performance and cost optimization
+- **Usage Analytics**: Comprehensive tracking of tokens, costs, and performance metrics
 
-### 🔒 Enterprise-Grade Security
-- **Dynamic Security Levels**: Adjustable security policies (Low, Medium, High, Custom)
-- **Code Sandboxing**: Isolated execution environment with containerization
-- **Permission Management**: Granular access control for system resources
-- **Audit Logging**: Complete activity tracking and compliance reporting
-- **Encryption**: End-to-end encryption for sensitive data
+### 🌍 Multilingual Excellence
+- **7 Languages Supported**: Arabic (العربية), English, French (Français), German (Deutsch), Spanish (Español), Chinese (中文), Norwegian (Norsk)
+- **RTL Support**: Full right-to-left text support for Arabic interface
+- **Dynamic Language Switching**: Change interface language on-the-fly
+- **Localized Content**: All UI elements, messages, and documentation available in multiple languages
 
-### 🔌 Extensible Plugin System
-- **Hot-loading Plugins**: Load and unload plugins without system restart
-- **Plugin Manager**: Built-in plugin management with dependency resolution
-- **API Integration**: Connect to external services and APIs
-- **Custom Commands**: Create custom commands and workflows
-- **Plugin Marketplace**: Community-driven plugin ecosystem
+### 🔒 Advanced Security
+- **Dynamic Security Protocols**: HMAC+AES encryption with minute-based parameter rotation
+- **Real-time Threat Monitoring**: Continuous system monitoring and threat assessment
+- **Secure API Key Management**: Encrypted storage and handling of sensitive credentials
+- **Audit Logging**: Comprehensive security event logging and monitoring
+- **Sandbox Execution**: Isolated code execution environment with Docker integration
 
-### 🎨 Multiple Interface Options
-- **CLI**: Rich command-line interface with auto-completion
-- **TUI**: Beautiful terminal user interface with Textual framework
-- **Web Interface**: Modern FastAPI-based web dashboard
-- **Voice Control**: Speech recognition and text-to-speech synthesis
-- **API Endpoints**: RESTful API for integration
+### 🚀 System Integration
+- **Email System**: Full SMTP/IMAP integration with OTP authentication
+- **External Platforms**: GitHub, Slack, Notion, Google Drive integrations
+- **Voice Control**: Speech-to-text and text-to-speech with multi-language support
+- **File Management**: Advanced file operations with encryption and monitoring
+- **Task Management**: Professional task scheduling and execution system
+- **Code Editor**: Integrated code editor with syntax highlighting for 23+ languages
 
-## 🚀 Quick Installation & Setup
+### 🔧 Professional Tools
+- **Advanced Export System**: 13+ export formats including PDF, Excel, Word, PowerPoint
+- **Automation Recipes**: Create and execute complex automation workflows
+- **Plugin Architecture**: Extensible system with custom plugin support
+- **Performance Monitoring**: Real-time system performance and resource tracking
+- **Comprehensive Testing**: 100+ automated tests with CI/CD pipeline integration
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- **Python**: 3.10 or higher
-- **Operating System**: Windows 10+, macOS 10.15+, or Linux (Ubuntu 20.04+)
-- **Memory**: Minimum 4GB RAM (8GB recommended)
-- **Storage**: 2GB free space
 
-### Automated Installation
+- **Python 3.10+** (Required)
+- **Git** for cloning the repository
+- **Docker** (Optional, for containerized deployment)
+- **Virtual Environment** (Recommended)
 
-1. **Clone the repository**:
+### Installation
+
+#### Method 1: Standard Installation
+
 ```bash
+# Clone the repository
 git clone https://github.com/AliPluss/AION.git
 cd AION
-```
 
-2. **Run the automated setup**:
-```bash
-python setup_aion_fixed.py
-```
-
-3. **Navigate to the project and start**:
-```bash
-cd aion_project
-python main.py start
-```
-
-### Manual Installation
-
-1. **Create virtual environment**:
-```bash
+# Create and activate virtual environment
 python -m venv aion_env
 source aion_env/bin/activate  # On Windows: aion_env\Scripts\activate
-```
 
-2. **Install dependencies**:
-```bash
+# Install dependencies
 pip install -r requirements.txt
+pip install -r requirements-integrations.txt  # For full features
+
+# Start AION
+python main.py start
 ```
 
-3. **Configure settings**:
+#### Method 2: Docker Deployment
+
 ```bash
-cp config/config_template.json config/config.json
-# Edit config.json with your API keys and preferences
+# Clone and build
+git clone https://github.com/AliPluss/AION.git
+cd AION
+
+# Build and run with Docker
+docker-compose up --build
+
+# Or use Docker directly
+docker build -t aion .
+docker run -it --name aion-container aion
 ```
 
-## 📦 Complete Dependencies List
+#### Method 3: Development Setup
 
-### Core Dependencies (Auto-installed)
-```txt
-# Terminal & UI Framework
-rich>=13.0.0              # Beautiful terminal formatting and colors
-typer>=0.9.0              # Modern CLI framework with type hints
-textual>=0.40.0           # Advanced TUI framework
-click>=8.0.0              # Command line interface creation toolkit
+```bash
+# Clone repository
+git clone https://github.com/AliPluss/AION.git
+cd AION
 
-# Web Framework
-fastapi>=0.100.0          # Modern web framework for APIs
-uvicorn>=0.23.0           # Lightning-fast ASGI server
-jinja2>=3.1.0             # Template engine for web interface
-python-multipart>=0.0.6   # Form data parsing
+# Install in development mode
+pip install -e .
 
-# AI & HTTP
-openai>=1.0.0             # OpenAI API client
-anthropic>=0.7.0          # Claude AI API client
-google-generativeai>=0.3.0 # Google Gemini API client
-requests>=2.31.0          # HTTP library for API calls
-aiohttp>=3.8.0            # Async HTTP client/server
+# Run tests
+python -m pytest tests/ -v
 
-# Data & Configuration
-pydantic>=2.0.0           # Data validation using Python type hints
-python-dotenv>=1.0.0      # Load environment variables from .env
-pyyaml>=6.0               # YAML parser and emitter
-toml>=0.10.2              # TOML parser
-
-# File & System Operations
-aiofiles>=23.0.0          # Async file operations
-watchdog>=3.0.0           # File system event monitoring
-psutil>=5.9.0             # System and process utilities
-pathlib2>=2.3.7           # Object-oriented filesystem paths
-
-# Security & Encryption
-cryptography>=41.0.0      # Cryptographic recipes and primitives
-bcrypt>=4.0.0             # Password hashing
-jwt>=1.3.1                # JSON Web Token implementation
-
-# Async & Concurrency
-asyncio>=3.4.3            # Asynchronous I/O
-concurrent-futures>=3.1.1  # High-level interface for asynchronously executing callables
-```
-
-### Optional Dependencies
-```txt
-# Voice Features
-speech-recognition>=3.10.0 # Speech recognition library
-pyttsx3>=2.90             # Text-to-speech conversion
-pyaudio>=0.2.11           # Audio I/O library
-
-# Advanced AI Providers
-deepseek-api>=1.0.0       # DeepSeek AI API client
-cohere>=4.0.0             # Cohere AI API client
-together>=0.2.0           # Together AI API client
-
-# Development & Testing
-pytest>=7.0.0             # Testing framework
-pytest-asyncio>=0.21.0    # Async testing support
-black>=23.0.0             # Code formatter
-flake8>=6.0.0             # Code linter
-mypy>=1.0.0               # Static type checker
-
-# Database (Optional)
-sqlalchemy>=2.0.0         # SQL toolkit and ORM
-sqlite3                   # Built-in SQLite support
-redis>=4.0.0              # Redis client (for caching)
-
-# Monitoring & Logging
-loguru>=0.7.0             # Advanced logging
-prometheus-client>=0.17.0  # Metrics collection
-```
-
+# Start with development features
+python main.py start --dev-mode
 ## 🎯 Usage Examples
 
-### Interactive Terminal Mode
+### Basic AI Interaction
+
 ```bash
-# Start the main interactive interface
+# Start AION
 python main.py start
 
-# Quick AI chat
-python main.py ai
-
-# Show version and system info
-python main.py version
-
-# Display help
-python main.py --help
+# Select language (Arabic/English/etc.)
+# Choose AI Assistant mode
+# Enter your questions or requests
 ```
 
-### Web Interface
+### Advanced Features
+
 ```bash
-# Start web server on default port (8000)
-python main.py web
+# Execute code with syntax highlighting
+python main.py execute --language python --file script.py
 
-# Start on custom port with specific host
-python main.py web --host 0.0.0.0 --port 3000
+# Manage tasks and scheduling
+python main.py task create --name "backup" --schedule "daily"
 
-# Enable debug mode
-python main.py web --debug
+# Export conversation to PDF
+python main.py export --format pdf --output conversation.pdf
+
+# Voice control (if enabled)
+python main.py voice --enable --language ar
 ```
 
-### Voice Control
-```bash
-# Start voice recognition mode
-python main.py voice
+## 📋 System Requirements
 
-# Voice with specific language
-python main.py voice --lang ar  # Arabic voice commands
-```
+### Minimum Requirements
+- **Python**: 3.10 or higher
+- **Operating System**: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
+- **Memory**: 1GB RAM minimum (2GB recommended)
+- **Storage**: 500MB free space
+- **Network**: Internet connection for AI providers
 
-### Code Execution
-```bash
-# Execute Python code
-python main.py exec --lang python --code "print('Hello AION!')"
+### Recommended Requirements
+- **Python**: 3.11+ for optimal performance
+- **Memory**: 4GB RAM for full features
+- **Storage**: 2GB for plugins and cache
+- **Docker**: For containerized deployment
 
-# Execute from file
-python main.py exec --file script.py
+## 🔧 Configuration
 
-# Interactive code session
-python main.py repl --lang python
-```
+### AI Provider Setup
 
-### Plugin Management
-```bash
-# List available plugins
-python main.py plugins list
+1. **OpenAI Configuration**:
+   ```bash
+   # Set your OpenAI API key
+   export OPENAI_API_KEY="your-api-key-here"
+   ```
 
-# Install plugin
-python main.py plugins install plugin_name
+2. **DeepSeek Configuration**:
+   ```bash
+   # Set your DeepSeek API key
+   export DEEPSEEK_API_KEY="your-api-key-here"
+   ```
 
-# Enable/disable plugin
-python main.py plugins enable plugin_name
-python main.py plugins disable plugin_name
-```
-
-## ⚙️ Configuration Guide
-
-### Basic Configuration (`config/config.json`)
-```json
-{
-  "app": {
-    "name": "AION",
-    "version": "2.0.0",
-    "language": "ar",           // Default: Arabic
-    "theme": "dark",            // dark, light, auto
-    "auto_save": true,
-    "session_timeout": 3600
-  },
-  "ai": {
-    "default_provider": "openai",
-    "providers": {
-      "openai": {
-        "api_key": "your-openai-api-key",
-        "model": "gpt-4",
-        "max_tokens": 2000,
-        "temperature": 0.7
-      },
-      "deepseek": {
-        "api_key": "your-deepseek-api-key",
-        "model": "deepseek-chat",
-        "max_tokens": 1500
-      },
-      "gemini": {
-        "api_key": "your-gemini-api-key",
-        "model": "gemini-pro"
-      }
-    }
-  },
-  "security": {
-    "level": "medium",          // low, medium, high, custom
-    "sandbox_enabled": true,
-    "max_execution_time": 30,
-    "allowed_imports": ["os", "sys", "json"],
-    "blocked_functions": ["exec", "eval"]
-  },
-  "features": {
-    "voice_enabled": true,
-    "web_interface": true,
-    "plugins_enabled": true,
-    "export_enabled": true,
-    "auto_completion": true
-  },
-  "interface": {
-    "cli": {
-      "prompt_style": "rich",
-      "auto_suggest": true,
-      "history_size": 1000
-    },
-    "web": {
-      "host": "127.0.0.1",
-      "port": 8000,
-      "cors_enabled": true
-    }
-  }
-}
-```
-
-### Environment Variables (`.env`)
-```env
-# AI Provider API Keys
-OPENAI_API_KEY=your-openai-key
-DEEPSEEK_API_KEY=your-deepseek-key
-GEMINI_API_KEY=your-gemini-key
-ANTHROPIC_API_KEY=your-claude-key
-
-# Application Settings
-AION_DEBUG=false
-AION_LOG_LEVEL=INFO
-AION_DATA_DIR=./data
-AION_CACHE_DIR=./cache
-
-# Security Settings
-AION_SECRET_KEY=your-secret-key
-AION_ENCRYPTION_KEY=your-encryption-key
-
-# Database (Optional)
-DATABASE_URL=sqlite:///aion.db
-REDIS_URL=redis://localhost:6379
-```
+3. **Google Gemini Configuration**:
+   ```bash
+   # Set your Gemini API key
+   export GEMINI_API_KEY="your-api-key-here"
+   ```
 
 ### Language Configuration
-Each language has its own JSON file in `locales/`:
 
-```json
-// locales/ar.json (Arabic)
-{
-  "welcome": "مرحباً بك في AION",
-  "ai_assistant": "مساعد الذكاء الاصطناعي",
-  "code_execution": "تنفيذ الكود",
-  "voice_mode": "الوضع الصوتي",
-  "settings": "الإعدادات",
-  "help": "المساعدة",
-  "exit": "خروج",
-  "error_occurred": "حدث خطأ: {error}",
-  "processing": "جاري المعالجة...",
-  "completed": "تم بنجاح"
-}
-```
-
-## 🏗️ Architecture & Development
-
-### Project Structure
-```
-AION/
-├── 📁 core/                    # Core system components
-│   ├── 🐍 ai_providers.py      # AI provider implementations
-│   ├── 🐍 executor.py          # Code execution engine
-│   ├── 🐍 security.py          # Security and sandboxing
-│   ├── 🐍 plugins.py           # Plugin system management
-│   └── 🐍 __init__.py
-├── 📁 interfaces/              # User interface implementations
-│   ├── 🐍 cli.py               # Command-line interface
-│   ├── 🐍 tui.py               # Terminal user interface
-│   ├── 🐍 web.py               # Web interface (FastAPI)
-│   └── 🐍 __init__.py
-├── 📁 locales/                 # Internationalization files
-│   ├── 🌐 ar.json              # Arabic translations
-│   ├── 🌐 en.json              # English translations
-│   ├── 🌐 de.json              # German translations
-│   ├── 🌐 fr.json              # French translations
-│   ├── 🌐 no.json              # Norwegian translations
-│   ├── 🌐 zh.json              # Chinese translations
-│   └── 🌐 es.json              # Spanish translations
-├── 📁 plugins/                 # Plugin directory
-│   ├── 🔌 example_plugin.py    # Example plugin implementation
-│   └── 📁 __pycache__/
-├── 📁 utils/                   # Utility functions
-│   ├── 🐍 arabic_support.py    # Arabic text processing
-│   ├── 🐍 translator.py        # Translation utilities
-│   ├── 🐍 helpers.py           # General helper functions
-│   └── 🐍 __init__.py
-├── 📁 config/                  # Configuration files
-│   ├── ⚙️ config.json          # Main configuration
-│   ├── ⚙️ ai_config.json       # AI provider settings
-│   └── ⚙️ security_config.json # Security policies
-├── 📁 templates/               # Web interface templates
-│   ├── 🌐 index.html           # Main web page
-│   ├── 🌐 chat.html            # Chat interface
-│   └── 📁 static/              # CSS, JS, images
-├── 📁 data/                    # Application data
-├── 📁 logs/                    # Log files
-├── 📁 exports/                 # Exported sessions
-├── 🐍 main.py                  # Main application entry point
-├── 🐍 setup_aion_fixed.py      # Automated setup script
-├── 📄 requirements.txt         # Python dependencies
-├── 📄 requirements-dev.txt     # Development dependencies
-├── 📄 README.md               # This file
-├── 📄 LICENSE                 # MIT License
-└── 📄 CHANGELOG.md            # Version history
-```
-
-### Adding New AI Providers
-```python
-# core/ai_providers.py
-class CustomAIProvider:
-    def __init__(self, api_key: str, model: str):
-        self.api_key = api_key
-        self.model = model
-
-    async def get_completion(self, prompt: str, **kwargs) -> str:
-        # Implement your AI provider logic here
-        pass
-
-    def validate_config(self) -> bool:
-        # Validate configuration
-        return bool(self.api_key)
-```
-
-### Creating Custom Plugins
-```python
-# plugins/my_custom_plugin.py
-from core.plugins import BasePlugin
-
-class MyCustomPlugin(BasePlugin):
-    name = "My Custom Plugin"
-    version = "1.0.0"
-    description = "A custom plugin for AION"
-
-    def __init__(self):
-        super().__init__()
-        self.commands = {
-            "hello": self.say_hello,
-            "calculate": self.calculate
-        }
-
-    def say_hello(self, args: list) -> str:
-        name = args[0] if args else "World"
-        return f"Hello, {name}!"
-
-    def calculate(self, args: list) -> str:
-        try:
-            expression = " ".join(args)
-            result = eval(expression)  # Note: Use safely in production
-            return f"Result: {result}"
-        except Exception as e:
-            return f"Error: {e}"
-
-    def on_load(self):
-        print(f"Plugin {self.name} loaded successfully!")
-
-    def on_unload(self):
-        print(f"Plugin {self.name} unloaded!")
-```
-
-## 🧪 Testing
-
-### Run Tests
 ```bash
-# Run all tests
-python -m pytest
-
-# Run with coverage
-python -m pytest --cov=core --cov=interfaces --cov=utils
-
-# Run specific test file
-python -m pytest tests/test_ai_providers.py
-
-# Run with verbose output
-python -m pytest -v
+# Set default language
+python main.py config set --language ar  # Arabic
+python main.py config set --language en  # English
 ```
 
-### Test Arabic Support
+## 🛠️ Development
+
+### Setup Development Environment
+
 ```bash
-python test_arabic.py
-```
-
-### Quick System Test
-```bash
-python quick_test.py
-```
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Development Setup
-```bash
-# Clone and setup development environment
+# Clone repository
 git clone https://github.com/AliPluss/AION.git
 cd AION
 
 # Create virtual environment
-python -m venv dev_env
-source dev_env/bin/activate  # Windows: dev_env\Scripts\activate
+python -m venv aion_dev
+source aion_dev/bin/activate  # On Windows: aion_dev\Scripts\activate
 
 # Install development dependencies
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
+pip install -r requirements-integrations.txt
 
 # Install pre-commit hooks
 pre-commit install
 
 # Run tests
-python -m pytest
+python -m pytest tests/ -v --cov=core --cov=interfaces --cov=utils
+
+# Run linting and formatting
+python -m flake8 .
+python -m black .
+python -m isort .
 ```
 
-### Code Style
-- **Formatter**: Black
-- **Linter**: Flake8
-- **Type Checker**: MyPy
-- **Import Sorting**: isort
+### Project Architecture
 
-```bash
-# Format code
-black .
-
-# Check linting
-flake8 .
-
-# Type checking
-mypy .
+```
+AION/
+├── 📁 core/                    # Core system modules
+│   ├── ai_providers.py         # AI provider integrations
+│   ├── security.py             # Security and encryption
+│   ├── task_manager.py         # Task scheduling and execution
+│   ├── automation_recipes.py   # Automation workflows
+│   ├── export_system.py        # Export functionality
+│   └── ...
+├── 📁 interfaces/              # User interfaces
+│   ├── cli.py                  # Command line interface
+│   ├── tui.py                  # Terminal user interface
+│   └── web.py                  # Web interface
+├── 📁 integrations/            # External integrations
+│   ├── email_system.py         # Email integration
+│   ├── github_integration.py   # GitHub integration
+│   ├── slack_integration.py    # Slack integration
+│   └── ...
+├── 📁 utils/                   # Utility modules
+│   ├── translator.py           # Multilingual support
+│   ├── helpers.py              # Common utilities
+│   └── arabic_support.py       # Arabic language support
+├── 📁 locales/                 # Translation files
+│   ├── ar.json                 # Arabic translations
+│   ├── en.json                 # English translations
+│   └── ...
+├── 📁 config/                  # Configuration files
+├── 📁 templates/               # Web templates
+├── 📁 tests/                   # Test suite
+├── 📁 plugins/                 # Plugin system
+├── 📁 monitoring/              # Performance monitoring
+├── 📁 file_system/             # File operations
+├── 📁 shell/                   # Shell integration
+└── 📁 editor/                  # Code editor
 ```
 
-## 📊 Performance & Benchmarks
+## 🌍 Language Support
 
-### System Requirements
-- **Minimum**: 4GB RAM, 2GB storage, Python 3.10+
-- **Recommended**: 8GB RAM, 5GB storage, Python 3.11+
-- **Optimal**: 16GB RAM, 10GB storage, Python 3.12+
+AION supports 7 languages with native interface translation:
 
-### Performance Metrics
-- **Startup Time**: < 2 seconds
-- **AI Response Time**: 1-5 seconds (depending on provider)
-- **Code Execution**: < 1 second for simple scripts
-- **Memory Usage**: 50-200MB (depending on features enabled)
-- **Concurrent Users**: Up to 100 (web interface)
+- 🇺🇸 English (Default)
+- 🇸🇦 Arabic (العربية)
+- 🇫🇷 French (Français)
+- 🇩🇪 German (Deutsch)
+- 🇪🇸 Spanish (Español)
+- 🇨🇳 Chinese (中文)
+- 🇳🇴 Norwegian (Norsk)
+
+## 🤖 AI Providers
+
+- **OpenAI**: GPT-4, GPT-3.5-turbo
+- **Anthropic**: Claude 3 (Opus, Sonnet, Haiku)
+- **Google**: Gemini Pro, Gemini Pro Vision
+- **DeepSeek**: DeepSeek Chat, DeepSeek Coder
+- **OpenRouter**: Access to multiple models
+
+## 🚀 Advanced Features
+
+### 🔐 Security Features
+- **Dynamic Encryption**: HMAC+AES encryption with minute-based rotation
+- **Threat Monitoring**: Real-time security assessment and protection
+- **Secure Storage**: Encrypted API key and sensitive data management
+- **Audit Logging**: Comprehensive security event tracking
+- **Sandbox Execution**: Isolated code execution environment
+- **Rate Limiting**: Intelligent request throttling and protection
+- **Input Validation**: Comprehensive input sanitization and validation
+
+### 🌐 Integration Capabilities
+- **Email System**: Full SMTP/IMAP with OTP authentication
+- **GitHub Integration**: Repository management and collaboration
+- **Slack Integration**: Team communication and notifications
+- **Google Drive**: File storage and sharing
+- **Notion Integration**: Documentation and knowledge management
+
+### 🎯 Automation & Productivity
+- **Task Scheduling**: Cron-like task scheduling with dependencies
+- **Automation Recipes**: Complex workflow automation
+- **Voice Control**: Speech-to-text and text-to-speech
+- **Code Editor**: Integrated editor with 23+ language support
+- **Export System**: 13+ export formats including PDF, Excel, Word
 
 ## 🔧 Troubleshooting
 
 ### Common Issues
 
-1. **Arabic text not displaying correctly**:
-   ```bash
-   # Windows: Set console to UTF-8
-   chcp 65001
-
-   # Linux/Mac: Check locale
-   export LANG=en_US.UTF-8
-   ```
-
-2. **AI provider API errors**:
-   - Verify API keys in `config/config.json`
-   - Check internet connection
-   - Verify API quotas and limits
-
-3. **Plugin loading errors**:
-   - Check plugin syntax
-   - Verify plugin dependencies
-   - Review plugin logs in `logs/plugins.log`
-
-4. **Web interface not accessible**:
-   - Check if port is already in use
-   - Verify firewall settings
-   - Try different port: `python main.py web --port 8080`
-
-### Debug Mode
+**Installation Issues**:
 ```bash
-# Enable debug logging
-export AION_DEBUG=true
-python main.py start
+# If pip install fails
+python -m pip install --upgrade pip
+pip install --no-cache-dir -r requirements.txt
 
-# Or use debug flag
-python main.py start --debug
+# For Windows users with path issues
+set PATH=%PATH%;C:\Python310\Scripts
 ```
 
-### Log Files
-- **Application**: `logs/aion.log`
-- **AI Providers**: `logs/ai_providers.log`
-- **Security**: `logs/security.log`
-- **Plugins**: `logs/plugins.log`
-- **Web Interface**: `logs/web.log`
+**API Key Issues**:
+```bash
+# Verify API keys are set correctly
+python main.py config check
+
+# Reset configuration
+python main.py config reset
+```
+
+**Language Issues**:
+```bash
+# Fix Arabic display issues
+pip install python-bidi arabic-reshaper
+
+# Reset language settings
+python main.py language reset
+```
+
+### Performance Optimization
+
+```bash
+# Enable performance mode
+python main.py config set --performance-mode high
+
+# Clear cache
+python main.py cache clear
+
+# Optimize database
+python main.py optimize
+```
+
+## 📊 Monitoring & Analytics
+
+AION includes comprehensive monitoring capabilities:
+
+- **Performance Metrics**: CPU, memory, and response time tracking
+- **Usage Analytics**: Token usage, cost tracking, and provider statistics
+- **Error Monitoring**: Comprehensive error logging and reporting
+- **Health Checks**: Automated system health monitoring
+
+## 🔌 Plugin Development
+
+### Creating Custom Plugins
+
+```python
+# Example plugin structure
+from core.plugins import BasePlugin
+
+class MyPlugin(BasePlugin):
+    def __init__(self):
+        super().__init__("my_plugin", "1.0.0")
+
+    def execute(self, command: str, args: dict):
+        # Plugin logic here
+        return {"status": "success", "result": "Plugin executed"}
+```
+
+### Plugin Installation
+
+```bash
+# Install plugin
+python main.py plugin install --path /path/to/plugin
+
+# List plugins
+python main.py plugin list
+
+# Enable/disable plugins
+python main.py plugin enable my_plugin
+python main.py plugin disable my_plugin
+```
+
+## 📚 Documentation
+
+- [Installation Guide](INSTALLATION.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+- [Security Guide](SECURITY.md)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ## 📄 License
 
@@ -577,47 +397,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-### Core Technologies
-- **[Rich](https://github.com/Textualize/rich)** - Beautiful terminal formatting
-- **[Textual](https://github.com/Textualize/textual)** - Modern TUI framework
-- **[FastAPI](https://fastapi.tiangolo.com/)** - High-performance web framework
-- **[Typer](https://typer.tiangolo.com/)** - Modern CLI framework
-- **[OpenAI](https://openai.com/)** - AI language models
+- Built with Python 3.8+
+- Uses Rich for beautiful terminal output
+- Powered by FastAPI for web interface
+- Textual for TUI components
 
-### Community
-- Thanks to all contributors and beta testers
-- Special thanks to the Arabic-speaking developer community
-- Inspired by modern terminal applications and AI assistants
+## 📞 Support
 
-## 📞 Support & Community
-
-### Get Help
-- 📧 **Email**: [support@aion-ai.com](mailto:support@aion-ai.com)
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/AliPluss/AION/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/AliPluss/AION/discussions)
-- 📖 **Documentation**: [Wiki](https://github.com/AliPluss/AION/wiki)
-
-### Community Links
-- 🌟 **Star us on GitHub**: [AION Repository](https://github.com/AliPluss/AION)
-- 🐦 **Follow on Twitter**: [@AION_AI](https://twitter.com/AION_AI)
-- 💼 **LinkedIn**: [AION Project](https://linkedin.com/company/aion-ai)
-- 📺 **YouTube**: [AION Tutorials](https://youtube.com/@AION_AI)
-
-### Contributing
-- 🤝 **Contribute**: See [CONTRIBUTING.md](CONTRIBUTING.md)
-- 🌍 **Translate**: Help us add more languages
-- 🔌 **Plugins**: Create and share plugins
-- 📝 **Documentation**: Improve our docs
+- 🐛 [Report Issues](https://github.com/AliPluss/aion-ai/issues)
+- 💬 [Discussions](https://github.com/AliPluss/aion-ai/discussions)
+- 📧 Email: project.django.rst@gmail.com
+- 🌐 Repository: https://github.com/AliPluss/aion-ai
 
 ---
 
-<div align="center">
-  <h3>🧠 AION - Where AI Meets Terminal Excellence</h3>
-  <p><strong>Built with ❤️ for developers, by developers</strong></p>
-  <p>
-    <a href="https://github.com/AliPluss/AION/stargazers">⭐ Star</a> •
-    <a href="https://github.com/AliPluss/AION/fork">🍴 Fork</a> •
-    <a href="https://github.com/AliPluss/AION/issues">🐛 Report Bug</a> •
-    <a href="https://github.com/AliPluss/AION/discussions">💬 Discuss</a>
-  </p>
-</div>
+**Made with ❤️ by the AION Team**

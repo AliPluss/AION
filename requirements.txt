@@ -39,6 +39,10 @@ cryptography>=41.0.7      # Cryptographic recipes and primitives
 bcrypt>=4.0.0             # Password hashing
 PyJWT>=2.8.0              # JSON Web Token implementation
 
+# Code Execution and Containerization
+docker>=6.1.0             # Docker SDK for Python (optional)
+virtualenv>=20.24.0       # Virtual environment creation
+
 # Optional Dependencies (Install as needed)
 # Voice Features (uncomment if needed)
 # speech-recognition>=3.10.0
@@ -57,3 +61,27 @@ PyJWT>=2.8.0              # JSON Web Token implementation
 # Monitoring and Logging (uncomment if needed)
 # loguru>=0.7.0
 # prometheus-client>=0.17.0
+
+# External Platform Integrations (uncomment if needed)
+# Google Drive Integration
+# google-api-python-client>=2.0.0
+# google-auth-httplib2>=0.2.0
+# google-auth-oauthlib>=1.0.0
+
+# Slack Integration
+# slack-sdk>=3.20.0
+
+# GitHub Integration (enhanced)
+# PyGithub>=1.58.0
+
+# Notion Integration
+# notion-client>=2.0.0
+
+# Advanced Export Features (uncomment if needed)
+# reportlab>=4.0.0          # PDF generation
+# openpyxl>=3.1.0           # Excel files
+# python-docx>=1.1.0        # Word documents
+# python-pptx>=0.6.0        # PowerPoint presentations
+
+# Email Integration (built-in with Python)
+# Uses standard library: smtplib, imaplib, email
