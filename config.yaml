@@ -8,18 +8,18 @@ general:
   description: "AI Operating Node - Terminal AI Assistant"
   author: "AION Development Team"
 
-# إعدادات اللغة
+# Language Settings
 language:
-  default: "en"  # اللغة الافتراضية
+  default: "en"  # Default language: English
   supported:
-    - "ar"  # العربية
-    - "en"  # الإنجليزية
-    - "fr"  # الفرنسية
-    - "de"  # الألمانية
-    - "es"  # الإسبانية
-    - "zh"  # الصينية
-    - "no"  # النرويجية
-  auto_detect: true
+    - "en"  # English (Primary)
+    - "ar"  # Arabic
+    - "fr"  # French
+    - "de"  # German
+    - "es"  # Spanish
+    - "zh"  # Chinese
+    - "no"  # Norwegian
+  auto_detect: false
   fallback: "en"
 
 # AI Provider Configuration

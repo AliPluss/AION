@@ -1,5 +1,6 @@
 {
   "default_language": "en",
+  "primary_language": "en",
   "supported_languages": {
     "en": {
       "name": "English",
@@ -7,7 +8,8 @@
       "code": "en",
       "flag": "🇺🇸",
       "rtl": false,
-      "enabled": true
+      "enabled": true,
+      "priority": 1
     },
     "ar": {
       "name": "Arabic",
@@ -15,7 +17,8 @@
       "code": "ar",
       "flag": "🇸🇦",
       "rtl": true,
-      "enabled": true
+      "enabled": true,
+      "priority": 2
     },
     "no": {
       "name": "Norwegian",
@@ -285,6 +288,7 @@
   "language_settings": {
     "auto_detect": false,
     "fallback_language": "en",
+    "default_startup_language": "en",
     "show_language_selector": true,
     "remember_selection": true,
     "rtl_support": true,

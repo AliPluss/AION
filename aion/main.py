@@ -135,57 +135,70 @@ def display_welcome():
     return lang_code
 
 def select_language():
-    """Language selection interface"""
+    """Language selection interface with command-driven selection - English as default"""
     languages = {
-        "1": ("en", "English 🇬🇧"),
-        "2": ("ar", "العربية 🇸🇦"),
-        "3": ("no", "Norsk 🇳🇴"),
-        "4": ("de", "Deutsch 🇩🇪"),
-        "5": ("fr", "Français 🇫🇷"),
-        "6": ("zh", "中文 🇨🇳"),
-        "7": ("es", "Español 🇪🇸")
+        "en": ("en", "English 🇬🇧"),
+        "no": ("no", "Norsk 🇳🇴"),
+        "de": ("de", "Deutsch 🇩🇪"),
+        "fr": ("fr", "Français 🇫🇷"),
+        "zh": ("zh", "中文 🇨🇳"),
+        "es": ("es", "Español 🇪🇸"),
+        "ar": ("ar", "العربية 🇸🇦")
     }
-    
-    console.print("\n🌐 Choose your language / اختر لغتك:")
-    for key, (code, name) in languages.items():
-        console.print(f"[{key}] {name}")
-    
+
+    console.print("\n🌐 [bold cyan]Language Selection[/bold cyan]")
+    console.print("🇬🇧 [bold green]Default: English[/bold green] (press Enter to continue)")
+    console.print("\nOther available languages:")
+    for code, (_, name) in list(languages.items())[1:]:  # Skip English as it's shown as default
+        console.print(f"   • [bold green]{code}[/bold green] - {name}")
+
+    console.print("\n💡 Type language code or press Enter for English:")
+
     while True:
-        choice = typer.prompt("\nEnter your choice (1-7)")
-        if choice in languages:
+        choice = input("🌐 Language> ").strip().lower()
+
+        if choice == "":
+            # Default to English
+            lang_code, lang_name = languages["en"]
+            translator.set_language(lang_code)
+            console.print(f"✅ Language set to: {lang_name}")
+            return lang_code
+        elif choice in languages:
             lang_code, lang_name = languages[choice]
             translator.set_language(lang_code)
             console.print(f"✅ Language set to: {lang_name}")
             return lang_code
         else:
-            console.print("❌ Invalid choice. Please select 1-7.")
+            console.print(f"❌ Invalid language code: '{choice}'")
+            console.print("💡 Available codes: " + ", ".join(languages.keys()))
 
 def show_main_menu():
     """
-    Display main menu with current language support
-    
+    Display main menu with command-driven interface (no numeric options)
+
     Shows available interface options and system information:
     - CLI mode for command-line interaction
     - TUI mode for terminal user interface
     - Web mode for browser-based interface
     - System status and configuration options
     """
-    console.print("\n" + "="*50)
-    console.print("🚀 AION Main Menu")
-    console.print("="*50)
-    console.print("1. 💬 CLI Mode - Command Line Interface")
-    console.print("2. 🖥️  TUI Mode - Terminal User Interface") 
-    console.print("3. 🌐 Web Mode - Browser Interface")
-    console.print("4. ⚙️  Settings")
-    console.print("5. 🌍 Change Language")
-    console.print("6. ❓ Help")
-    console.print("7. 🚪 Exit")
-    console.print("="*50)
+    console.print("\n" + "="*60)
+    console.print("🚀 AION Main Menu - Command Interface")
+    console.print("="*60)
+    console.print("💬 [bold cyan]cli[/bold cyan] - Command Line Interface")
+    console.print("🖥️  [bold cyan]tui[/bold cyan] - Terminal User Interface")
+    console.print("🌐 [bold cyan]web[/bold cyan] - Browser Interface")
+    console.print("⚙️  [bold cyan]settings[/bold cyan] - Configuration")
+    console.print("🌍 [bold cyan]language[/bold cyan] - Change Language")
+    console.print("❓ [bold cyan]help[/bold cyan] - Show Help")
+    console.print("🚪 [bold cyan]exit[/bold cyan] - Exit AION")
+    console.print("="*60)
+    console.print("💡 Type a command and press Enter (e.g., 'cli' or 'tui')")
 
 @app.command()
 def start(
     interface: str = typer.Option("cli", help="Interface type: cli, tui, or web"),
-    language: str = typer.Option("en", help="Language code (en, ar, fr, de, es, zh, no)"),
+    language: str = typer.Option("en", help="Language code (en, ar, fr, de, es, zh, no) - Default: English"),
     dev_mode: bool = typer.Option(False, help="Enable development mode")
 ):
     """

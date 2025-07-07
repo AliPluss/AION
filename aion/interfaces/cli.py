@@ -87,21 +87,65 @@ class CLI:
         self.show_main_menu()
     
     def show_main_menu(self):
-        """Display main menu options"""
-        menu_table = Table(title="🤖 AION Main Menu")
-        menu_table.add_column("Option", style="cyan")
+        """Display main menu options with command-driven interface"""
+        menu_table = Table(title="🤖 AION Command Interface")
+        menu_table.add_column("Command", style="cyan", width=15)
+        menu_table.add_column("Aliases", style="green", width=20)
         menu_table.add_column("Description", style="white")
-        
-        menu_table.add_row("1", "AI Assistant Mode")
-        menu_table.add_row("2", "System Commands")
-        menu_table.add_row("3", "Execute Code")
-        menu_table.add_row("4", "Plugins")
-        menu_table.add_row("5", "Settings")
-        menu_table.add_row("6", "Help")
-        menu_table.add_row("7", "Exit")
-        
+
+        menu_table.add_row("ai", "assistant, chat", "Start AI Assistant Mode")
+        menu_table.add_row("code", "execute, run", "Execute Code")
+        menu_table.add_row("system", "commands, sys", "System Commands")
+        menu_table.add_row("files", "manager, fm", "File Management")
+        menu_table.add_row("plugins", "plugin, ext", "Plugin Management")
+        menu_table.add_row("settings", "config, prefs", "Settings & Configuration")
+        menu_table.add_row("help", "?, h", "Show Help")
+        menu_table.add_row("exit", "quit, q", "Exit AION")
+
         self.console.print(menu_table)
-    
+        self.console.print("\n💡 [bold yellow]Usage:[/bold yellow] Type a command and press Enter")
+        self.console.print("   Use [bold green]Tab[/bold green] for autocomplete, [bold green]↑↓[/bold green] for command history")
+
+        # Start command loop
+        self._command_loop()
+
+    def _command_loop(self):
+        """Main command processing loop"""
+        while True:
+            try:
+                command = input("\n🤖 AION> ").strip().lower()
+
+                if command in ["ai", "assistant", "chat"]:
+                    self.ai_assistant_mode()
+                elif command in ["code", "execute", "run"]:
+                    self.execute_code_mode()
+                elif command in ["system", "commands", "sys", "cmd"]:
+                    self.system_commands_mode()
+                elif command in ["files", "manager", "fm", "file"]:
+                    self.file_management_mode()
+                elif command in ["plugins", "plugin", "ext"]:
+                    self.plugin_management_mode()
+                elif command in ["settings", "config", "prefs"]:
+                    self.settings_mode()
+                elif command in ["help", "?", "h"]:
+                    self.show_help()
+                elif command in ["exit", "quit", "q", "bye"]:
+                    self.console.print("👋 Goodbye! Thanks for using AION!")
+                    break
+                elif command == "":
+                    continue  # Empty input, just continue
+                elif command == "menu":
+                    self.show_main_menu()
+                else:
+                    self.console.print(f"❌ Unknown command: '{command}'")
+                    self.console.print("💡 Type 'help' to see available commands")
+
+            except KeyboardInterrupt:
+                self.console.print("\n👋 Goodbye! Thanks for using AION!")
+                break
+            except Exception as e:
+                self.console.print(f"❌ Error: {e}")
+
     def ai_assistant_mode(self):
         """AI Assistant interactive mode"""
         self.console.print(Panel(
@@ -287,7 +331,27 @@ class CLI:
         settings_table.add_row("Session Active", "Yes" if self.current_session else "No")
         
         self.console.print(settings_table)
-    
+
+    def file_management_mode(self):
+        """File management mode"""
+        self.console.print(Panel(
+            "📁 File Management",
+            border_style="blue"
+        ))
+
+        self.console.print("File management system is ready.")
+        self.console.print("Available operations: list, create, edit, delete (placeholder)")
+
+    def plugin_management_mode(self):
+        """Plugin management mode"""
+        self.console.print(Panel(
+            "🔌 Plugin Management",
+            border_style="purple"
+        ))
+
+        self.console.print("Plugin system is ready for integration.")
+        self.console.print("Available plugins: None (placeholder)")
+
     def show_help(self):
         """Show help information"""
         help_text = """

@@ -535,29 +535,42 @@ class TUI:
         self._handle_user_input()
     
     def _handle_user_input(self):
-        """Handle user input in main interface"""
+        """Handle user input in main interface with command-driven control"""
+        self.console.print("\n💡 [bold yellow]Available Commands:[/bold yellow]")
+        self.console.print("   • [bold cyan]ai[/bold cyan] or [bold cyan]assistant[/bold cyan] - Start AI Assistant")
+        self.console.print("   • [bold cyan]code[/bold cyan] or [bold cyan]execute[/bold cyan] - Code Execution")
+        self.console.print("   • [bold cyan]files[/bold cyan] or [bold cyan]manager[/bold cyan] - File Management")
+        self.console.print("   • [bold cyan]system[/bold cyan] or [bold cyan]commands[/bold cyan] - System Commands")
+        self.console.print("   • [bold cyan]settings[/bold cyan] or [bold cyan]config[/bold cyan] - Settings")
+        self.console.print("   • [bold cyan]help[/bold cyan] - Show help")
+        self.console.print("   • [bold cyan]quit[/bold cyan] or [bold cyan]exit[/bold cyan] - Exit AION")
+        self.console.print("   • Use [bold green]Tab[/bold green] for autocomplete, [bold green]↑↓[/bold green] for history")
+
         while self.is_running:
             try:
-                choice = input("\n🎯 Select option (1-7): ").strip()
-                
-                if choice == "1":
+                command = input("\n🤖 AION> ").strip().lower()
+
+                if command in ["ai", "assistant", "chat"]:
                     self._ai_assistant_mode()
-                elif choice == "2":
-                    self._system_commands_mode()
-                elif choice == "3":
+                elif command in ["code", "execute", "run"]:
                     self._code_execution_mode()
-                elif choice == "4":
+                elif command in ["files", "manager", "file", "fm"]:
                     self._file_management_mode()
-                elif choice == "5":
+                elif command in ["system", "commands", "sys", "cmd"]:
+                    self._system_commands_mode()
+                elif command in ["settings", "config", "preferences"]:
                     self._settings_mode()
-                elif choice == "6":
+                elif command in ["help", "?", "h"]:
                     self._show_help()
-                elif choice == "7" or choice.lower() == "q":
+                elif command in ["quit", "exit", "q", "bye"]:
                     self._exit_tui()
                     break
+                elif command == "":
+                    continue  # Empty input, just continue
                 else:
-                    self.console.print("❌ Invalid choice. Please select 1-7.")
-                    
+                    self.console.print(f"❌ Unknown command: '{command}'")
+                    self.console.print("💡 Type 'help' to see available commands")
+
             except KeyboardInterrupt:
                 self._exit_tui()
                 break

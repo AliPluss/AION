@@ -38,12 +38,13 @@ class Translator:
     """
     
     def __init__(self, default_language: str = "en"):
+        """Initialize translator with English as default language"""
         self.current_language = default_language
         self.translations: Dict[str, Dict[str, str]] = {}
         self.supported_languages = {
-            "ar": "العربية (Arabic)",
             "en": "English",
-            "no": "Norsk (Norwegian)", 
+            "ar": "العربية (Arabic)",
+            "no": "Norsk (Norwegian)",
             "de": "Deutsch (German)",
             "fr": "Français (French)",
             "zh": "中文 (Chinese)",
