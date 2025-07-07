@@ -109,6 +109,25 @@ python -m pytest tests/ -v
 
 # Start with development features
 python main.py start --dev-mode
+
+# Quick test
+python start_aion_en.py
+```
+
+### Testing & Verification
+
+```bash
+# Run all tests
+python -m pytest tests/ -v
+
+# Run specific test categories
+python -m pytest tests/test_basic.py -v      # Basic functionality
+python -m pytest tests/test_imports.py -v   # Import validation
+
+# Quick health check
+python start_aion_en.py
+```
+
 ## 🎯 Usage Examples
 
 ### Basic AI Interaction
