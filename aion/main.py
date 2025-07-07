@@ -136,51 +136,24 @@ def display_welcome():
 
 def select_language():
     """Pure arrow-key language selection interface - English as default"""
+    # Always use arrow navigation - no fallback to typing
     try:
-        # Try pure arrow navigation first
         from aion.interfaces.arrow_navigation import select_language_arrows
         lang_code = select_language_arrows()
-        translator.set_language(lang_code)
-        return lang_code
-    except ImportError:
-        # Fallback to numbered selection if arrow navigation fails
-        from rich.prompt import IntPrompt
-
-        languages = [
-            ("en", "English 🇬🇧", "🧠 Pulse"),
-            ("ar", "العربية 🇮🇶", "🇮🇶 Bounce RTL"),
-            ("no", "Norsk 🇳🇴", "✨ Glow"),
-            ("de", "Deutsch 🇩🇪", "🌊 Wave"),
-            ("fr", "Français 🇫🇷", "💫 Sparkle"),
-            ("zh", "中文 🇨🇳", "🎭 Fade"),
-            ("es", "Español 🇪🇸", "⚡ Flash")
-        ]
-
-        console.print("\n🌐 [bold cyan]Language Selection[/bold cyan]")
-        console.print("🎮 [bold yellow]Select 1-7, or press Enter for English default[/bold yellow]\n")
-
-        for i, (code, name, animation) in enumerate(languages, 1):
-            status = "🔥 Default" if code == "en" else "✅ Available"
-            console.print(f"  {i}. {name} [dim]{animation}[/dim] {status}")
-
-        try:
-            choice = IntPrompt.ask(
-                "🌐 Language",
-                default=1,
-                choices=[str(i) for i in range(1, len(languages) + 1)],
-                show_default=True
-            )
-
-            lang_code, lang_name, animation = languages[choice - 1]
+        if lang_code:
             translator.set_language(lang_code)
-            console.print(f"\n✅ Selected: [bold green]{lang_name}[/bold green] ({animation})")
             return lang_code
-
-        except (KeyboardInterrupt, EOFError):
-            # Default to English
+        else:
+            # If cancelled, default to English
             translator.set_language("en")
-            console.print("\n🇬🇧 ✅ Defaulting to English")
+            console.print("\n🔄 [bold yellow]Defaulting to English[/bold yellow]")
             return "en"
+    except Exception as e:
+        # If any error, default to English
+        console.print(f"\n⚠️ [bold red]Arrow navigation error: {e}[/bold red]")
+        console.print("🔄 [bold yellow]Defaulting to English[/bold yellow]")
+        translator.set_language("en")
+        return "en"
 
 def show_main_menu():
     """

@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from rich.live import Live
-from rich.prompt import IntPrompt
+# IntPrompt removed - using pure arrow navigation only
 
 # Windows-compatible imports
 if platform.system() == "Windows":
@@ -168,59 +168,46 @@ class ArrowNavigator:
         except Exception:
             pass  # Fall through to numbered fallback
 
-        # Numbered fallback for compatibility
-        console.print(f"\n🔢 [bold cyan]Numbered Selection Fallback[/bold cyan]")
-        console.print("[dim]Arrow keys not available - using numbered selection[/dim]\n")
-
-        for i, (value, display_name, animation) in enumerate(self.items, 1):
-            if i - 1 == self.selected_index:
-                console.print(f"  {i}. [bold bright_white on blue]► {display_name}[/bold bright_white on blue] [dim]{animation}[/dim] 🔥 Default")
-            else:
-                console.print(f"  {i}. {display_name} [dim]{animation}[/dim]")
-
-        try:
-            choice = IntPrompt.ask(
-                f"🎯 {self.title}",
-                default=self.selected_index + 1,
-                choices=[str(i) for i in range(1, len(self.items) + 1)],
-                show_default=True
-            )
-
-            selected_value = self.items[choice - 1][0]
-            selected_name = self.items[choice - 1][1]
-            selected_animation = self.items[choice - 1][2]
-
-            console.print(f"\n✅ Selected: [bold green]{selected_name}[/bold green] ({selected_animation})")
-            return selected_value
-
-        except (KeyboardInterrupt, EOFError):
-            # Return default selection
-            selected_value = self.items[self.selected_index][0]
-            selected_name = self.items[self.selected_index][1]
-            console.print(f"\n🔄 Using default: [bold green]{selected_name}[/bold green]")
-            return selected_value
+        # If arrow navigation fails, return default selection
+        console.print("\n⚠️ [bold red]Arrow navigation not available[/bold red]")
+        selected_value = self.items[self.selected_index][0]
+        selected_name = self.items[self.selected_index][1]
+        console.print(f"🔄 [bold yellow]Using default: {selected_name}[/bold yellow]")
+        return selected_value
 
 def select_with_arrows(items: List[Tuple[str, str, str]], title: str = "Selection", default_index: int = 0) -> str:
     """
-    Convenience function for arrow-key selection
-    
+    Convenience function for arrow-key selection - guaranteed to return a value
+
     Args:
         items: List of (value, display_name, animation) tuples
         title: Selection title
         default_index: Default selected index
-        
+
     Returns:
-        Selected value
+        Selected value (never None)
     """
-    navigator = ArrowNavigator(items, title)
-    navigator.selected_index = default_index
-    
-    result = navigator.navigate()
-    return result if result is not None else items[default_index][0]
+    try:
+        navigator = ArrowNavigator(items, title)
+        navigator.selected_index = default_index
+
+        result = navigator.navigate()
+        # Always return a valid result
+        if result is not None:
+            return result
+        else:
+            # If navigation was cancelled, return default
+            console.print(f"\n🔄 [bold yellow]Using default: {items[default_index][1]}[/bold yellow]")
+            return items[default_index][0]
+    except Exception as e:
+        # If any error occurs, return default
+        console.print(f"\n⚠️ [bold red]Selection error: {e}[/bold red]")
+        console.print(f"🔄 [bold yellow]Using default: {items[default_index][1]}[/bold yellow]")
+        return items[default_index][0]
 
 # Language selection with pure arrow navigation
 def select_language_arrows() -> str:
-    """Pure arrow-key language selection"""
+    """Pure arrow-key language selection - guaranteed to return a language code"""
     languages = [
         ("en", "English 🇬🇧", "🧠 Pulse"),
         ("ar", "العربية 🇮🇶", "🇮🇶 Bounce RTL"),
@@ -230,11 +217,18 @@ def select_language_arrows() -> str:
         ("zh", "中文 🇨🇳", "🎭 Fade"),
         ("es", "Español 🇪🇸", "⚡ Flash")
     ]
-    
+
     console.print("\n🎮 [bold yellow]Pure Arrow-Key Navigation Active[/bold yellow]")
-    console.print("[dim]No typing required - use arrow keys only![/dim]\n")
-    
-    return select_with_arrows(languages, "🌐 Language Selection", default_index=0)
+    console.print("[dim]Use ↑↓ arrows to navigate, Enter to select, Esc for English default[/dim]\n")
+
+    try:
+        result = select_with_arrows(languages, "🌐 Language Selection", default_index=0)
+        # Always return a valid language code, default to English if None
+        return result if result else "en"
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Navigation error: {e}[/bold red]")
+        console.print("🔄 [bold yellow]Defaulting to English[/bold yellow]")
+        return "en"
 
 # AI Provider selection with arrows
 def select_ai_provider_arrows() -> str:

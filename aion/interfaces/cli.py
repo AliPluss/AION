@@ -238,7 +238,7 @@ class CLI:
             self.console.print(f"❌ Error executing command: {e}")
     
     def execute_code_mode(self):
-        """Code execution mode with arrow-key navigation"""
+        """Code execution mode with pure arrow-key navigation"""
         self.console.print(Panel(
             "🚀 Code Execution Mode",
             border_style="magenta"
@@ -251,38 +251,28 @@ class CLI:
             ("sql", "🗄️ SQL", "✨ Standard")
         ]
 
-        # Show language options with animations
-        lang_table = Table(title="🚀 Programming Languages", show_header=True, header_style="bold magenta")
-        lang_table.add_column("Option", style="cyan", width=8)
-        lang_table.add_column("Language", style="white", width=20)
-        lang_table.add_column("Animation", style="green", width=15)
-
-        for i, (code, name, animation) in enumerate(languages, 1):
-            lang_table.add_row(str(i), name, animation)
-
-        self.console.print(lang_table)
-        self.console.print("\n🎮 [bold yellow]Select option 1-4, or press Enter for Python default[/bold yellow]")
-
-        from rich.prompt import IntPrompt
-
+        # Use pure arrow navigation
         try:
-            choice = IntPrompt.ask(
-                "🚀 Language option",
-                default=1,  # Default to Python
-                choices=[str(i) for i in range(1, len(languages) + 1)],
-                show_default=True
-            )
+            from aion.interfaces.arrow_navigation import select_with_arrows
 
-            lang_code, lang_name, animation = languages[choice - 1]
+            self.console.print("\n🎮 [bold yellow]Pure Arrow-Key Navigation Active[/bold yellow]")
+            self.console.print("[dim]Use ↑↓ arrows to navigate, Enter to select[/dim]\n")
+
+            lang_code = select_with_arrows(languages, "🚀 Programming Language Selection", default_index=0)
+
+            # Find the selected language details
+            selected_lang = next((lang for lang in languages if lang[0] == lang_code), languages[0])
+            lang_code, lang_name, animation = selected_lang
 
             # Show animated confirmation
             self.console.print(f"\n✅ Selected: [bold green]{lang_name}[/bold green] ({animation} animation)")
 
             self._code_execution_session(lang_code, lang_name)
 
-        except (KeyboardInterrupt, EOFError):
-            # Fallback to Python
-            self.console.print("\n🐍 ✅ Defaulting to Python")
+        except Exception as e:
+            # Fallback to Python if arrow navigation fails
+            self.console.print(f"\n⚠️ [bold red]Navigation error: {e}[/bold red]")
+            self.console.print("🐍 ✅ Defaulting to Python")
             self._code_execution_session("python", "🐍 Python")
     
     def _code_execution_session(self, lang_code: str, lang_name: str):

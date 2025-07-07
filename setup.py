@@ -34,7 +34,7 @@ requirements = [
 
 setup(
     name="aion-ai",
-    version="2.2.1",
+    version="2.2.2",
     author="AliPluss",
     author_email="project.django.rst@gmail.com",
     description="🤖 AION - AI Operating Node | Professional Terminal AI Assistant with Multi-Provider Support",
