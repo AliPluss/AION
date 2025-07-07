@@ -135,72 +135,52 @@ def display_welcome():
     return lang_code
 
 def select_language():
-    """Arrow-key driven language selection interface - English as default"""
-    from rich.prompt import IntPrompt
-    from rich.table import Table
-
-    languages = [
-        ("en", "English 🇬🇧"),
-        ("no", "Norsk 🇳🇴"),
-        ("de", "Deutsch 🇩🇪"),
-        ("fr", "Français 🇫🇷"),
-        ("zh", "中文 🇨🇳"),
-        ("es", "Español 🇪🇸"),
-        ("ar", "العربية 🇮🇶")  # Fixed to Iraq flag
-    ]
-
-    console.print("\n🌐 [bold cyan]Language Selection[/bold cyan]")
-    console.print("🎮 [bold yellow]Navigate with numbers 1-7, or press Enter for English default[/bold yellow]\n")
-
-    # Create animated language table
-    table = Table(title="🌍 Available Languages", show_header=True, header_style="bold magenta")
-    table.add_column("Option", style="cyan", width=8)
-    table.add_column("Language", style="white", width=20)
-    table.add_column("Status", style="green")
-
-    for i, (code, name) in enumerate(languages, 1):
-        status = "🔥 Default" if code == "en" else "✅ Available"
-        # Add animated icons for specific languages
-        if code == "en":
-            name = f"🧠 {name}"  # Pulse animation indicator
-        elif code == "ar":
-            name = f"🇮🇶 {name}"  # Bounce animation indicator
-
-        table.add_row(str(i), name, status)
-
-    console.print(table)
-    console.print("\n💡 [bold green]Press Enter for English default, or select 1-7[/bold green]")
-
+    """Pure arrow-key language selection interface - English as default"""
     try:
-        # Use IntPrompt with default to 1 (English)
-        choice = IntPrompt.ask(
-            "🌐 Language",
-            default=1,
-            choices=[str(i) for i in range(1, len(languages) + 1)],
-            show_default=True,
-            show_choices=False
-        )
-
-        # Get selected language
-        lang_code, lang_name = languages[choice - 1]
+        # Try pure arrow navigation first
+        from aion.interfaces.arrow_navigation import select_language_arrows
+        lang_code = select_language_arrows()
         translator.set_language(lang_code)
-
-        # Show confirmation with animation
-        if lang_code == "en":
-            console.print(f"\n🧠 ✅ Language set to: [bold green]{lang_name}[/bold green] (pulse animation active)")
-        elif lang_code == "ar":
-            console.print(f"\n🇮🇶 ✅ Language set to: [bold green]{lang_name}[/bold green] (bounce animation active)")
-        else:
-            console.print(f"\n✅ Language set to: [bold green]{lang_name}[/bold green]")
-
         return lang_code
+    except ImportError:
+        # Fallback to numbered selection if arrow navigation fails
+        from rich.prompt import IntPrompt
 
-    except (KeyboardInterrupt, EOFError):
-        # Fallback to English on any error
-        lang_code, lang_name = languages[0]
-        translator.set_language(lang_code)
-        console.print(f"\n🧠 ✅ Language set to: [bold green]{lang_name}[/bold green] (default)")
-        return lang_code
+        languages = [
+            ("en", "English 🇬🇧", "🧠 Pulse"),
+            ("ar", "العربية 🇮🇶", "🇮🇶 Bounce RTL"),
+            ("no", "Norsk 🇳🇴", "✨ Glow"),
+            ("de", "Deutsch 🇩🇪", "🌊 Wave"),
+            ("fr", "Français 🇫🇷", "💫 Sparkle"),
+            ("zh", "中文 🇨🇳", "🎭 Fade"),
+            ("es", "Español 🇪🇸", "⚡ Flash")
+        ]
+
+        console.print("\n🌐 [bold cyan]Language Selection[/bold cyan]")
+        console.print("🎮 [bold yellow]Select 1-7, or press Enter for English default[/bold yellow]\n")
+
+        for i, (code, name, animation) in enumerate(languages, 1):
+            status = "🔥 Default" if code == "en" else "✅ Available"
+            console.print(f"  {i}. {name} [dim]{animation}[/dim] {status}")
+
+        try:
+            choice = IntPrompt.ask(
+                "🌐 Language",
+                default=1,
+                choices=[str(i) for i in range(1, len(languages) + 1)],
+                show_default=True
+            )
+
+            lang_code, lang_name, animation = languages[choice - 1]
+            translator.set_language(lang_code)
+            console.print(f"\n✅ Selected: [bold green]{lang_name}[/bold green] ({animation})")
+            return lang_code
+
+        except (KeyboardInterrupt, EOFError):
+            # Default to English
+            translator.set_language("en")
+            console.print("\n🇬🇧 ✅ Defaulting to English")
+            return "en"
 
 def show_main_menu():
     """
