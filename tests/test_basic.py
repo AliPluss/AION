@@ -62,10 +62,10 @@ def test_config_files_exist():
 def test_main_modules_exist():
     """Test that main application files exist"""
     main_files = [
-        "main.py",
-        "start_aion_en.py"
+        "aion/main.py",
+        "aion/__init__.py"
     ]
-    
+
     for main_file in main_files:
         file_path = project_root / main_file
         assert file_path.exists(), f"Main file {main_file} not found"
@@ -74,13 +74,12 @@ def test_main_modules_exist():
 def test_core_directory_structure():
     """Test that core directory structure exists"""
     core_dirs = [
-        "core",
-        "interfaces", 
-        "utils",
-        "locales",
+        "aion/core",
+        "aion/interfaces",
+        "aion/utils",
         "config"
     ]
-    
+
     for core_dir in core_dirs:
         dir_path = project_root / core_dir
         if dir_path.exists():
@@ -110,7 +109,7 @@ class TestAIONBasic:
         """Test that environment is properly set up"""
         # Check if we're in the right directory
         assert project_root.exists()
-        assert (project_root / "main.py").exists() or (project_root / "aion_project" / "main.py").exists()
+        assert (project_root / "aion" / "main.py").exists(), "AION main module should exist"
 
 
 if __name__ == "__main__":
