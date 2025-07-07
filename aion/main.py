@@ -420,5 +420,9 @@ def toggle_theme():
     except ImportError:
         console.print("❌ Theme switching not available")
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for AION application"""
     app()
+
+if __name__ == "__main__":
+    main()
