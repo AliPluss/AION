@@ -11,8 +11,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 
-**Next-Generation AI-Powered Terminal Assistant**
-**مساعد الطرفية المدعوم بالذكاء الاصطناعي من الجيل التالي**
+**Next-Generation AI-Powered Terminal Assistant
 
 [English](#english) | [العربية](#arabic)
 
