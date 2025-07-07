@@ -289,7 +289,7 @@ AION/
 AION supports 7 languages with native interface translation:
 
 - 🇺🇸 English (Default)
-- 🇸🇦 Arabic (العربية)
+- 🇮🇶 Arabic (العربية)
 - 🇫🇷 French (Français)
 - 🇩🇪 German (Deutsch)
 - 🇪🇸 Spanish (Español)
