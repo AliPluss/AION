@@ -36,6 +36,7 @@ try:
     )
     from textual.binding import Binding
     from textual.screen import Screen
+    from textual import events
     TEXTUAL_AVAILABLE = True
 except ImportError:
     TEXTUAL_AVAILABLE = False
@@ -54,10 +55,55 @@ except ImportError:
     from core.ai_providers import AdvancedAIManager
     from core.executor import AdvancedCodeExecutor
 
+# AI Assistant imports
+try:
+    from aion.ai.input_handler import AIScreenMixin, AIInputBar, AI_INPUT_CSS
+    from aion.ai.contextual_assistant import contextual_ai
+    from aion.ai.chatbot import aion_chatbot
+    AI_AVAILABLE = True
+except ImportError:
+    AI_AVAILABLE = False
+    AIScreenMixin = object
+
 class AIONApp(App):
     """Main AION Textual Application with enhanced navigation"""
 
     CSS = """
+    /* AI Assistant Styles */
+    #ai-input-container {
+        height: auto;
+        background: $surface;
+        border: solid $primary;
+        margin: 1;
+        padding: 1;
+    }
+
+    .ai-input-hidden {
+        display: none;
+    }
+
+    .ai-input-visible {
+        display: block;
+    }
+
+    #ai-prompt {
+        color: $primary;
+        text-style: bold;
+    }
+
+    #ai-input {
+        margin: 1 0;
+    }
+
+    #ai-response {
+        color: $text;
+        background: $surface-lighten-1;
+        padding: 1;
+        margin: 1 0;
+        border-radius: 1;
+    }
+
+    /* Original Styles */
     #loading-container {
         align: center middle;
         background: $surface;
@@ -119,6 +165,9 @@ class AIONApp(App):
 
     def on_mount(self) -> None:
         """Show loading screen on startup"""
+        # Initialize AI context
+        if AI_AVAILABLE:
+            contextual_ai.set_context("main_menu")
         self.push_screen(LoadingScreen())
 
     def compose(self) -> ComposeResult:
@@ -130,13 +179,131 @@ class AIONApp(App):
                 Button("🤖 AI Assistant", id="ai-btn", variant="primary"),
                 Button("⚡ Code Execution", id="code-btn", variant="success"),
                 Button("📁 File Manager", id="file-btn", variant="warning"),
+                Button("📧 Email Sharing", id="email-btn", variant="success"),
+                Button("🐙 GitHub Tools", id="github-btn", variant="primary"),
+                Button("💡 AI Code Assist", id="ai-assist-btn", variant="success"),
                 Button("⚙️ Settings", id="settings-btn", variant="default"),
                 id="main-buttons"
             ),
-            Static("Use arrow keys to navigate • Enter to select • Q to quit", id="status-bar"),
+            # AI Input Bar
+            Container(
+                Static("🤖 AI Assistant:", id="ai-prompt"),
+                Input(placeholder="Ask me anything about AION...", id="ai-input"),
+                Static("Use arrow keys to navigate • Enter to select • Q to quit", id="ai-response"),
+                id="ai-input-container",
+                classes="ai-input-hidden"
+            ),
+            Static("💡 Press '/' for AI help, '?' for context help, or Ctrl+A for AI assistant", id="status-bar"),
             id="main-container"
         )
         yield Footer()
+
+    async def on_key(self, event: events.Key) -> None:
+        """Handle AI activation keys and smart search"""
+        if not AI_AVAILABLE:
+            return
+
+        ai_container = self.query_one("#ai-input-container")
+        ai_input = self.query_one("#ai-input", Input)
+        ai_response = self.query_one("#ai-response", Static)
+
+        # Ctrl+K - Smart Search
+        if event.key == "ctrl+k":
+            ai_container.remove_class("ai-input-hidden")
+            ai_container.add_class("ai-input-visible")
+            ai_input.placeholder = "🔍 Search Stack Overflow, GitHub, Python Docs..."
+            ai_input.focus()
+            ai_response.update("🔍 Smart Search Mode: Enter your search topic")
+            event.prevent_default()
+
+        # Forward slash (/) - Quick AI help
+        elif event.key == "/":
+            ai_container.remove_class("ai-input-hidden")
+            ai_container.add_class("ai-input-visible")
+            ai_input.placeholder = "Ask me anything about AION..."
+            ai_input.focus()
+            ai_response.update("💡 Ask me anything about AION!")
+            event.prevent_default()
+
+        # Question mark (?) - Context help
+        elif event.key == "?":
+            ai_container.remove_class("ai-input-hidden")
+            ai_container.add_class("ai-input-visible")
+            ai_input.value = "What can I do on this screen?"
+            ai_input.placeholder = "Context help..."
+            ai_input.focus()
+            event.prevent_default()
+
+        # Ctrl+A - AI assistant
+        elif event.key == "ctrl+a":
+            ai_container.remove_class("ai-input-hidden")
+            ai_container.add_class("ai-input-visible")
+            ai_input.placeholder = "AI Assistant ready..."
+            ai_input.focus()
+            ai_response.update("🤖 AI Assistant activated! How can I help?")
+            event.prevent_default()
+
+        # Escape - Hide AI input
+        elif event.key == "escape":
+            if "ai-input-visible" in ai_container.classes:
+                ai_container.remove_class("ai-input-visible")
+                ai_container.add_class("ai-input-hidden")
+                ai_input.value = ""
+                ai_input.placeholder = ""
+                ai_response.update("💡 Press '/' for AI help, '?' for context help, Ctrl+K for search, or Ctrl+A for AI assistant")
+                event.prevent_default()
+
+    async def on_input_submitted(self, event: Input.Submitted) -> None:
+        """Handle AI input submission and smart search"""
+        if event.input.id == "ai-input" and AI_AVAILABLE:
+            query = event.input.value.strip()
+            if query:
+                ai_response = self.query_one("#ai-response", Static)
+
+                # Check if this is a search query (Ctrl+K was pressed)
+                if "Search Stack Overflow" in event.input.placeholder:
+                    # Handle smart search
+                    ai_response.update("🔍 Searching developer resources...")
+
+                    try:
+                        from aion.ai.smart_search import smart_search
+
+                        # Perform search
+                        search_results = await smart_search.search(
+                            query,
+                            ["stackoverflow", "github", "python_docs"],
+                            5
+                        )
+
+                        # Format results for display
+                        if search_results.results:
+                            response = f"🔍 **Found {len(search_results.results)} results for '{query}':**\n\n"
+                            for i, result in enumerate(search_results.results[:3], 1):
+                                response += f"**{i}. {result.title}**\n"
+                                response += f"   Source: {result.source} | Score: {result.score:.2f}\n"
+                                response += f"   {result.snippet[:100]}...\n\n"
+                            response += f"📝 Full results: search_logs/query_*.log"
+                        else:
+                            response = f"🔍 No results found for '{query}'. Try different keywords."
+
+                    except Exception as e:
+                        response = f"⚠️ Search error: {e}"
+
+                    ai_response.update(response)
+
+                else:
+                    # Handle regular AI query
+                    ai_response.update("🤖 Thinking...")
+
+                    # Get AI response
+                    response = await contextual_ai.handle_ai_query(query)
+
+                    # Display response
+                    ai_response.update(response)
+
+                # Clear input
+                event.input.value = ""
+                event.input.placeholder = ""
 
     def _get_welcome_message(self) -> str:
         """Get welcome message with system status"""
@@ -154,13 +321,26 @@ Professional Terminal AI Assistant with Enhanced Navigation"""
         button_id = event.button.id
 
         if button_id == "ai-btn":
-            await self._show_ai_assistant()
+            if AI_AVAILABLE:
+                await self._show_chat()
+            else:
+                await self._show_ai_assistant()
         elif button_id == "code-btn":
             await self._show_code_execution()
         elif button_id == "file-btn":
             await self._show_file_manager()
+        elif button_id == "email-btn":
+            await self._show_email_sharing()
+        elif button_id == "github-btn":
+            await self._show_github_tools()
+        elif button_id == "ai-assist-btn":
+            await self._show_ai_assist()
         elif button_id == "settings-btn":
             await self._show_settings()
+
+    async def _show_chat(self):
+        """Show full-screen AI chat interface"""
+        self.push_screen(ChatScreen(self.translator))
 
     async def _show_ai_assistant(self):
         """Show AI assistant interface"""
@@ -173,6 +353,18 @@ Professional Terminal AI Assistant with Enhanced Navigation"""
     async def _show_file_manager(self):
         """Show file manager interface"""
         self.push_screen(FileManagerScreen(self.translator))
+
+    async def _show_email_sharing(self):
+        """Show email sharing interface"""
+        self.push_screen(EmailSharingScreen(self.translator))
+
+    async def _show_github_tools(self):
+        """Show GitHub tools interface"""
+        self.push_screen(GitHubToolsScreen(self.translator))
+
+    async def _show_ai_assist(self):
+        """Show AI code assistance interface"""
+        self.push_screen(AIAssistScreen(self.translator))
 
     async def _show_settings(self):
         """Show settings interface"""
@@ -363,6 +555,426 @@ class FileManagerScreen(Screen):
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "back-btn":
             self.app.pop_screen()
+
+class EmailSharingScreen(Screen):
+    """Email sharing interface screen"""
+
+    BINDINGS = [("escape", "back", "Back")]
+
+    def __init__(self, translator):
+        super().__init__()
+        self.translator = translator
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Container(
+            Static("📧 Email Sharing", id="title"),
+            Vertical(
+                Static("Send files or content via email", id="description"),
+                Horizontal(
+                    Button("📝 Send Text", id="text-btn", variant="primary"),
+                    Button("📁 Send File", id="file-btn", variant="success"),
+                    Button("💻 Send Output", id="output-btn", variant="warning"),
+                    id="email-buttons"
+                ),
+                TextArea("", placeholder="Email content will appear here...", id="preview"),
+                Button("Back", id="back-btn", variant="default"),
+                id="email-content"
+            ),
+            id="email-container"
+        )
+        yield Footer()
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "back-btn":
+            self.app.pop_screen()
+        elif event.button.id == "text-btn":
+            await self._send_text_email()
+        elif event.button.id == "file-btn":
+            await self._send_file_email()
+        elif event.button.id == "output-btn":
+            await self._send_output_email()
+
+    async def _send_text_email(self):
+        """Send text email"""
+        try:
+            from aion.integrations.email_system import email_system
+            # Switch to CLI mode for interactive email
+            self.app.exit()
+            email_system.send_email_interactive()
+        except Exception as e:
+            preview = self.query_one("#preview", TextArea)
+            preview.text = f"❌ Email error: {e}"
+
+    async def _send_file_email(self):
+        """Send file email"""
+        try:
+            from aion.integrations.email_system import email_system
+            # Switch to CLI mode for interactive email
+            self.app.exit()
+            email_system.send_email_interactive()
+        except Exception as e:
+            preview = self.query_one("#preview", TextArea)
+            preview.text = f"❌ Email error: {e}"
+
+    async def _send_output_email(self):
+        """Send terminal output email"""
+        try:
+            from aion.integrations.email_system import email_system
+            # Switch to CLI mode for interactive email
+            self.app.exit()
+            email_system.send_email_interactive()
+        except Exception as e:
+            preview = self.query_one("#preview", TextArea)
+            preview.text = f"❌ Email error: {e}"
+
+    def action_back(self) -> None:
+        self.app.pop_screen()
+
+class GitHubToolsScreen(Screen):
+    """GitHub tools interface screen"""
+
+    BINDINGS = [("escape", "back", "Back")]
+
+    def __init__(self, translator):
+        super().__init__()
+        self.translator = translator
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Container(
+            Static("🐙 GitHub Tools", id="title"),
+            Vertical(
+                Static("Repository management and synchronization", id="description"),
+                Horizontal(
+                    Button("📋 List Repos", id="list-btn", variant="primary"),
+                    Button("📤 Push Files", id="push-btn", variant="success"),
+                    Button("📥 Pull Updates", id="pull-btn", variant="warning"),
+                    id="github-buttons"
+                ),
+                Horizontal(
+                    Button("🌿 New Branch", id="branch-btn", variant="primary"),
+                    Button("📊 Statistics", id="stats-btn", variant="success"),
+                    Button("Back", id="back-btn", variant="default"),
+                    id="github-buttons2"
+                ),
+                TextArea("", placeholder="GitHub operation results will appear here...", id="output"),
+                id="github-content"
+            ),
+            id="github-container"
+        )
+        yield Footer()
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "back-btn":
+            self.app.pop_screen()
+        elif event.button.id == "list-btn":
+            await self._list_repositories()
+        elif event.button.id == "push-btn":
+            await self._push_files()
+        elif event.button.id == "pull-btn":
+            await self._pull_updates()
+        elif event.button.id == "branch-btn":
+            await self._create_branch()
+        elif event.button.id == "stats-btn":
+            await self._show_statistics()
+
+    async def _list_repositories(self):
+        """List repositories"""
+        try:
+            from aion.integrations.github_tools import github_tools
+            # Switch to CLI mode for interactive GitHub tools
+            self.app.exit()
+            github_tools.github_tools_interactive()
+        except Exception as e:
+            output = self.query_one("#output", TextArea)
+            output.text = f"❌ GitHub error: {e}"
+
+    async def _push_files(self):
+        """Push files to repository"""
+        try:
+            from aion.integrations.github_tools import github_tools
+            # Switch to CLI mode for interactive GitHub tools
+            self.app.exit()
+            github_tools.github_tools_interactive()
+        except Exception as e:
+            output = self.query_one("#output", TextArea)
+            output.text = f"❌ GitHub error: {e}"
+
+    async def _pull_updates(self):
+        """Pull repository updates"""
+        try:
+            from aion.integrations.github_tools import github_tools
+            # Switch to CLI mode for interactive GitHub tools
+            self.app.exit()
+            github_tools.github_tools_interactive()
+        except Exception as e:
+            output = self.query_one("#output", TextArea)
+            output.text = f"❌ GitHub error: {e}"
+
+    async def _create_branch(self):
+        """Create new branch"""
+        try:
+            from aion.integrations.github_tools import github_tools
+            # Switch to CLI mode for interactive GitHub tools
+            self.app.exit()
+            github_tools.github_tools_interactive()
+        except Exception as e:
+            output = self.query_one("#output", TextArea)
+            output.text = f"❌ GitHub error: {e}"
+
+    async def _show_statistics(self):
+        """Show GitHub statistics"""
+        try:
+            from aion.integrations.github_tools import github_tools
+            # Switch to CLI mode for interactive GitHub tools
+            self.app.exit()
+            github_tools.github_tools_interactive()
+        except Exception as e:
+            output = self.query_one("#output", TextArea)
+            output.text = f"❌ GitHub error: {e}"
+
+    def action_back(self) -> None:
+        self.app.pop_screen()
+
+class AIAssistScreen(Screen):
+    """AI code assistance interface screen"""
+
+    BINDINGS = [("escape", "back", "Back")]
+
+    def __init__(self, translator):
+        super().__init__()
+        self.translator = translator
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Container(
+            Static("💡 AI Code Assistant", id="title"),
+            Vertical(
+                Static("AI-powered code analysis and suggestions", id="description"),
+                Horizontal(
+                    Button("📄 Analyze File", id="analyze-btn", variant="primary"),
+                    Button("✍️ Code Snippet", id="snippet-btn", variant="success"),
+                    Button("🔍 Check Errors", id="errors-btn", variant="warning"),
+                    id="ai-buttons"
+                ),
+                Horizontal(
+                    Button("🚀 Improvements", id="improve-btn", variant="primary"),
+                    Button("📊 Quality Score", id="quality-btn", variant="success"),
+                    Button("Back", id="back-btn", variant="default"),
+                    id="ai-buttons2"
+                ),
+                TextArea("", placeholder="AI analysis results will appear here...", id="results"),
+                id="ai-content"
+            ),
+            id="ai-container"
+        )
+        yield Footer()
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "back-btn":
+            self.app.pop_screen()
+        elif event.button.id == "analyze-btn":
+            await self._analyze_file()
+        elif event.button.id == "snippet-btn":
+            await self._analyze_snippet()
+        elif event.button.id == "errors-btn":
+            await self._check_errors()
+        elif event.button.id == "improve-btn":
+            await self._suggest_improvements()
+        elif event.button.id == "quality-btn":
+            await self._show_quality_score()
+
+    async def _analyze_file(self):
+        """Analyze file with AI"""
+        try:
+            from aion.integrations.ai_code_assist import ai_code_assist
+            # Switch to CLI mode for interactive AI assistance
+            self.app.exit()
+            ai_code_assist.analyze_code_interactive()
+        except Exception as e:
+            results = self.query_one("#results", TextArea)
+            results.text = f"❌ AI assistance error: {e}"
+
+    async def _analyze_snippet(self):
+        """Analyze code snippet"""
+        try:
+            from aion.integrations.ai_code_assist import ai_code_assist
+            # Switch to CLI mode for interactive AI assistance
+            self.app.exit()
+            ai_code_assist.analyze_code_interactive()
+        except Exception as e:
+            results = self.query_one("#results", TextArea)
+            results.text = f"❌ AI assistance error: {e}"
+
+    async def _check_errors(self):
+        """Check for code errors"""
+        try:
+            from aion.integrations.ai_code_assist import ai_code_assist
+            # Switch to CLI mode for interactive AI assistance
+            self.app.exit()
+            ai_code_assist.analyze_code_interactive()
+        except Exception as e:
+            results = self.query_one("#results", TextArea)
+            results.text = f"❌ AI assistance error: {e}"
+
+    async def _suggest_improvements(self):
+        """Suggest code improvements"""
+        try:
+            from aion.integrations.ai_code_assist import ai_code_assist
+            # Switch to CLI mode for interactive AI assistance
+            self.app.exit()
+            ai_code_assist.analyze_code_interactive()
+        except Exception as e:
+            results = self.query_one("#results", TextArea)
+            results.text = f"❌ AI assistance error: {e}"
+
+    async def _show_quality_score(self):
+        """Show code quality score"""
+        try:
+            from aion.integrations.ai_code_assist import ai_code_assist
+            # Switch to CLI mode for interactive AI assistance
+            self.app.exit()
+            ai_code_assist.analyze_code_interactive()
+        except Exception as e:
+            results = self.query_one("#results", TextArea)
+            results.text = f"❌ AI assistance error: {e}"
+
+    def action_back(self) -> None:
+        self.app.pop_screen()
+
+class ChatScreen(Screen):
+    """Full-screen AI chat interface"""
+
+    BINDINGS = [
+        ("escape", "back", "Back"),
+        ("ctrl+c", "clear", "Clear Chat"),
+        ("ctrl+s", "save", "Save Session"),
+    ]
+
+    def __init__(self, translator: Translator):
+        super().__init__()
+        self.translator = translator
+        self.session_id = None
+
+    def compose(self) -> ComposeResult:
+        yield Container(
+            Static("💬 AION AI Chat - Full Conversation Mode", id="chat-title"),
+            Container(
+                Log(id="chat-history", auto_scroll=True),
+                id="chat-display"
+            ),
+            Horizontal(
+                Input(placeholder="Type your message... (Press Enter to send)", id="chat-input"),
+                Button("Send", id="send-btn", variant="primary"),
+                Button("Clear", id="clear-btn", variant="warning"),
+                Button("Save", id="save-btn", variant="success"),
+                id="chat-controls"
+            ),
+            Static("💡 Continuous memory active • Context-aware responses • Code & error analysis", id="chat-status"),
+            id="chat-container"
+        )
+
+    async def on_mount(self):
+        """Initialize chat session"""
+        if AI_AVAILABLE:
+            self.session_id = aion_chatbot.start_chat_session()
+            chat_history = self.query_one("#chat-history", Log)
+            chat_history.write_line("🤖 **AION AI Chat Started**")
+            chat_history.write_line(f"📋 Session ID: {self.session_id}")
+            chat_history.write_line("💬 I'm ready to help! I can explain code, analyze errors, and answer AION questions.")
+            chat_history.write_line("🧠 I'll remember our entire conversation for context.")
+            chat_history.write_line("---")
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "send-btn":
+            await self._send_message()
+        elif event.button.id == "clear-btn":
+            await self._clear_chat()
+        elif event.button.id == "save-btn":
+            await self._save_session()
+
+    async def on_input_submitted(self, event: Input.Submitted) -> None:
+        if event.input.id == "chat-input":
+            await self._send_message()
+
+    async def _send_message(self):
+        """Send message to AI chatbot"""
+        if not AI_AVAILABLE:
+            return
+
+        chat_input = self.query_one("#chat-input", Input)
+        chat_history = self.query_one("#chat-history", Log)
+
+        user_message = chat_input.value.strip()
+        if not user_message:
+            return
+
+        # Display user message
+        chat_history.write_line(f"👤 **You:** {user_message}")
+
+        # Clear input
+        chat_input.value = ""
+
+        # Show AI thinking
+        chat_history.write_line("🤖 **AI:** Thinking...")
+
+        try:
+            # Get AI response
+            ai_response = await aion_chatbot.send_message(user_message)
+
+            # Remove thinking message and add response
+            chat_history.write_line(f"🤖 **AI:** {ai_response}")
+            chat_history.write_line("---")
+
+        except Exception as e:
+            chat_history.write_line(f"❌ **Error:** {e}")
+
+    async def _clear_chat(self):
+        """Clear chat history"""
+        chat_history = self.query_one("#chat-history", Log)
+        chat_history.clear()
+
+        if AI_AVAILABLE and self.session_id:
+            # End current session and start new one
+            aion_chatbot.end_chat_session("Chat cleared by user")
+            self.session_id = aion_chatbot.start_chat_session()
+
+            chat_history.write_line("🔄 **Chat Cleared**")
+            chat_history.write_line(f"📋 New Session ID: {self.session_id}")
+            chat_history.write_line("💬 Ready for a fresh conversation!")
+            chat_history.write_line("---")
+
+    async def _save_session(self):
+        """Save chat session"""
+        if not AI_AVAILABLE or not self.session_id:
+            return
+
+        chat_history = self.query_one("#chat-history", Log)
+
+        try:
+            summary = aion_chatbot.get_session_summary()
+            chat_history.write_line(f"💾 **Session Saved**")
+            chat_history.write_line(f"📊 Messages: {summary.get('total_messages', 0)}")
+            chat_history.write_line(f"⏱️ Duration: {summary.get('duration_minutes', 0):.1f} minutes")
+            chat_history.write_line("---")
+
+        except Exception as e:
+            chat_history.write_line(f"❌ **Save Error:** {e}")
+
+    def action_back(self) -> None:
+        """End session and go back"""
+        if AI_AVAILABLE and self.session_id:
+            aion_chatbot.end_chat_session("User ended session")
+        self.app.pop_screen()
+
+    def action_clear(self) -> None:
+        """Clear chat action"""
+        self.run_action("_clear_chat")
+
+    def action_save(self) -> None:
+        """Save session action"""
+        self.run_action("_save_session")
 
 class SettingsScreen(Screen):
     """Settings interface screen"""

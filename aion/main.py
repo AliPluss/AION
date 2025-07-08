@@ -396,6 +396,207 @@ def change_language():
         console.print(f"\n⚠️ [bold red]Error changing language: {e}[/bold red]")
         console.print("🔄 [bold yellow]Keeping current language[/bold yellow]")
 
+@app.command("send-email")
+def send_email():
+    """Send files or content via email"""
+    try:
+        from aion.integrations.email_system import email_system
+        console.print("\n📧 [bold yellow]AION Email Sharing[/bold yellow]")
+        success = email_system.send_email_interactive()
+        if success:
+            console.print("✅ [green]Email sent successfully![/green]")
+        else:
+            console.print("❌ [red]Email sending failed[/red]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Email error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure email is configured in .env file[/cyan]")
+
+@app.command("github-tools")
+def github_tools():
+    """GitHub integration tools for repository management"""
+    try:
+        from aion.integrations.github_tools import github_tools
+        console.print("\n🐙 [bold yellow]AION GitHub Tools[/bold yellow]")
+        success = github_tools.github_tools_interactive()
+        if success:
+            console.print("✅ [green]GitHub operation completed![/green]")
+        else:
+            console.print("❌ [red]GitHub operation failed[/red]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]GitHub error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure AION_GITHUB_TOKEN is set in .env file[/cyan]")
+
+@app.command("chat")
+def chat():
+    """Launch full-screen AI chat mode"""
+    try:
+        from aion.ai.chatbot import aion_chatbot
+        console.print("\n💬 [bold yellow]AION AI Chat Mode[/bold yellow]")
+        console.print("🚀 [cyan]Starting interactive chat session...[/cyan]")
+
+        # Start chat session
+        session_id = aion_chatbot.start_chat_session()
+        console.print(f"📋 [green]Session ID: {session_id}[/green]")
+        console.print("💡 [yellow]Type 'exit' or 'quit' to end session[/yellow]")
+        console.print("🧠 [cyan]I'll remember our entire conversation![/cyan]")
+        console.print("---")
+
+        # Interactive chat loop
+        while True:
+            try:
+                user_input = input("\n👤 You: ").strip()
+
+                if user_input.lower() in ['exit', 'quit', 'bye']:
+                    console.print("👋 [yellow]Ending chat session...[/yellow]")
+                    aion_chatbot.end_chat_session("User ended session")
+                    break
+
+                if not user_input:
+                    continue
+
+                console.print("🤖 AI: Thinking...")
+
+                # Get AI response
+                import asyncio
+                response = asyncio.run(aion_chatbot.send_message(user_input))
+                console.print(f"🤖 AI: {response}")
+
+            except KeyboardInterrupt:
+                console.print("\n👋 [yellow]Chat interrupted by user[/yellow]")
+                aion_chatbot.end_chat_session("Interrupted by user")
+                break
+            except Exception as e:
+                console.print(f"❌ [red]Chat error: {e}[/red]")
+
+        console.print("✅ [green]Chat session ended![/green]")
+
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Chat error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure AI system is configured[/cyan]")
+
+@app.command("search")
+def search_command(
+    topic: str = typer.Argument(..., help="Topic to search for"),
+    sources: str = typer.Option("stackoverflow,github,python_docs", help="Comma-separated list of sources"),
+    max_results: int = typer.Option(10, help="Maximum number of results")
+):
+    """Smart search across developer resources (Stack Overflow, GitHub, Python Docs)"""
+    try:
+        from aion.ai.smart_search import smart_search
+        import asyncio
+
+        console.print(f"\n🔍 [bold yellow]Smart Search: {topic}[/bold yellow]")
+
+        # Parse sources
+        source_list = [s.strip() for s in sources.split(",")]
+
+        console.print(f"📡 [cyan]Searching {', '.join(source_list)}...[/cyan]")
+
+        # Perform search
+        search_results = asyncio.run(smart_search.search(topic, source_list, max_results))
+
+        # Format and display results
+        formatted_output = smart_search.format_search_results(search_results)
+        console.print(formatted_output)
+
+        console.print(f"\n✅ [green]Search completed in {search_results.search_time:.2f}s![/green]")
+        console.print(f"📝 [cyan]Results logged to: search_logs/query_*.log[/cyan]")
+
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Search error: {e}[/bold red]")
+        console.print("💡 [cyan]Try: aion search [topic][/cyan]")
+
+@app.command("explain")
+def explain_command(command: str = typer.Argument(..., help="Command to explain")):
+    """Explain terminal commands with AI-powered analysis"""
+    try:
+        from aion.ai.command_explainer import command_explainer
+        import asyncio
+
+        console.print(f"\n📘 [bold yellow]Explaining Command: {command}[/bold yellow]")
+        console.print("🔍 [cyan]Analyzing command with AI...[/cyan]")
+
+        # Get command explanation
+        explanation = asyncio.run(command_explainer.explain_command(command))
+
+        # Format and display explanation
+        formatted_output = command_explainer.format_explanation_display(explanation)
+        console.print(formatted_output)
+
+        console.print(f"\n✅ [green]Command explanation completed![/green]")
+        console.print(f"📝 [cyan]Logged to: test_logs/system_command_explanation.log[/cyan]")
+
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Command explanation error: {e}[/bold red]")
+        console.print("💡 [cyan]Try: aion explain [command][/cyan]")
+
+@app.command("ai-assist")
+def ai_assist():
+    """AI-powered code analysis and suggestions"""
+    try:
+        from aion.integrations.ai_code_assist import ai_code_assist
+        console.print("\n💡 [bold yellow]AION AI Code Assistant[/bold yellow]")
+        success = ai_code_assist.analyze_code_interactive()
+        if success:
+            console.print("✅ [green]Code analysis completed![/green]")
+        else:
+            console.print("❌ [red]Code analysis failed[/red]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]AI assistance error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure AI provider is configured[/cyan]")
+
+@app.command("ai-use")
+def ai_use(provider: str):
+    """Switch AI provider (openai, deepseek, anthropic, google, openrouter)"""
+    try:
+        from aion.ai_engine.provider_router import provider_router
+        console.print(f"\n🔀 [bold yellow]Switching to AI Provider: {provider}[/bold yellow]")
+
+        success = provider_router.switch_provider(provider)
+        if success:
+            console.print(f"✅ [green]Successfully switched to {provider}[/green]")
+            console.print(f"🧠 [cyan]Current provider: {provider_router.get_current_provider()}[/cyan]")
+        else:
+            console.print(f"❌ [red]Failed to switch to {provider}[/red]")
+            console.print("💡 [yellow]Available providers: openai, deepseek, anthropic, google, openrouter[/yellow]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Provider switching error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure AI engine is properly configured[/cyan]")
+
+@app.command("ai-status")
+def ai_status():
+    """Show current AI provider status and configuration"""
+    try:
+        from aion.ai_engine.provider_router import provider_router
+        console.print("\n🧠 [bold yellow]AI Provider Status[/bold yellow]")
+
+        current = provider_router.get_current_provider()
+        console.print(f"📍 [green]Current Provider: {current}[/green]")
+
+        # Show available providers
+        providers = provider_router.get_available_providers()
+        console.print("\n📋 [cyan]Available Providers:[/cyan]")
+        for provider in providers:
+            status = "✅ Ready" if provider_router.is_provider_ready(provider) else "❌ Not configured"
+            console.print(f"  • {provider}: {status}")
+
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]AI status error: {e}[/bold red]")
+        console.print("💡 [cyan]Make sure AI engine is properly configured[/cyan]")
+
+@app.command("voice")
+def voice():
+    """Launch voice assistant mode"""
+    try:
+        from aion.ai_engine.ai_interface import ai_interface
+        console.print("\n🔊 [bold yellow]AION Voice Assistant[/bold yellow]")
+        console.print("🎤 [cyan]Voice mode is not yet fully implemented[/cyan]")
+        console.print("💡 [yellow]This feature will be available in a future update[/yellow]")
+        console.print("🔄 [green]For now, use text-based chat: aion chat[/green]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Voice assistant error: {e}[/bold red]")
+        console.print("💡 [cyan]Feature under development[/cyan]")
+
 def main():
     """Main entry point for AION application"""
     app()

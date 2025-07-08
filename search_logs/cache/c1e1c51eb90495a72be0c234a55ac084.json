@@ -1,0 +1,90 @@
+{
+  "query": "python async programming",
+  "sources": [
+    "stackoverflow",
+    "github",
+    "python_docs"
+  ],
+  "filters": {},
+  "results": [
+    {
+      "title": "How to python async programming in Python",
+      "url": "https://stackoverflow.com/questions/12345/python-async-programming",
+      "source": "stackoverflow",
+      "snippet": "This is a comprehensive answer about python async programming......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "programming"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    },
+    {
+      "title": "python async programming-toolkit - A comprehensive toolkit for python async programming development",
+      "url": "https://github.com/awesome/python async programming-toolkit",
+      "source": "github",
+      "snippet": "\u2b50 1250 stars | Language: Python | A comprehensive toolkit for python async programming development",
+      "score": 1.0,
+      "tags": [
+        "python async programming",
+        "toolkit",
+        "python"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    },
+    {
+      "title": "Python Async Programming - Python Documentation",
+      "url": "https://docs.python.org/3/library/python async programming.html",
+      "source": "python_docs",
+      "snippet": "Official Python documentation for python async programming......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "documentation",
+        "official"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    },
+    {
+      "title": "Python Async Programming Tutorial - Python Documentation",
+      "url": "https://docs.python.org/3/tutorial/python async programming.html",
+      "source": "python_docs",
+      "snippet": "Python tutorial covering python async programming concepts......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "documentation",
+        "official"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    },
+    {
+      "title": "Best practices for python async programming",
+      "url": "https://stackoverflow.com/questions/67890/python-async-programming-best-practices",
+      "source": "stackoverflow",
+      "snippet": "Here are the best practices for python async programming......",
+      "score": 0.96,
+      "tags": [
+        "best-practices",
+        "python"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    },
+    {
+      "title": "python async programming-examples - Collection of python async programming examples and tutorials",
+      "url": "https://github.com/examples/python async programming-examples",
+      "source": "github",
+      "snippet": "\u2b50 890 stars | Language: Python | Collection of python async programming examples and tutorials",
+      "score": 0.845,
+      "tags": [
+        "python async programming",
+        "examples",
+        "tutorial"
+      ],
+      "timestamp": "2025-07-09 00:16:22.643005"
+    }
+  ],
+  "total_results": 6,
+  "search_time": 0.19751,
+  "timestamp": "2025-07-09T00:16:22.445495"
+}

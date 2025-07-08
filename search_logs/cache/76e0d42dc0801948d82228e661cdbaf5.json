@@ -1,0 +1,90 @@
+{
+  "query": "javascript frameworks",
+  "sources": [
+    "stackoverflow",
+    "github",
+    "python_docs"
+  ],
+  "filters": {},
+  "results": [
+    {
+      "title": "How to javascript frameworks in Python",
+      "url": "https://stackoverflow.com/questions/12345/javascript-frameworks",
+      "source": "stackoverflow",
+      "snippet": "This is a comprehensive answer about javascript frameworks......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "programming"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    },
+    {
+      "title": "javascript frameworks-toolkit - A comprehensive toolkit for javascript frameworks development",
+      "url": "https://github.com/awesome/javascript frameworks-toolkit",
+      "source": "github",
+      "snippet": "\u2b50 1250 stars | Language: Python | A comprehensive toolkit for javascript frameworks development",
+      "score": 1.0,
+      "tags": [
+        "javascript frameworks",
+        "toolkit",
+        "python"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    },
+    {
+      "title": "Javascript Frameworks - Python Documentation",
+      "url": "https://docs.python.org/3/library/javascript frameworks.html",
+      "source": "python_docs",
+      "snippet": "Official Python documentation for javascript frameworks......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "documentation",
+        "official"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    },
+    {
+      "title": "Javascript Frameworks Tutorial - Python Documentation",
+      "url": "https://docs.python.org/3/tutorial/javascript frameworks.html",
+      "source": "python_docs",
+      "snippet": "Python tutorial covering javascript frameworks concepts......",
+      "score": 1.0,
+      "tags": [
+        "python",
+        "documentation",
+        "official"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    },
+    {
+      "title": "Best practices for javascript frameworks",
+      "url": "https://stackoverflow.com/questions/67890/javascript-frameworks-best-practices",
+      "source": "stackoverflow",
+      "snippet": "Here are the best practices for javascript frameworks......",
+      "score": 0.9600000000000001,
+      "tags": [
+        "best-practices",
+        "python"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    },
+    {
+      "title": "javascript frameworks-examples - Collection of javascript frameworks examples and tutorials",
+      "url": "https://github.com/examples/javascript frameworks-examples",
+      "source": "github",
+      "snippet": "\u2b50 890 stars | Language: Python | Collection of javascript frameworks examples and tutorials",
+      "score": 0.845,
+      "tags": [
+        "javascript frameworks",
+        "examples",
+        "tutorial"
+      ],
+      "timestamp": "2025-07-08 20:08:00.829599"
+    }
+  ],
+  "total_results": 6,
+  "search_time": 0.002498,
+  "timestamp": "2025-07-08T20:08:00.827101"
+}

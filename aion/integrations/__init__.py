@@ -18,26 +18,26 @@ All integrations feature:
 """
 
 from .email_system import EmailSystem
-from .github_integration import GitHubIntegration
-from .slack_integration import SlackIntegration
-from .google_drive_integration import GoogleDriveIntegration
-from .notion_integration import NotionIntegration
+from .ai_code_assist import ai_code_assist
+from .github_tools import github_tools
+
+# Note: Only importing modules that actually exist
+# Other integrations (slack, google_drive, notion) are placeholders for future implementation
 
 __all__ = [
     "EmailSystem",
-    "GitHubIntegration",
-    "SlackIntegration",
-    "GoogleDriveIntegration", 
-    "NotionIntegration"
+    "ai_code_assist",
+    "github_tools"
 ]
 
 # Integration availability and status
 INTEGRATIONS_STATUS = {
     "email": {"available": True, "requires_config": True},
     "github": {"available": True, "requires_config": True},
-    "slack": {"available": True, "requires_config": True},
-    "google_drive": {"available": True, "requires_config": True},
-    "notion": {"available": True, "requires_config": True}
+    "ai_code_assist": {"available": True, "requires_config": False},
+    "slack": {"available": False, "requires_config": True, "status": "planned"},
+    "google_drive": {"available": False, "requires_config": True, "status": "planned"},
+    "notion": {"available": False, "requires_config": True, "status": "planned"}
 }
 
 def get_available_integrations():
