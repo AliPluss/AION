@@ -27,7 +27,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
-from rich.prompt import Prompt, Confirm
+from rich.prompt import Confirm
 from rich.syntax import Syntax
 
 try:
@@ -147,28 +147,38 @@ class CLI:
                 self.console.print(f"❌ Error: {e}")
 
     def ai_assistant_mode(self):
-        """AI Assistant interactive mode"""
+        """AI Assistant interactive mode with arrow navigation"""
         self.console.print(Panel(
             f"🧠 {self.translator.get('ai_mode_title', 'AI Assistant Mode')}",
             border_style="cyan"
         ))
-        
-        self.console.print(f"💡 {self.translator.get('ai_mode_help', 'Enter your AI requests. Type \"back\" to return to main menu.')}")
-        
-        while True:
-            try:
-                user_input = Prompt.ask(f"\n🤖 AI")
-                
-                if user_input.lower() in ['back', 'exit', 'quit']:
-                    break
-                
-                if user_input.strip():
-                    self.command_history.append(f"AI: {user_input}")
-                    # Here you would integrate with AI providers
-                    self._simulate_ai_response(user_input)
-                
-            except KeyboardInterrupt:
-                break
+
+        # Use arrow navigation for AI provider selection
+        try:
+            from aion.interfaces.arrow_navigation import select_ai_provider_arrows
+            provider = select_ai_provider_arrows()
+            if provider:
+                self.console.print(f"✅ Selected AI Provider: {provider}")
+                self.console.print(f"💡 {self.translator.get('ai_mode_help', 'Enter your AI requests. Type \"back\" to return to main menu.')}")
+
+                while True:
+                    try:
+                        user_input = input(f"\n🤖 {provider.upper()}> ").strip()
+
+                        if user_input.lower() in ['back', 'exit', 'quit']:
+                            break
+
+                        if user_input:
+                            self.command_history.append(f"AI: {user_input}")
+                            self._simulate_ai_response(user_input)
+
+                    except KeyboardInterrupt:
+                        break
+            else:
+                self.console.print("❌ No AI provider selected")
+        except Exception as e:
+            self.console.print(f"⚠️ Error in AI mode: {e}")
+            self.console.print("🔄 Returning to main menu")
     
     def _simulate_ai_response(self, query: str):
         """Simulate AI response (placeholder for actual AI integration)"""
@@ -186,24 +196,45 @@ class CLI:
         self.console.print(f"🤖 {response}")
     
     def system_commands_mode(self):
-        """System commands mode"""
+        """System commands mode with arrow navigation"""
         self.console.print(Panel(
             "⚙️ System Commands Mode",
             border_style="yellow"
         ))
-        
-        while True:
-            try:
-                command = Prompt.ask("\n💻 System")
-                
-                if command.lower() in ['back', 'exit', 'quit']:
-                    break
-                
-                if command.strip():
-                    self._execute_system_command(command)
-                
-            except KeyboardInterrupt:
-                break
+
+        # Show common system commands with arrow navigation
+        system_commands = [
+            ("ls", "List directory contents", "📁 List"),
+            ("pwd", "Show current directory", "📍 Location"),
+            ("whoami", "Show current user", "👤 User"),
+            ("date", "Show current date/time", "🕐 Time"),
+            ("custom", "Enter custom command", "⌨️ Custom")
+        ]
+
+        try:
+            from aion.interfaces.arrow_navigation import select_with_arrows
+            self.console.print("\n🎮 [bold yellow]System Commands Menu[/bold yellow]")
+            selected = select_with_arrows(system_commands, "⚙️ System Commands", default_index=0)
+
+            if selected == "custom":
+                while True:
+                    try:
+                        command = input("\n💻 System> ").strip()
+
+                        if command.lower() in ['back', 'exit', 'quit']:
+                            break
+
+                        if command:
+                            self._execute_system_command(command)
+
+                    except KeyboardInterrupt:
+                        break
+            elif selected:
+                self._execute_system_command(selected)
+
+        except Exception as e:
+            self.console.print(f"⚠️ Error in system mode: {e}")
+            self.console.print("🔄 Returning to main menu")
     
     def _execute_system_command(self, command: str):
         """Execute system command with security validation"""
@@ -276,16 +307,46 @@ class CLI:
             self._code_execution_session("python", "🐍 Python")
     
     def _code_execution_session(self, lang_code: str, lang_name: str):
-        """Interactive code execution session"""
+        """Interactive code execution session with arrow navigation"""
         self.console.print(f"\n🚀 {lang_name} Execution Mode")
+
+        # Show execution options with arrow navigation
+        execution_options = [
+            ("editor", "Code Editor Mode", "📝 Editor"),
+            ("repl", "Interactive REPL", "🔄 REPL"),
+            ("file", "Execute File", "📄 File"),
+            ("back", "Return to Menu", "🔙 Back")
+        ]
+
+        try:
+            from aion.interfaces.arrow_navigation import select_with_arrows
+            self.console.print(f"\n🎮 [bold yellow]{lang_name} Execution Options[/bold yellow]")
+            selected = select_with_arrows(execution_options, f"🚀 {lang_name} Execution", default_index=0)
+
+            if selected == "editor":
+                self._code_editor_mode(lang_code, lang_name)
+            elif selected == "repl":
+                self._repl_mode(lang_code, lang_name)
+            elif selected == "file":
+                self._file_execution_mode(lang_code, lang_name)
+            elif selected == "back":
+                return
+
+        except Exception as e:
+            self.console.print(f"⚠️ Error in code execution: {e}")
+            self.console.print("🔄 Returning to main menu")
+
+    def _code_editor_mode(self, lang_code: str, lang_name: str):
+        """Code editor mode with line-by-line input"""
+        self.console.print(f"\n📝 {lang_name} Code Editor")
         self.console.print("Enter your code (type 'run' to execute, 'back' to return):")
-        
+
         code_lines = []
-        
+
         while True:
             try:
-                line = Prompt.ask(">>> " if not code_lines else "... ")
-                
+                line = input(">>> " if not code_lines else "... ")
+
                 if line.lower() == 'back':
                     break
                 elif line.lower() == 'run':
@@ -300,9 +361,40 @@ class CLI:
                     self.console.print("Code cleared!")
                 else:
                     code_lines.append(line)
-                    
+
             except KeyboardInterrupt:
                 break
+
+    def _repl_mode(self, lang_code: str, lang_name: str):
+        """REPL mode for interactive execution"""
+        self.console.print(f"\n🔄 {lang_name} REPL Mode")
+        self.console.print("Enter commands one at a time (type 'back' to return):")
+
+        while True:
+            try:
+                line = input(f"{lang_code}> ")
+
+                if line.lower() == 'back':
+                    break
+                elif line.strip():
+                    self._execute_code(line, lang_code)
+
+            except KeyboardInterrupt:
+                break
+
+    def _file_execution_mode(self, lang_code: str, lang_name: str):
+        """File execution mode"""
+        self.console.print(f"\n📄 {lang_name} File Execution")
+        self.console.print("Enter file path to execute:")
+
+        try:
+            file_path = input("File path> ").strip()
+            if file_path and file_path.lower() != 'back':
+                # Here you would read and execute the file
+                self.console.print(f"📄 Executing file: {file_path}")
+                self.console.print("⚠️ File execution not implemented yet")
+        except KeyboardInterrupt:
+            pass
     
     def _execute_code(self, code: str, language: str):
         """Execute code with syntax highlighting"""
@@ -325,41 +417,230 @@ class CLI:
         self.console.print("Available plugins: None (placeholder)")
     
     def settings_mode(self):
-        """Settings management mode"""
+        """Settings management mode with arrow navigation"""
         self.console.print(Panel(
-            "⚙️ Settings",
+            "⚙️ Settings & Configuration",
             border_style="green"
         ))
-        
+
+        # Show current settings
         settings_table = Table(title="Current Settings")
         settings_table.add_column("Setting", style="cyan")
         settings_table.add_column("Value", style="white")
-        
+
         settings_table.add_row("Language", self.translator.current_language)
         settings_table.add_row("Security Level", str(self.security.protection_level))
         settings_table.add_row("Session Active", "Yes" if self.current_session else "No")
-        
+
         self.console.print(settings_table)
 
+        # Settings options with arrow navigation
+        settings_options = [
+            ("language", "Change Language", "🌐 Language"),
+            ("security", "Security Settings", "🛡️ Security"),
+            ("ai", "AI Provider Settings", "🤖 AI"),
+            ("display", "Display Settings", "🎨 Display"),
+            ("reset", "Reset to Defaults", "🔄 Reset"),
+            ("back", "Return to Menu", "🔙 Back")
+        ]
+
+        try:
+            from aion.interfaces.arrow_navigation import select_with_arrows
+            self.console.print("\n🎮 [bold yellow]Settings Options[/bold yellow]")
+            selected = select_with_arrows(settings_options, "⚙️ Settings", default_index=0)
+
+            if selected == "language":
+                self._change_language_setting()
+            elif selected == "security":
+                self._security_settings()
+            elif selected == "ai":
+                self._ai_settings()
+            elif selected == "display":
+                self._display_settings()
+            elif selected == "reset":
+                self._reset_settings()
+            elif selected == "back":
+                return
+
+        except Exception as e:
+            self.console.print(f"⚠️ Error in settings: {e}")
+            self.console.print("🔄 Returning to main menu")
+
+    def _change_language_setting(self):
+        """Change language setting"""
+        try:
+            from aion.interfaces.arrow_navigation import select_language_arrows
+            self.console.print("\n🌐 Language Settings:")
+            lang_code = select_language_arrows()
+            if lang_code:
+                self.translator.set_language(lang_code)
+                self.console.print(f"✅ Language changed to: {self.translator.get_language_name(lang_code)}")
+        except Exception as e:
+            self.console.print(f"❌ Error changing language: {e}")
+
+    def _security_settings(self):
+        """Security settings"""
+        self.console.print("\n🛡️ Security Settings:")
+        self.console.print("Security settings not implemented yet")
+
+    def _ai_settings(self):
+        """AI provider settings"""
+        self.console.print("\n🤖 AI Provider Settings:")
+        self.console.print("AI settings not implemented yet")
+
+    def _display_settings(self):
+        """Display settings"""
+        self.console.print("\n🎨 Display Settings:")
+        self.console.print("Display settings not implemented yet")
+
+    def _reset_settings(self):
+        """Reset settings to defaults"""
+        self.console.print("\n🔄 Reset Settings:")
+        self.console.print("Settings reset not implemented yet")
+
     def file_management_mode(self):
-        """File management mode"""
+        """File management mode with arrow navigation"""
         self.console.print(Panel(
             "📁 File Management",
             border_style="blue"
         ))
 
-        self.console.print("File management system is ready.")
-        self.console.print("Available operations: list, create, edit, delete (placeholder)")
+        # File management options with arrow navigation
+        file_options = [
+            ("list", "List Files", "📋 List"),
+            ("create", "Create File", "📝 Create"),
+            ("edit", "Edit File", "✏️ Edit"),
+            ("delete", "Delete File", "🗑️ Delete"),
+            ("copy", "Copy File", "📄 Copy"),
+            ("move", "Move File", "📁 Move"),
+            ("back", "Return to Menu", "🔙 Back")
+        ]
+
+        try:
+            from aion.interfaces.arrow_navigation import select_with_arrows
+            self.console.print("\n🎮 [bold yellow]File Management Options[/bold yellow]")
+            selected = select_with_arrows(file_options, "📁 File Management", default_index=0)
+
+            if selected == "list":
+                self._list_files()
+            elif selected == "create":
+                self._create_file()
+            elif selected == "edit":
+                self._edit_file()
+            elif selected == "delete":
+                self._delete_file()
+            elif selected == "copy":
+                self._copy_file()
+            elif selected == "move":
+                self._move_file()
+            elif selected == "back":
+                return
+
+        except Exception as e:
+            self.console.print(f"⚠️ Error in file management: {e}")
+            self.console.print("🔄 Returning to main menu")
+
+    def _list_files(self):
+        """List files in current directory"""
+        import os
+        self.console.print("\n📋 Current Directory Files:")
+        try:
+            files = os.listdir('.')
+            for file in files[:10]:  # Show first 10 files
+                self.console.print(f"• {file}")
+            if len(files) > 10:
+                self.console.print(f"... and {len(files) - 10} more files")
+        except Exception as e:
+            self.console.print(f"❌ Error listing files: {e}")
+
+    def _create_file(self):
+        """Create new file"""
+        self.console.print("\n📝 Create File:")
+        self.console.print("File creation not implemented yet")
+
+    def _edit_file(self):
+        """Edit existing file"""
+        self.console.print("\n✏️ Edit File:")
+        self.console.print("File editing not implemented yet")
+
+    def _delete_file(self):
+        """Delete file"""
+        self.console.print("\n🗑️ Delete File:")
+        self.console.print("File deletion not implemented yet")
+
+    def _copy_file(self):
+        """Copy file"""
+        self.console.print("\n📄 Copy File:")
+        self.console.print("File copying not implemented yet")
+
+    def _move_file(self):
+        """Move file"""
+        self.console.print("\n📁 Move File:")
+        self.console.print("File moving not implemented yet")
 
     def plugin_management_mode(self):
-        """Plugin management mode"""
+        """Plugin management mode with arrow navigation"""
         self.console.print(Panel(
             "🔌 Plugin Management",
             border_style="purple"
         ))
 
-        self.console.print("Plugin system is ready for integration.")
-        self.console.print("Available plugins: None (placeholder)")
+        # Plugin management options with arrow navigation
+        plugin_options = [
+            ("list", "List Installed Plugins", "📋 List"),
+            ("install", "Install New Plugin", "⬇️ Install"),
+            ("remove", "Remove Plugin", "🗑️ Remove"),
+            ("enable", "Enable Plugin", "✅ Enable"),
+            ("disable", "Disable Plugin", "❌ Disable"),
+            ("back", "Return to Menu", "🔙 Back")
+        ]
+
+        try:
+            from aion.interfaces.arrow_navigation import select_with_arrows
+            self.console.print("\n🎮 [bold yellow]Plugin Management Options[/bold yellow]")
+            selected = select_with_arrows(plugin_options, "🔌 Plugin Management", default_index=0)
+
+            if selected == "list":
+                self._list_plugins()
+            elif selected == "install":
+                self._install_plugin()
+            elif selected == "remove":
+                self._remove_plugin()
+            elif selected == "enable":
+                self._enable_plugin()
+            elif selected == "disable":
+                self._disable_plugin()
+            elif selected == "back":
+                return
+
+        except Exception as e:
+            self.console.print(f"⚠️ Error in plugin management: {e}")
+            self.console.print("🔄 Returning to main menu")
+
+    def _list_plugins(self):
+        """List installed plugins"""
+        self.console.print("\n📋 Installed Plugins:")
+        self.console.print("• No plugins installed yet (placeholder)")
+
+    def _install_plugin(self):
+        """Install new plugin"""
+        self.console.print("\n⬇️ Plugin Installation:")
+        self.console.print("Plugin installation not implemented yet")
+
+    def _remove_plugin(self):
+        """Remove plugin"""
+        self.console.print("\n🗑️ Plugin Removal:")
+        self.console.print("Plugin removal not implemented yet")
+
+    def _enable_plugin(self):
+        """Enable plugin"""
+        self.console.print("\n✅ Plugin Enable:")
+        self.console.print("Plugin enable not implemented yet")
+
+    def _disable_plugin(self):
+        """Disable plugin"""
+        self.console.print("\n❌ Plugin Disable:")
+        self.console.print("Plugin disable not implemented yet")
 
     def show_help(self):
         """Show help information"""

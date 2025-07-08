@@ -64,3 +64,60 @@ htmlcov/
 
 # Documentation builds
 docs/_build/
+
+# Additional build artifacts
+*.bak
+*.old
+*.backup
+*.orig
+*.rej
+
+# Cache directories
+.cache/
+.mypy_cache/
+.tox/
+
+# IDE specific files
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# System files
+*.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Temporary and backup files
+*~
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.orig
+*.rej
+
+# PyPI build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Local development
+.env.development
+.env.production
+.env.test
+local_settings.py
