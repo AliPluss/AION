@@ -28,6 +28,12 @@ def test_basic_imports():
 def test_project_structure():
     """Test basic project structure"""
     project_root = Path(__file__).parent.parent
+
+    # Test essential files exist
+    assert (project_root / "aion").exists(), "AION directory should exist"
+    assert (project_root / "aion" / "main.py").exists(), "AION main.py should exist"
+    assert (project_root / "requirements.txt").exists(), "requirements.txt should exist"
+    assert (project_root / "start_aion_en.py").exists(), "start_aion_en.py should exist"
     
     # These files should exist
     essential_files = [
