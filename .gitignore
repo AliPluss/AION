@@ -1,126 +1,74 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+# AION Production .gitignore
+# ===========================
 
-# Virtual environments
+# AION Runtime Logs and Data
+/chat_logs/
+/test_logs/
+/voice_logs/
+/search_logs/
+*.log
+
+# Python Cache and Compiled Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+
+# Build and Distribution
+build/
+dist/
+*.whl
+*.tar.gz
+
+# Virtual Environments
 venv/
 env/
 ENV/
-aion_env/
-test_venv/
+.venv/
 
-# IDE
+# Environment Configuration
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# IDE and Editor Files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# OS Generated Files
 .DS_Store
 Thumbs.db
-
-# Logs and AION specific directories
-*.log
-logs/
-/chat_logs/
-/test_logs/
-/search_logs/
-
-# Temporary files
-*.tmp
-*.temp
-temp/
-
-# Local configuration
-.env
-.env.local
-config/local_*
-
-# Build artifacts
-*.whl
-*.tar.gz
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Documentation builds
-docs/_build/
-
-# Additional build artifacts
-*.bak
-*.old
-*.backup
-*.orig
-*.rej
-
-# Cache directories
-.cache/
-.mypy_cache/
-.tox/
-
-# IDE specific files
-*.sublime-project
-*.sublime-workspace
-.vscode/settings.json
-.vscode/launch.json
-.vscode/extensions.json
-
-# System files
-*.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Desktop.ini
 
-# Temporary and backup files
-*~
+# Temporary Files
 *.tmp
 *.temp
-*.bak
-*.swp
-*.swo
-*.orig
-*.rej
+*.zip
+.cache/
 
-# PyPI build artifacts
-build/
-dist/
-*.egg-info/
-.eggs/
-
-# Test artifacts
+# Testing and Coverage
 .pytest_cache/
 .coverage
 htmlcov/
 .tox/
 .nox/
 
-# Local development
-.env.development
-.env.production
-.env.test
-local_settings.py
+# Documentation Builds
+docs/_build/
+site/
+
+# Development Artifacts
+*.bak
+*.old
+*.backup
+*.orig
+*.rej
