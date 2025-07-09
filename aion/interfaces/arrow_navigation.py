@@ -340,7 +340,21 @@ class ArrowNavigator:
 
             while self.running:
                 try:
+                    # Add timeout to prevent hanging
+                    import signal
+
+                    def timeout_handler(signum, frame):
+                        raise TimeoutError("Key input timeout")
+
+                    # Set timeout for Windows compatibility
+                    if platform.system() != "Windows":
+                        signal.signal(signal.SIGALRM, timeout_handler)
+                        signal.alarm(30)  # 30 second timeout
+
                     key = self.get_key()
+
+                    if platform.system() != "Windows":
+                        signal.alarm(0)  # Cancel timeout
 
                     if key == 'fallback':
                         # Switch to numbered fallback
@@ -391,6 +405,10 @@ class ArrowNavigator:
                         os.system('clear')
                     console.print("\n❌ Selection cancelled")
                     return None
+                except TimeoutError:
+                    console.print("\n⏰ [yellow]Input timeout - using default selection[/yellow]")
+                    selected_value = self.items[self.selected_index][0]
+                    return selected_value
                 except Exception:
                     # Switch to fallback on any error
                     break

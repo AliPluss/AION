@@ -1052,27 +1052,54 @@ class TUI:
 
     def start(self):
         """Start the TUI interface"""
-        if self.textual_available:
-            # Use enhanced Textual TUI
-            self._show_animated_loading()
-            if self.enhanced_mode:
-                self.console.print("🎨 [bold green]Starting Enhanced Animated AION Interface...[/bold green]")
-                self.console.print("✨ [cyan]Features: Dynamic icons, arrow navigation, real-time animations[/cyan]")
+        try:
+            if self.textual_available:
+                # Use simple Textual TUI without excessive animations
+                self.console.print("🖥️ [bold blue]Starting AION Interface...[/bold blue]")
+                self.console.print("⚠️ [yellow]Note: Enhanced animations disabled to prevent refresh issues[/yellow]")
+
+                # Use simple app instead of enhanced
+                try:
+                    from textual.app import App
+                    from textual.widgets import Static, Header, Footer
+                    from textual.containers import Container
+
+                    class SimpleAIONApp(App):
+                        def compose(self):
+                            yield Header()
+                            yield Container(
+                                Static("🤖 AION - AI Operating Node\n\nPress 'q' to quit", id="main-content")
+                            )
+                            yield Footer()
+
+                        def on_key(self, event):
+                            if event.key == 'q':
+                                self.exit()
+
+                    simple_app = SimpleAIONApp()
+                    simple_app.run()
+
+                except Exception as e:
+                    self.console.print(f"❌ Simple TUI error: {e}")
+                    return
             else:
-                self.console.print("🖥️ [bold blue]Starting Standard AION Interface...[/bold blue]")
-            self.app.run()
-        else:
-            # Fallback to basic Rich TUI
-            self.console.print(Panel(
-                "🖥️ AION TUI Interface Starting...\n\n⚠️ Enhanced TUI requires 'textual' package\nUsing basic interface...",
-                border_style="yellow"
-            ))
+                # Fallback to basic Rich TUI
+                self.console.print(Panel(
+                    "🖥️ AION TUI Interface Starting...\n\n⚠️ Enhanced TUI requires 'textual' package\nUsing basic interface...",
+                    border_style="yellow"
+                ))
 
-            # Create session token
-            self.current_session = self.security.create_session_token("tui_user")
-            self.is_running = True
+                # Create session token
+                self.current_session = self.security.create_session_token("tui_user")
+                self.is_running = True
 
-            self._show_main_interface()
+                self._show_main_interface()
+
+        except Exception as e:
+            print(f"❌ TUI start error: {e}")
+            print(f"TUI object type: {type(self)}")
+            print(f"Available methods: {[m for m in dir(self) if not m.startswith('_')]}")
+            raise
 
     def _show_animated_loading(self):
         """Show animated loading screen using Rich"""

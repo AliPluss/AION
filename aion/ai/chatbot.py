@@ -144,7 +144,15 @@ class AIONChatbot:
         self._log_conversation(user_msg, ai_msg)
         
         return ai_response
-    
+
+    def chat_sync(self, user_message: str) -> str:
+        """Synchronous chat method for CLI compatibility"""
+        try:
+            import asyncio
+            return asyncio.run(self.send_message(user_message))
+        except Exception as e:
+            return f"❌ Chat error: {e}"
+
     async def _generate_ai_response(self, message: str, message_type: str, context: str) -> str:
         """Generate AI response based on message type and context"""
         

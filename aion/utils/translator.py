@@ -296,6 +296,10 @@ class Translator:
         # Final fallback: return default or the key itself
         return default or key
     
+    def get_current_language(self) -> str:
+        """Get the current language code"""
+        return self.current_language
+
     def get_language_name(self, language_code: str) -> str:
         """Get the display name for a language code"""
         return self.supported_languages.get(language_code, language_code)

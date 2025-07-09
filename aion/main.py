@@ -369,32 +369,58 @@ def verify_2fa(
     except ImportError:
         console.print("❌ 2FA verification not available")
 
-@app.command()
+@app.command("toggle-theme")
 def toggle_theme():
-    """Toggle between light and dark themes"""
+    """Select theme with arrow navigation"""
     try:
-        from .interfaces.animated_components import ThemeManager
-        theme_manager = ThemeManager()
-        theme_manager.toggle_theme()
-        console.print(f"🎨 Theme switched to: {theme_manager.current_theme.value}")
-    except ImportError:
-        console.print("❌ Theme switching not available")
+        console.print("\n🎨 [bold yellow]Theme Selection with Arrow Navigation[/bold yellow]")
+        console.print("🎮 [cyan]Use arrow keys to navigate, Enter to select[/cyan]")
+
+        from aion.interfaces.simple_arrow_nav import select_theme_simple
+
+        # Show current theme
+        console.print(f"📍 [dim]Current theme: dark (default)[/dim]")
+        console.print("\n🚀 [yellow]Starting arrow navigation...[/yellow]")
+
+        # Use arrow navigation
+        selected_theme = select_theme_simple()
+
+        if selected_theme:
+            console.print(f"\n✅ [bold green]Theme changed to: {selected_theme}[/bold green]")
+            console.print(f"🎨 [cyan]Theme settings saved[/cyan]")
+        else:
+            console.print("\n🔄 [yellow]Theme change cancelled[/yellow]")
+
+    except Exception as e:
+        console.print(f"❌ [red]Theme selection failed: {e}[/red]")
 
 @app.command("change-language")
 def change_language():
     """Change interface language using arrow key navigation"""
+    console.print("\n🌐 [bold yellow]Language Selection with Arrow Navigation[/bold yellow]")
+    console.print("🎮 [cyan]Use arrow keys to navigate, Enter to select[/cyan]")
+
     try:
-        from aion.interfaces.arrow_navigation import select_language_arrows
-        console.print("\n🌐 [bold yellow]Language Selection[/bold yellow]")
-        lang_code = select_language_arrows()
-        if lang_code:
-            translator.set_language(lang_code)
-            console.print(f"\n✅ [bold green]Language changed to: {translator.get_language_name(lang_code)}[/bold green]")
+        from aion.interfaces.simple_arrow_nav import select_language_simple
+
+        # Show current language
+        current_lang = translator.get_current_language()
+        console.print(f"📍 [dim]Current language: {current_lang}[/dim]")
+        console.print("\n🚀 [yellow]Starting arrow navigation...[/yellow]")
+
+        # Use simple arrow navigation
+        selected_lang = select_language_simple()
+
+        if selected_lang:
+            translator.set_language(selected_lang)
+            lang_name = translator.get_language_name(selected_lang)
+            console.print(f"\n✅ [bold green]Language changed to: {lang_name}[/bold green]")
         else:
-            console.print("\n❌ [bold red]Language change cancelled[/bold red]")
+            console.print("\n🔄 [yellow]Language change cancelled[/yellow]")
+
     except Exception as e:
-        console.print(f"\n⚠️ [bold red]Error changing language: {e}[/bold red]")
-        console.print("🔄 [bold yellow]Keeping current language[/bold yellow]")
+        console.print(f"\n⚠️ [bold red]Error in language selection: {e}[/bold red]")
+        console.print("🔄 [yellow]Keeping current language[/yellow]")
 
 @app.command("send-email")
 def send_email():
@@ -426,28 +452,30 @@ def github_tools():
         console.print(f"\n⚠️ [bold red]GitHub error: {e}[/bold red]")
         console.print("💡 [cyan]Make sure AION_GITHUB_TOKEN is set in .env file[/cyan]")
 
+@app.command("test-simple")
+def test_simple():
+    """Simple test command"""
+    console.print("✅ Test command works!")
+
 @app.command("chat")
 def chat():
-    """Launch full-screen AI chat mode"""
+    """Launch AI chat mode"""
+    console.print("💬 [bold yellow]AION AI Chat Mode[/bold yellow]")
+    console.print("🚀 [cyan]Starting simple chat session...[/cyan]")
+    console.print("💡 [green]Type 'exit' to quit[/green]")
+    console.print("---")
+
     try:
         from aion.ai.chatbot import aion_chatbot
-        console.print("\n💬 [bold yellow]AION AI Chat Mode[/bold yellow]")
-        console.print("🚀 [cyan]Starting interactive chat session...[/cyan]")
-
-        # Start chat session
         session_id = aion_chatbot.start_chat_session()
-        console.print(f"📋 [green]Session ID: {session_id}[/green]")
-        console.print("💡 [yellow]Type 'exit' or 'quit' to end session[/yellow]")
-        console.print("🧠 [cyan]I'll remember our entire conversation![/cyan]")
-        console.print("---")
+        console.print(f"📋 Session ID: {session_id}")
 
-        # Interactive chat loop
         while True:
             try:
-                user_input = input("\n👤 You: ").strip()
+                user_input = console.input("\n👤 You: ").strip()
 
                 if user_input.lower() in ['exit', 'quit', 'bye']:
-                    console.print("👋 [yellow]Ending chat session...[/yellow]")
+                    console.print("👋 Ending chat session...")
                     aion_chatbot.end_chat_session("User ended session")
                     break
 
@@ -455,24 +483,22 @@ def chat():
                     continue
 
                 console.print("🤖 AI: Thinking...")
-
-                # Get AI response
-                import asyncio
-                response = asyncio.run(aion_chatbot.send_message(user_input))
+                response = aion_chatbot.chat_sync(user_input)
                 console.print(f"🤖 AI: {response}")
 
-            except KeyboardInterrupt:
-                console.print("\n👋 [yellow]Chat interrupted by user[/yellow]")
-                aion_chatbot.end_chat_session("Interrupted by user")
+            except (KeyboardInterrupt, EOFError):
+                console.print("\n👋 Chat session ended")
+                aion_chatbot.end_chat_session("User ended session")
                 break
             except Exception as e:
-                console.print(f"❌ [red]Chat error: {e}[/red]")
+                console.print(f"❌ Chat error: {e}")
+                continue
 
-        console.print("✅ [green]Chat session ended![/green]")
+        console.print("✅ Chat session ended!")
 
     except Exception as e:
-        console.print(f"\n⚠️ [bold red]Chat error: {e}[/bold red]")
-        console.print("💡 [cyan]Make sure AI system is configured[/cyan]")
+        console.print(f"❌ Chat error: {e}")
+        console.print("💡 Make sure AI system is configured")
 
 @app.command("search")
 def search_command(
@@ -546,19 +572,45 @@ def ai_assist():
         console.print("💡 [cyan]Make sure AI provider is configured[/cyan]")
 
 @app.command("ai-use")
-def ai_use(provider: str):
-    """Switch AI provider (openai, deepseek, anthropic, google, openrouter)"""
+def ai_use(provider: str = typer.Argument(None, help="AI provider to use (optional - will show selection if not provided)")):
+    """Switch AI provider with arrow navigation or direct selection"""
     try:
         from aion.ai_engine.provider_router import provider_router
-        console.print(f"\n🔀 [bold yellow]Switching to AI Provider: {provider}[/bold yellow]")
 
-        success = provider_router.switch_provider(provider)
-        if success:
-            console.print(f"✅ [green]Successfully switched to {provider}[/green]")
-            console.print(f"🧠 [cyan]Current provider: {provider_router.get_current_provider()}[/cyan]")
+        if provider:
+            # Direct provider selection
+            console.print(f"\n🔀 [bold yellow]Switching to AI Provider: {provider}[/bold yellow]")
+            success = provider_router.switch_provider(provider)
+            if success:
+                console.print(f"✅ [green]Successfully switched to {provider}[/green]")
+                console.print(f"🧠 [cyan]Current provider: {provider_router.get_current_provider()}[/cyan]")
+            else:
+                console.print(f"❌ [red]Failed to switch to {provider}[/red]")
+                console.print("💡 [yellow]Available providers: openai, deepseek, anthropic, google, openrouter[/yellow]")
         else:
-            console.print(f"❌ [red]Failed to switch to {provider}[/red]")
-            console.print("💡 [yellow]Available providers: openai, deepseek, anthropic, google, openrouter[/yellow]")
+            # Interactive arrow navigation
+            console.print("\n🤖 [bold yellow]AI Provider Selection with Arrow Navigation[/bold yellow]")
+            console.print("🎮 [cyan]Use arrow keys to navigate, Enter to select[/cyan]")
+
+            from aion.interfaces.simple_arrow_nav import select_ai_provider_simple
+
+            # Show current provider
+            current_provider = provider_router.get_current_provider()
+            console.print(f"📍 [dim]Current provider: {current_provider}[/dim]")
+            console.print("\n🚀 [yellow]Starting arrow navigation...[/yellow]")
+
+            # Use arrow navigation
+            selected_provider = select_ai_provider_simple()
+
+            if selected_provider:
+                success = provider_router.switch_provider(selected_provider)
+                if success:
+                    console.print(f"\n✅ [bold green]Switched to AI provider: {selected_provider}[/bold green]")
+                else:
+                    console.print(f"\n❌ [red]Failed to switch to provider: {selected_provider}[/red]")
+            else:
+                console.print("\n🔄 [yellow]Provider change cancelled[/yellow]")
+
     except Exception as e:
         console.print(f"\n⚠️ [bold red]Provider switching error: {e}[/bold red]")
         console.print("💡 [cyan]Make sure AI engine is properly configured[/cyan]")
@@ -596,6 +648,26 @@ def voice():
     except Exception as e:
         console.print(f"\n⚠️ [bold red]Voice assistant error: {e}[/bold red]")
         console.print("💡 [cyan]Feature under development[/cyan]")
+
+@app.command()
+def tui():
+    """Launch TUI interface"""
+    try:
+        from aion.interfaces.tui import TUI
+        from aion.core.security import SecurityManager
+
+        console.print("\n🚀 [bold yellow]AION TUI Interface[/bold yellow]")
+        console.print("🖥️ [cyan]Launching Terminal User Interface...[/cyan]")
+
+        # Initialize security manager
+        security = SecurityManager()
+
+        # Create and start TUI
+        tui = TUI(translator, security)
+        tui.start()
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]TUI error: {e}[/bold red]")
+        console.print("💡 [cyan]Try using CLI commands instead[/cyan]")
 
 def main():
     """Main entry point for AION application"""
