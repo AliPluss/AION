@@ -419,11 +419,24 @@ def main():
         bootstrap.handle_code_execution(args.execute)
         return
 
-    # Start interface
-    success = bootstrap.start_interface(args.interface)
-    
-    if not success:
-        sys.exit(1)
+    # Start unified AION engine
+    try:
+        from aion_engine import AIONEngine
+        engine = AIONEngine()
+        engine.run()
+        return
+    except ImportError as e:
+        bootstrap._print_error(f"❌ AION Engine not available: {e}")
+        bootstrap._print_info("🔄 Falling back to standard interface")
+        success = bootstrap.start_interface(args.interface)
+        if not success:
+            sys.exit(1)
+    except Exception as e:
+        bootstrap._print_error(f"❌ Engine error: {e}")
+        bootstrap._print_info("🔄 Falling back to standard interface")
+        success = bootstrap.start_interface(args.interface)
+        if not success:
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
