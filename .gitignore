@@ -39,9 +39,12 @@ test_venv/
 .DS_Store
 Thumbs.db
 
-# Logs
+# Logs and AION specific directories
 *.log
 logs/
+/chat_logs/
+/test_logs/
+/search_logs/
 
 # Temporary files
 *.tmp
