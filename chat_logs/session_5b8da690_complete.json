@@ -1,0 +1,40 @@
+{
+  "session": {
+    "session_id": "5b8da690",
+    "start_time": "2025-07-09 06:16:41.057358",
+    "end_time": "2025-07-09 06:16:41.071411",
+    "messages": [],
+    "context_data": {},
+    "total_messages": 2,
+    "session_summary": "Test completed"
+  },
+  "messages": [
+    {
+      "id": "d38def00",
+      "timestamp": "2025-07-09 06:16:41.063534",
+      "role": "user",
+      "content": "Hello, test the AI engine",
+      "context": "",
+      "message_type": "text"
+    },
+    {
+      "id": "04d3198b",
+      "timestamp": "2025-07-09 06:16:41.063534",
+      "role": "assistant",
+      "content": "\ud83d\udcac **General Chat**\n\nThanks for chatting with me! I'm AION's AI assistant.\n\n**Your message:** Hello, test the AI engine...\n\n**I can help you with:**\n\u2022 **Development Questions:** Programming, debugging, best practices\n\u2022 **AION Usage:** Features, commands, configuration\n\u2022 **Code Review:** Analysis, improvements, optimization\n\u2022 **Learning:** Explanations, tutorials, examples\n\u2022 **Problem Solving:** Step-by-step guidance\n\n**Our Conversation:**\n\u2022 **Session Messages:** 1\n\u2022 **Current Context:** General chat\n\u2022 **Session ID:** 5b8da690\n\n**Conversation Memory:** I remember everything we've discussed in this session, so feel free to reference previous topics!\n\n**Want to dive deeper?** Try:\n\u2022 \"Explain [concept] in detail\"\n\u2022 \"Help me debug [problem]\"\n\u2022 \"Show me examples of [topic]\"\n\u2022 \"What's the best way to [task]?\"\n\n\ud83d\udca1 **Tip:** I'm context-aware and remember our entire conversation!",
+      "context": "",
+      "message_type": "text"
+    }
+  ],
+  "context_data": {},
+  "summary": {
+    "session_id": "5b8da690",
+    "start_time": "2025-07-09T06:16:41.057358",
+    "duration_minutes": 0.00023421666666666665,
+    "total_messages": 2,
+    "message_types": {
+      "text": 2
+    },
+    "context_data": {}
+  }
+}

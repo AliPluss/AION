@@ -452,6 +452,21 @@ def github_tools():
         console.print(f"\n⚠️ [bold red]GitHub error: {e}[/bold red]")
         console.print("💡 [cyan]Make sure AION_GITHUB_TOKEN is set in .env file[/cyan]")
 
+@app.command("share")
+def share():
+    """Share terminal output to public sharing platforms"""
+    try:
+        from aion.integrations.terminal_sharing import terminal_sharing
+        console.print("\n📤 [bold yellow]AION Terminal Sharing[/bold yellow]")
+        success = terminal_sharing.share_terminal_output_interactive()
+        if success:
+            console.print("✅ [green]Content shared successfully![/green]")
+        else:
+            console.print("❌ [red]Sharing failed[/red]")
+    except Exception as e:
+        console.print(f"\n⚠️ [bold red]Sharing error: {e}[/bold red]")
+        console.print("💡 [cyan]Check your internet connection and try again[/cyan]")
+
 @app.command("test-simple")
 def test_simple():
     """Simple test command"""
