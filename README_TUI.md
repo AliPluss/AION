@@ -41,7 +41,10 @@ cd AION
 # Install dependencies
 pip install textual rich
 
-# Launch AION TUI
+# Launch AION (recommended)
+python aion.py
+
+# Or launch TUI directly
 python aion_tui.py
 
 # Or use main CLI entry point

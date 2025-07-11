@@ -422,20 +422,17 @@ def main():
     # Start unified AION TUI
     try:
         from aion_tui import main as tui_main
+        print("🚀 Starting AION Interactive TUI...")
         tui_main()
         return
     except ImportError as e:
-        bootstrap._print_error(f"❌ AION TUI not available: {e}")
-        bootstrap._print_info("🔄 Falling back to standard interface")
-        success = bootstrap.start_interface(args.interface)
-        if not success:
-            sys.exit(1)
+        print(f"❌ AION TUI not available: {e}")
+        print("💡 Please install required dependencies: pip install textual rich")
+        sys.exit(1)
     except Exception as e:
-        bootstrap._print_error(f"❌ TUI error: {e}")
-        bootstrap._print_info("🔄 Falling back to standard interface")
-        success = bootstrap.start_interface(args.interface)
-        if not success:
-            sys.exit(1)
+        print(f"❌ TUI error: {e}")
+        print("💡 Please check your installation and try again")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
