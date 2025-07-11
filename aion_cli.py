@@ -419,20 +419,19 @@ def main():
         bootstrap.handle_code_execution(args.execute)
         return
 
-    # Start unified AION engine
+    # Start unified AION TUI
     try:
-        from aion_engine import AIONEngine
-        engine = AIONEngine()
-        engine.run()
+        from aion_tui import main as tui_main
+        tui_main()
         return
     except ImportError as e:
-        bootstrap._print_error(f"❌ AION Engine not available: {e}")
+        bootstrap._print_error(f"❌ AION TUI not available: {e}")
         bootstrap._print_info("🔄 Falling back to standard interface")
         success = bootstrap.start_interface(args.interface)
         if not success:
             sys.exit(1)
     except Exception as e:
-        bootstrap._print_error(f"❌ Engine error: {e}")
+        bootstrap._print_error(f"❌ TUI error: {e}")
         bootstrap._print_info("🔄 Falling back to standard interface")
         success = bootstrap.start_interface(args.interface)
         if not success:
