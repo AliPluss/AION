@@ -1,0 +1,28 @@
+[meta]
+code = "no"
+name = "Norwegian"
+native = "Norsk"
+direction = "ltr"
+status = "partial"
+
+[app]
+name = "AION"
+welcome = "Velkommen til AION"
+loading = "Laster"
+ready = "Klar"
+error = "Feil"
+success = "Suksess"
+
+[wizard]
+title = "AION Oppsett"
+help_title = "Hjelp"
+status_title = "Status"
+
+[wizard.action]
+next = "Neste"
+back = "Tilbake"
+cancel = "Avbryt"
+finish = "Fullfør"
+
+[status]
+ready = "System klart"

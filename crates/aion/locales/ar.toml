@@ -1,0 +1,88 @@
+[meta]
+code = "ar"
+name = "Arabic"
+native = "العربية"
+direction = "rtl"
+status = "full"
+
+[app]
+name = "AION"
+welcome = "مرحبًا بك في AION"
+loading = "جارٍ التحميل"
+ready = "جاهز"
+error = "خطأ"
+success = "نجاح"
+
+[wizard]
+title = "إعداد AION"
+subtitle = "الإعداد الأولي"
+help_title = "مساعدة"
+status_title = "الحالة"
+
+[wizard.step]
+language = "الخطوة 1/4: لغة الواجهة"
+chat_language = "الخطوة 2/4: لغة المحادثة"
+provider = "الخطوة 3/4: مزود الذكاء"
+model = "الخطوة 4/4: النموذج"
+
+[wizard.action]
+next = "التالي"
+back = "رجوع"
+cancel = "إلغاء"
+finish = "إنهاء"
+confirm = "تأكيد"
+
+[wizard.hint]
+navigation = "استخدم ↑↓ للتنقل"
+confirm = "اضغط Enter للتأكيد"
+back = "اضغط Backspace أو السهم الأيسر للرجوع"
+quit = "اضغط q للخروج"
+colors = "اضغط C لتغيير الألوان"
+animation = "اضغط A لتغيير الأنيميشن"
+
+[wizard.language]
+select = "اختر لغة الواجهة"
+unsupported = "هذه اللغة غير مدعومة بالكامل بعد"
+
+[wizard.chat_language]
+select = "اختر لغة المحادثة"
+description = "هذا يحدد لغة تواصل AION معك"
+
+[wizard.provider]
+select = "اختر مزود الذكاء"
+ollama = "Ollama"
+openai = "OpenAI"
+claude = "Claude"
+openrouter = "OpenRouter"
+
+[wizard.model]
+select = "أدخل اسم النموذج"
+placeholder = "اكتب اسم النموذج..."
+
+[wizard.summary]
+title = "ملخص الإعداد"
+save = "اضغط Enter للحفظ والخروج"
+review = "راجع الإعدادات"
+
+[status]
+initializing = "جارٍ التهيئة"
+loading_languages = "جارٍ تحميل اللغات"
+loading_models = "جارٍ تحميل النماذج"
+ready = "النظام جاهز"
+
+[error]
+unknown = "خطأ غير معروف"
+invalid_input = "إدخال غير صالح"
+language_not_supported = "اللغة غير مدعومة"
+model_empty = "اسم النموذج لا يمكن أن يكون فارغًا"
+
+[chat]
+thinking = "جارٍ التفكير"
+processing = "جارٍ المعالجة"
+generating = "جارٍ إنشاء الرد"
+complete = "اكتمل"
+
+[system]
+detecting = "جارٍ اكتشاف النظام"
+analyzing = "جارٍ تحليل البيئة"
+complete = "اكتمل التحليل"

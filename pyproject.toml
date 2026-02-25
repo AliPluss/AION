@@ -1,0 +1,140 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aion-ai"
+version = "2.2.3"
+authors = [
+    {name = "AliPluss", email = "project.django.rst@gmail.com"},
+]
+description = "🤖 AION - AI Operating Node | Professional Terminal AI Assistant with Multi-Provider Support"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Shells",
+    "Topic :: Terminals",
+    "Topic :: Office/Business :: Groupware",
+    "Topic :: Communications :: Chat",
+    "Environment :: Console",
+    "Environment :: Console :: Curses",
+]
+keywords = [
+    "ai", "artificial-intelligence", "terminal", "assistant", "cli", "tui",
+    "openai", "deepseek", "gemini", "automation", "chatbot", "command-line",
+    "productivity", "developer-tools", "ai-assistant", "multi-language",
+    "cross-platform", "security", "sandbox", "plugin-system"
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "textual>=0.41.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+    "cryptography>=41.0.0",
+    "psutil>=5.9.0",
+    "aiofiles>=23.0.0",
+    "httpx>=0.25.0",
+    "python-dotenv>=1.0.0",
+    "openai>=1.0.0",
+    "google-generativeai>=0.3.0",
+    "requests>=2.31.0",
+    "pyyaml>=6.0.0",
+    "click>=8.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+web = [
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.6",
+]
+full = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.6",
+]
+
+[project.scripts]
+aion = "aion.main:main"
+aion-cli = "aion.main:main"
+aion-ai = "aion.main:main"
+
+[project.urls]
+Homepage = "https://github.com/AliPluss/AION"
+"Bug Reports" = "https://github.com/AliPluss/AION/issues"
+Source = "https://github.com/AliPluss/AION"
+Documentation = "https://github.com/AliPluss/AION#readme"
+Changelog = "https://github.com/AliPluss/AION/releases"
+Funding = "https://github.com/sponsors/AliPluss"
+
+[tool.setuptools]
+packages = ["aion", "aion.core", "aion.interfaces", "aion.utils", "locales", "config", "plugins", "templates"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.txt", "*.md", "*.yml", "*.yaml", "*.html", "*.css", "*.js"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --tb=short"
+testpaths = [
+    "tests",
+    ".",
+]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

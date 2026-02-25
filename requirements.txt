@@ -1,0 +1,87 @@
+# Core dependencies for AION AI Operating Node v2.0.0
+
+# Terminal UI and CLI Framework
+rich>=13.6.0              # Beautiful terminal formatting and colors
+typer>=0.9.0              # Modern CLI framework with type hints
+textual>=0.41.0           # Advanced TUI framework
+click>=8.1.7              # Command line interface creation toolkit
+colorama>=0.4.6           # Cross-platform colored terminal text
+
+# Web Framework
+fastapi>=0.104.0          # Modern web framework for APIs
+uvicorn>=0.24.0           # Lightning-fast ASGI server
+jinja2>=3.1.0             # Template engine for web interface
+python-multipart>=0.0.6   # Form data parsing
+
+# AI Provider Clients
+openai>=1.3.0             # OpenAI API client (GPT-4, GPT-3.5)
+anthropic>=0.7.0          # Claude AI API client
+google-generativeai>=0.8.0 # Google Gemini API client
+
+# HTTP and Network
+requests>=2.31.0          # HTTP library for API calls
+httpx>=0.25.0             # Modern async HTTP client
+aiohttp>=3.8.0            # Async HTTP client/server
+
+# Data Validation and Configuration
+pydantic>=2.4.0           # Data validation using Python type hints
+python-dotenv>=1.0.0      # Load environment variables from .env
+pyyaml>=6.0               # YAML parser and emitter
+toml>=0.10.2              # TOML parser
+
+# File and System Operations
+aiofiles>=23.2.1          # Async file operations
+watchdog>=3.0.0           # File system event monitoring
+psutil>=5.9.0             # System and process utilities
+
+# Security and Encryption
+cryptography>=41.0.7      # Cryptographic recipes and primitives
+bcrypt>=4.0.0             # Password hashing
+PyJWT>=2.8.0              # JSON Web Token implementation
+
+# Code Execution and Containerization
+docker>=6.1.0             # Docker SDK for Python (optional)
+virtualenv>=20.24.0       # Virtual environment creation
+
+# Optional Dependencies (Install as needed)
+# Voice Features (uncomment if needed)
+# speech-recognition>=3.10.0
+# pyttsx3>=2.90
+# pyaudio>=0.2.11
+
+# Advanced AI Providers (uncomment if needed)
+# deepseek-api>=1.0.0
+# cohere>=4.0.0
+# together>=0.2.0
+
+# Database Support (uncomment if needed)
+# sqlalchemy>=2.0.0
+# redis>=4.0.0
+
+# Monitoring and Logging (uncomment if needed)
+# loguru>=0.7.0
+# prometheus-client>=0.17.0
+
+# External Platform Integrations (uncomment if needed)
+# Google Drive Integration
+# google-api-python-client>=2.0.0
+# google-auth-httplib2>=0.2.0
+# google-auth-oauthlib>=1.0.0
+
+# Slack Integration
+# slack-sdk>=3.20.0
+
+# GitHub Integration (enhanced)
+# PyGithub>=1.58.0
+
+# Notion Integration
+# notion-client>=2.0.0
+
+# Advanced Export Features (uncomment if needed)
+# reportlab>=4.0.0          # PDF generation
+# openpyxl>=3.1.0           # Excel files
+# python-docx>=1.1.0        # Word documents
+# python-pptx>=0.6.0        # PowerPoint presentations
+
+# Email Integration (built-in with Python)
+# Uses standard library: smtplib, imaplib, email

@@ -1,0 +1,78 @@
+# AION Production .gitignore
+# ===========================
+
+# AION Runtime Logs and Data
+/chat_logs/
+/test_logs/
+/voice_logs/
+/search_logs/
+*.log
+
+# Python Cache and Compiled Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+
+# Build and Distribution
+build/
+dist/
+*.whl
+*.tar.gz
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Configuration
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary Files
+*.tmp
+*.temp
+*.zip
+.cache/
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Documentation Builds
+docs/_build/
+site/
+
+# Development Artifacts
+*.bak
+*.old
+*.backup
+*.orig
+*.rej
+
+/target/
+**/*.d
+

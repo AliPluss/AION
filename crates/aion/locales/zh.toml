@@ -1,0 +1,28 @@
+[meta]
+code = "zh"
+name = "Chinese"
+native = "中文"
+direction = "ltr"
+status = "partial"
+
+[app]
+name = "AION"
+welcome = "欢迎使用 AION"
+loading = "加载中"
+ready = "就绪"
+error = "错误"
+success = "成功"
+
+[wizard]
+title = "AION 设置向导"
+help_title = "帮助"
+status_title = "状态"
+
+[wizard.action]
+next = "下一步"
+back = "返回"
+cancel = "取消"
+finish = "完成"
+
+[status]
+ready = "系统已准备"

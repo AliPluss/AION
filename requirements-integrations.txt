@@ -1,0 +1,58 @@
+# External Platform Integrations for AION v2.0.0
+# Install these dependencies to enable external platform integrations
+
+# Google Drive Integration
+google-api-python-client>=2.0.0  # Google Drive API client
+google-auth-httplib2>=0.2.0       # Google Auth HTTP library
+google-auth-oauthlib>=1.0.0       # Google OAuth flow
+
+# Slack Integration
+slack-sdk>=3.20.0                 # Official Slack SDK for Python
+
+# GitHub Integration (Enhanced)
+PyGithub>=1.58.0                  # GitHub API wrapper
+
+# Notion Integration
+notion-client>=2.0.0              # Official Notion API client
+
+# Advanced Export Features
+reportlab>=4.0.0                  # PDF generation
+openpyxl>=3.1.0                   # Excel file operations
+python-docx>=1.1.0                # Word document operations
+python-pptx>=0.6.0                # PowerPoint presentation operations
+
+# Voice Control Features
+speech-recognition>=3.10.0        # Speech recognition
+pyttsx3>=2.90                     # Text-to-speech synthesis
+pyaudio>=0.2.11                   # Audio I/O
+
+# Advanced AI Providers
+deepseek-api>=1.0.0               # DeepSeek API client
+cohere>=4.0.0                     # Cohere API client
+together>=0.2.0                   # Together AI API client
+
+# Database Support
+sqlalchemy>=2.0.0                 # SQL toolkit and ORM
+redis>=4.0.0                      # Redis client
+
+# Monitoring and Logging
+loguru>=0.7.0                     # Advanced logging
+prometheus-client>=0.17.0         # Prometheus metrics
+
+# Installation Instructions:
+# 
+# To install all integrations:
+# pip install -r requirements-integrations.txt
+#
+# To install specific integrations:
+# pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib  # Google Drive
+# pip install slack-sdk  # Slack
+# pip install PyGithub  # GitHub
+# pip install notion-client  # Notion
+# pip install reportlab openpyxl python-docx python-pptx  # Export features
+# pip install speech-recognition pyttsx3 pyaudio  # Voice control
+#
+# Note: Some packages may require system dependencies:
+# - pyaudio: May need portaudio development headers
+# - speech-recognition: May need additional audio libraries
+# - Google APIs: Require OAuth2 credentials setup

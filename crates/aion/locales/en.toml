@@ -1,0 +1,89 @@
+[meta]
+code = "en"
+name = "English"
+native = "English"
+direction = "ltr"
+status = "full"
+
+[app]
+name = "AION"
+welcome = "Welcome to AION"
+loading = "Loading"
+ready = "Ready"
+error = "Error"
+success = "Success"
+
+[wizard]
+title = "AION Setup Wizard"
+subtitle = "Initial configuration"
+help_title = "Help"
+status_title = "Status"
+
+[wizard.step]
+language = "Step 1/4: Interface Language"
+chat_language = "Step 2/4: Chat Language"
+provider = "Step 3/4: AI Provider"
+model = "Step 4/4: Model"
+
+[wizard.action]
+next = "Next"
+back = "Back"
+cancel = "Cancel"
+finish = "Finish"
+confirm = "Confirm"
+
+[wizard.hint]
+navigation = "Use ↑↓ to navigate"
+confirm = "Press Enter to confirm"
+back = "Press Backspace or Left Arrow to go back"
+quit = "Press q to quit"
+colors = "Press C to toggle colors"
+animation = "Press A to toggle animation"
+
+[wizard.language]
+select = "Select interface language"
+unsupported = "This language is not fully supported yet"
+
+[wizard.chat_language]
+select = "Select chat language"
+description = "This controls how AION communicates with you"
+
+[wizard.provider]
+select = "Select AI provider"
+ollama = "Ollama"
+openai = "OpenAI"
+claude = "Claude"
+openrouter = "OpenRouter"
+
+[wizard.model]
+select = "Enter model name"
+placeholder = "Type model name..."
+
+[wizard.summary]
+title = "Configuration Summary"
+save = "Press Enter to save and exit"
+review = "Review your settings"
+
+[status]
+initializing = "Initializing"
+loading_languages = "Loading languages"
+loading_models = "Loading models"
+ready = "System ready"
+
+[error]
+unknown = "Unknown error"
+invalid_input = "Invalid input"
+language_not_supported = "Language not supported"
+model_empty = "Model cannot be empty"
+
+[chat]
+
+thinking = "Thinking"
+processing = "Processing"
+generating = "Generating response"
+complete = "Complete"
+
+[system]
+detecting = "Detecting system"
+analyzing = "Analyzing environment"
+complete = "Analysis complete"

@@ -1,0 +1,9 @@
+{
+  "language": "ar",
+  "ai_provider": "openai",
+  "theme": "dark",
+  "api_keys": {
+    "test_provider": "configured",
+    "test": "configured"
+  }
+}
