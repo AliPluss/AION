@@ -72,7 +72,10 @@ site/
 *.backup
 *.orig
 *.rej
+HEAD
 
 /target/
 **/*.d
 
+
+ 3db2b3208f6b87f5f7cce996f4bffbb34df320e3
