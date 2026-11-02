@@ -3,18 +3,16 @@
 <div align="center">
 
 ![AION Logo](https://img.shields.io/badge/AION-AI%20Operating%20Node-blue?style=for-the-badge&logo=terminal)
-![Version](https://img.shields.io/badge/version-1.0.0--production--clean-green?style=for-the-badge)
-![PyPI](https://img.shields.io/pypi/v/aion-ai?style=for-the-badge&logo=pypi)
+![Status](https://img.shields.io/badge/status-under%20utvikling-yellow?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
 ![Python](https://img.shields.io/badge/python-3.10+-blue?style=for-the-badge&logo=python)
 
 [![CI/CD Pipeline](https://github.com/AliPluss/AION/actions/workflows/ci.yml/badge.svg)](https://github.com/AliPluss/AION/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 
-**Next-Generation AI-Powered Terminal Assistant
+**AI-Powered Terminal Assistant – learning project, under development**
 
-[English](#english) | [العربية](#arabic)
+[English](#english)
 
 </div>
 
@@ -22,11 +20,13 @@
 
 ## English
 
-**AION** is a revolutionary AI-powered terminal assistant that transforms your command line experience with intelligent automation, beautiful animated interfaces, and comprehensive multilingual support. Built with Python, enhanced with Rust performance, and featuring next-generation terminal UI.
+**AION** is a personal learning project: an AI-powered terminal assistant with support for multiple AI providers, an arrow-key driven terminal UI and Arabic/English support. It is written in Python with some experimental Rust components.
+
+> **Status:** Under development. Not published as a package; some features are experimental or incomplete.
 
 ## 🌟 Overview
 
-AION combines the power of multiple AI providers with advanced security, professional-grade features, and an innovative animated terminal interface. Designed for developers, researchers, and enterprises requiring sophisticated AI assistance with cultural sensitivity and multilingual support.
+AION connects to several AI providers through one interface and explores ideas like provider fallback, sandboxed code execution, plugins and a multilingual terminal UI.
 
 ## ✨ Core Features
 
@@ -87,51 +87,6 @@ AION combines the power of multiple AI providers with advanced security, profess
 - **Glow**: ⚡ JavaScript, security warnings
 - **Ripple**: 🌐 Google provider
 
-## 🎉 Latest Improvements (v1.0.0-production-clean)
-
-### ✅ Complete Arrow-Key Navigation System
-- **Zero Manual Input**: All interfaces now use pure arrow-key navigation
-- **No More Typing**: Language selection, AI provider selection, and all menus use arrow keys only
-- **Professional UX**: Consistent interaction patterns across all interfaces
-- **Inline Icon Integration**: Icons and text perfectly aligned without visual containers
-
-### 🎨 Enhanced Animation System
-- **Real-Time Animations**: Mathematical time-based animation cycles (2Hz-8Hz frequencies)
-- **Selection Feedback**: Visual feedback shows current selection state
-- **Cross-Platform Compatibility**: Works seamlessly on Windows, Linux, and macOS
-- **Performance Optimized**: Smooth animations without excessive repetition
-
-### 🧹 Production-Ready Codebase
-- **Clean Structure**: Removed all cache files, build artifacts, and duplicate code
-- **Optimized Testing**: Streamlined from 55 to 10 essential test log files
-- **Comprehensive Documentation**: Complete test logs and implementation reports
-- **Space Optimized**: 48MB saved through systematic cleanup
-
-### 📊 Comprehensive Testing Results
-- **Full UI Testing**: All interfaces tested with arrow navigation
-- **Animation Verification**: All 8 animation types verified and documented
-- **Cross-Platform Testing**: Tested on Windows PowerShell with full compatibility
-- **Security Validation**: Sandbox security and AI provider fallback tested
-
-### 📋 Test Log Documentation
-
-#### 🎯 **CRITICAL VALIDATION TESTS** (النواقص المطلوبة)
-- **[arrow_navigation_test.log](test_logs/arrow_navigation_test.log)** - ✅ **100% Arrow Navigation Proof** - Zero manual input verification
-- **[plugin_execution_test.log](test_logs/plugin_execution_test.log)** - ✅ **Plugin Security Testing** - Sandbox isolation validation
-- **[sandbox_test.log](test_logs/sandbox_test.log)** - ✅ **Maximum Security Proof** - Multi-layer security testing
-- **[inline_animated_icons_proof.log](test_logs/inline_animated_icons_proof.log)** - ✅ **Inline Icon Integration** - Mathematical animation proof
-
-#### 📊 **COMPREHENSIVE TEST RESULTS**
-View detailed testing results in `test_logs/` (optimized structure):
-- `full_ui_session.log` - Complete UI session testing with arrow navigation
-- `CLEANUP_COMPLETION_REPORT.log` - File optimization and cleanup documentation
-
-#### 🔗 **DIRECT GITHUB LINKS** (روابط مباشرة للاختبار)
-- **Arrow Navigation**: [View Test Results](https://github.com/AliPluss/AION/blob/main/test_logs/arrow_navigation_test.log)
-- **Plugin Security**: [View Security Results](https://github.com/AliPluss/AION/blob/main/test_logs/plugin_execution_test.log)
-- **Sandbox Security**: [View Security Validation](https://github.com/AliPluss/AION/blob/main/test_logs/sandbox_test.log)
-- **Inline Icons**: [View Animation Proof](https://github.com/AliPluss/AION/blob/main/test_logs/inline_animated_icons_proof.log)
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -143,21 +98,7 @@ View detailed testing results in `test_logs/` (optimized structure):
 
 ### Installation
 
-#### Method 1: PyPI Installation (Recommended) 🐍
-
-```bash
-# Install AION from PyPI
-pip install aion-ai
-
-# Start AION
-aion
-
-# Or use alternative commands
-aion-cli
-aion-ai
-```
-
-#### Method 2: Standard Installation
+#### Method 1: Standard Installation
 
 ```bash
 # Clone the repository
@@ -173,10 +114,10 @@ pip install -r requirements.txt
 pip install -r requirements-integrations.txt  # For full features
 
 # Start AION
-python main.py start
+python -m aion start
 ```
 
-#### Method 3: Docker Deployment
+#### Method 2: Docker
 
 ```bash
 # Clone and build
@@ -191,7 +132,7 @@ docker build -t aion .
 docker run -it --name aion-container aion
 ```
 
-#### Method 4: Development Setup
+#### Method 3: Development Setup
 
 ```bash
 # Clone repository
@@ -205,10 +146,8 @@ pip install -e .
 python -m pytest tests/ -v
 
 # Start with development features
-python main.py start --dev-mode
+python -m aion start --dev-mode
 
-# Quick test
-python start_aion_en.py
 ```
 
 ### Testing & Verification
@@ -221,8 +160,6 @@ python -m pytest tests/ -v
 python -m pytest tests/test_basic.py -v      # Basic functionality
 python -m pytest tests/test_imports.py -v   # Import validation
 
-# Quick health check
-python start_aion_en.py
 ```
 
 ## 🎯 Usage Examples
@@ -231,7 +168,7 @@ python start_aion_en.py
 
 ```bash
 # Start AION
-python main.py start
+python -m aion start
 
 # Select language (Arabic/English/etc.)
 # Choose AI Assistant mode
@@ -242,16 +179,16 @@ python main.py start
 
 ```bash
 # Execute code with syntax highlighting
-python main.py execute --language python --file script.py
+python -m aion execute --language python --file script.py
 
 # Manage tasks and scheduling
-python main.py task create --name "backup" --schedule "daily"
+python -m aion task create --name "backup" --schedule "daily"
 
 # Export conversation to PDF
-python main.py export --format pdf --output conversation.pdf
+python -m aion export --format pdf --output conversation.pdf
 
 # Voice control (if enabled)
-python main.py voice --enable --language ar
+python -m aion voice --enable --language ar
 ```
 
 ## 📋 System Requirements
@@ -295,8 +232,8 @@ python main.py voice --enable --language ar
 
 ```bash
 # Set default language
-python main.py config set --language ar  # Arabic
-python main.py config set --language en  # English
+python -m aion config set --language ar  # Arabic
+python -m aion config set --language en  # English
 ```
 
 ## 🛠️ Development
@@ -428,10 +365,10 @@ set PATH=%PATH%;C:\Python310\Scripts
 **API Key Issues**:
 ```bash
 # Verify API keys are set correctly
-python main.py config check
+python -m aion config check
 
 # Reset configuration
-python main.py config reset
+python -m aion config reset
 ```
 
 **Language Issues**:
@@ -440,20 +377,20 @@ python main.py config reset
 pip install python-bidi arabic-reshaper
 
 # Reset language settings
-python main.py language reset
+python -m aion language reset
 ```
 
 ### Performance Optimization
 
 ```bash
 # Enable performance mode
-python main.py config set --performance-mode high
+python -m aion config set --performance-mode high
 
 # Clear cache
-python main.py cache clear
+python -m aion cache clear
 
 # Optimize database
-python main.py optimize
+python -m aion optimize
 ```
 
 ## 📊 Monitoring & Analytics
@@ -486,14 +423,14 @@ class MyPlugin(BasePlugin):
 
 ```bash
 # Install plugin
-python main.py plugin install --path /path/to/plugin
+python -m aion plugin install --path /path/to/plugin
 
 # List plugins
-python main.py plugin list
+python -m aion plugin list
 
 # Enable/disable plugins
-python main.py plugin enable my_plugin
-python main.py plugin disable my_plugin
+python -m aion plugin enable my_plugin
+python -m aion plugin disable my_plugin
 ```
 
 ## 📚 Documentation
